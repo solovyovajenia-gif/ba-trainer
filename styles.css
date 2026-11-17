@@ -207,3 +207,28 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1117;color:#e2e8f
 .app-nav-btn.active{color:#fff;border-bottom-color:#3b82f6;background:#1a1f2e}
 .app-nav-btn:hover:not(.active){color:#94a3b8;background:#1a1f2e44}
 .section{display:none}.section.show{display:block}
+
+/* ─── Draw practice ─── */
+.dw-toolbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0 6px}
+.dw-tool{padding:6px 12px;border-radius:7px;border:1px solid #2d3748;background:#1a1f2e;color:#94a3b8;font-size:0.76rem;font-weight:600;cursor:pointer}
+.dw-tool:hover{border-color:#64748b;color:#e2e8f0}
+.dw-tool.active{border-color:#3b82f6;color:#93c5fd;background:#1e3a5f}
+.dw-tool:disabled{opacity:0.4;cursor:default}
+.dw-sep{width:1px;height:22px;background:#2d3748;margin:0 4px}
+.dw-hint{font-size:0.78rem;color:#fcd34d;margin:4px 0 6px}
+.dw-canvas-wrap{border:1px solid #2d3748;border-radius:10px;overflow:hidden;background:#0d1117;margin:6px 0}
+.dw-svg{display:block;width:100%;height:auto;touch-action:none;user-select:none}
+.dw-node text,.dw-edge text{pointer-events:none}
+.dw-label-box{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#1a1f2e;border-left:3px solid #f59e0b;border-radius:6px;padding:10px 12px;margin:8px 0;font-size:0.82rem;color:#e2e8f0}
+.dw-lbl{padding:5px 12px;font-size:0.78rem}
+.dw-pal-title{font-size:0.78rem;color:#94a3b8;margin:12px 0 6px}
+.dw-palette{display:flex;flex-wrap:wrap;gap:8px}
+.dw-pal-item{display:flex;align-items:center;gap:7px;background:#1e293b;border:1px solid #3b82f6;border-radius:8px;padding:8px 12px;font-size:0.74rem;color:#cbd5e1;cursor:grab;user-select:none;transition:all .12s}
+.dw-pal-item:hover{background:#264663;border-color:#60a5fa}
+.dw-pal-item.used{opacity:0.25;pointer-events:none;cursor:default}
+.dw-pal-icon{font-size:0.95rem}
+.dw-pal-kind{color:#64748b;font-size:0.68rem}
+.dw-pal-text{font-weight:600}
+.dw-errors{background:#1a1f2e;border-left:3px solid #ef4444;border-radius:6px;padding:12px 14px;margin:12px 0;font-size:0.82rem;color:#e2e8f0;line-height:1.55}
+.dw-errors ul{margin:6px 0 0 18px}
+.dw-errors li{margin-bottom:4px;color:#fca5a5}

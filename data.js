@@ -2979,3 +2979,218 @@ var BUILD_EXERCISES = [
  correctOrder:['a','b','c','d','e','f','g','h','i'],
  explanation:'Порядок: акторы + Generalization между ними, затем основной Use Case со своей связью, затем include (проверка PIN ОБЯЗАТЕЛЬНА — значит include, а не extend), и в конце — Generalization между Use Case (Withdraw Without PIN — это специализация/альтернативная реализация Withdraw Cash, не отдельный независимый сценарий). Premium Customer НЕ нужно связывать с Withdraw Cash напрямую — он уже наследует эту связь через Generalization от Bank Customer. «Verify PIN extend Withdraw Cash» — частая ошибка: extend означает «опционально», а проверка PIN обязательна для всех — это include.'}
 ];
+
+// ═══ DRAW PRACTICE: free-form diagram drawing exercises ═══
+// level 1 — палитра содержит только нужные элементы; level 2 — есть лишние (extraNodes)
+// kinds flow: start,end,task,send,gateway_x,fork,join   graph: actor,usecase,class,interface
+// edge kinds flow: 'flow' (label for gateway branches)   graph: assoc,include,extend,generalization,realization,composition,aggregation
+var DRAW_EXERCISES = [
+{id:'d1',level:1,type:'bpmn',title:'Заявка на отпуск (Employee / Manager / HR)',
+ scenario:'Сотрудник подаёт заявку на отпуск. Руководитель рассматривает её. Если ОДОБРЕНО — HR оформляет отпуск, и процесс завершается. Если НЕТ — руководитель уведомляет сотрудника об отказе, и процесс завершается. Расставь элементы по Lane и соедини Sequence Flow слева направо.',
+ lanes:[{id:'emp',label:'Employee'},{id:'mgr',label:'Manager'},{id:'hr',label:'HR'}],
+ nodes:[
+  {id:'s',kind:'start',text:'Нужен отпуск',lane:'emp'},
+  {id:'t1',kind:'task',text:'Подать заявку',lane:'emp'},
+  {id:'t2',kind:'task',text:'Рассмотреть заявку',lane:'mgr'},
+  {id:'g',kind:'gateway_x',text:'Одобрено?',lane:'mgr'},
+  {id:'t3',kind:'task',text:'Оформить отпуск',lane:'hr'},
+  {id:'t4',kind:'task',text:'Уведомить об отказе',lane:'mgr'},
+  {id:'e1',kind:'end',text:'Отпуск оформлен',lane:'hr'},
+  {id:'e2',kind:'end',text:'Отказ',lane:'mgr'}
+ ],
+ edges:[
+  {from:'s',to:'t1'},{from:'t1',to:'t2'},{from:'t2',to:'g'},
+  {from:'g',to:'t3',label:'Да'},{from:'g',to:'t4',label:'Нет'},
+  {from:'t3',to:'e1'},{from:'t4',to:'e2'}
+ ],
+ explanation:'Каждая Lane — это РОЛЬ: задачи лежат в дорожке того, кто их выполняет. Exclusive Gateway (◆) задаёт вопрос «Одобрено?» и даёт две подписанные ветки: «Да» → HR оформляет отпуск, «Нет» → Manager уведомляет об отказе. У каждой ветки свой End Event — это нормально, в BPMN может быть несколько концов.'},
+
+{id:'d2',level:1,type:'activity',title:'Снятие наличных в банкомате',
+ scenario:'Клиент вставляет карту и вводит PIN. Если PIN верный — выбирает сумму, банкомат выдаёт наличные и возвращает карту, конец. Если PIN неверный — банкомат возвращает карту, конец. Нарисуй Activity Diagram: Initial Node, Actions, Decision Node с подписанными ветками, Activity Final.',
+ nodes:[
+  {id:'s',kind:'start',text:'Initial'},
+  {id:'a1',kind:'task',text:'Вставить карту'},
+  {id:'a2',kind:'task',text:'Ввести PIN'},
+  {id:'d',kind:'gateway_x',text:'PIN верный?'},
+  {id:'a3',kind:'task',text:'Выбрать сумму'},
+  {id:'a4',kind:'task',text:'Выдать наличные'},
+  {id:'a5',kind:'task',text:'Вернуть карту'},
+  {id:'e',kind:'end',text:'Activity Final'}
+ ],
+ edges:[
+  {from:'s',to:'a1'},{from:'a1',to:'a2'},{from:'a2',to:'d'},
+  {from:'d',to:'a3',label:'Да'},{from:'a3',to:'a4'},{from:'a4',to:'a5'},
+  {from:'d',to:'a5',label:'Нет'},{from:'a5',to:'e'}
+ ],
+ explanation:'Decision Node (◆) имеет один вход и несколько выходов с guard-условиями [Да]/[Нет]. Обе ветки сходятся на Action «Вернуть карту» — в UML Activity несколько входящих потоков в одно действие допустимы (неявный merge). Activity Final (◉) один.'},
+
+{id:'d3',level:1,type:'bpmn',title:'Обработка заказа интернет-магазина',
+ scenario:'Заказ получен. Система проверяет остаток на складе. Если товар В НАЛИЧИИ — резервирует его и отправляет курьеру (Send Task), конец. Если НЕТ — уведомляет клиента о недостаче, конец. Один Pool без Lane: просто выстрой процесс слева направо.',
+ nodes:[
+  {id:'s',kind:'start',text:'Заказ получен'},
+  {id:'t1',kind:'task',text:'Проверить остаток'},
+  {id:'g',kind:'gateway_x',text:'В наличии?'},
+  {id:'t2',kind:'task',text:'Зарезервировать товар'},
+  {id:'t3',kind:'send',text:'Передать курьеру'},
+  {id:'t4',kind:'task',text:'Уведомить о недостаче'},
+  {id:'e1',kind:'end',text:'Отправлен'},
+  {id:'e2',kind:'end',text:'Отменён'}
+ ],
+ edges:[
+  {from:'s',to:'t1'},{from:'t1',to:'g'},
+  {from:'g',to:'t2',label:'Да'},{from:'t2',to:'t3'},{from:'t3',to:'e1'},
+  {from:'g',to:'t4',label:'Нет'},{from:'t4',to:'e2'}
+ ],
+ explanation:'Классический линейный процесс с одним Exclusive Gateway. Send Task (✉, пунктир) — задача, которая отправляет сообщение другому участнику (курьеру). Обрати внимание: Gateway сам ничего не делает, он только маршрутизирует — проверка остатка идёт ДО него.'},
+
+{id:'d4',level:1,type:'usecase',title:'Онлайн-магазин: заказ со скидкой',
+ scenario:'Customer оформляет заказ (Place Order). Оформление ВСЕГДА включает оплату (Make Payment). Иногда покупатель применяет промокод (Apply Discount Code) — это необязательное расширение Place Order. Нарисуй Use Case Diagram с правильными направлениями «include» и «extend».',
+ nodes:[
+  {id:'cust',kind:'actor',text:'Customer'},
+  {id:'po',kind:'usecase',text:'Place Order'},
+  {id:'mp',kind:'usecase',text:'Make Payment'},
+  {id:'ad',kind:'usecase',text:'Apply Discount Code'}
+ ],
+ edges:[
+  {from:'cust',to:'po',kind:'assoc'},
+  {from:'po',to:'mp',kind:'include'},
+  {from:'ad',to:'po',kind:'extend'}
+ ],
+ explanation:'«include»: стрелка от базового (Place Order) к обязательному включаемому (Make Payment). «extend»: стрелка от расширяющего (Apply Discount Code) к базовому (Place Order) — направление ПРОТИВОПОЛОЖНОЕ. Актор связан только с тем Use Case, который он инициирует.'},
+
+{id:'d5',level:1,type:'activity',title:'Доставка еды с параллельной подготовкой',
+ scenario:'После оформления заказа ОДНОВРЕМЕННО запускаются готовка еды и назначение курьера. Когда ОБА закончены — курьер забирает заказ, конец. Используй Fork и Join.',
+ nodes:[
+  {id:'s',kind:'start',text:'Initial'},
+  {id:'a1',kind:'task',text:'Оформить заказ'},
+  {id:'f',kind:'fork',text:'Fork'},
+  {id:'a2',kind:'task',text:'Приготовить еду'},
+  {id:'a3',kind:'task',text:'Назначить курьера'},
+  {id:'j',kind:'join',text:'Join'},
+  {id:'a4',kind:'task',text:'Передать заказ курьеру'},
+  {id:'e',kind:'end',text:'Activity Final'}
+ ],
+ edges:[
+  {from:'s',to:'a1'},{from:'a1',to:'f'},{from:'f',to:'a2'},{from:'f',to:'a3'},
+  {from:'a2',to:'j'},{from:'a3',to:'j'},{from:'j',to:'a4'},{from:'a4',to:'e'}
+ ],
+ explanation:'Fork (▮) — один вход, несколько выходов, ветки идут ПАРАЛЛЕЛЬНО. Join (▮) — ждёт завершения ВСЕХ входящих веток и только потом пропускает поток дальше. Decision здесь не нужен: нет условия, нужны обе работы.'},
+
+// ─── LEVEL 2: library with distractors ───
+{id:'d6',level:2,type:'bpmn',title:'Обращение в поддержку (Customer / Support / Engineer)',
+ scenario:'Клиент создаёт тикет. Поддержка проверяет его. Если проблема ПРОСТАЯ — поддержка отвечает клиенту, конец. Если СЛОЖНАЯ — инженер чинит, затем поддержка отвечает клиенту, конец. В библиотеке есть лишние элементы — используй только нужные.',
+ lanes:[{id:'cust',label:'Customer'},{id:'sup',label:'Support'},{id:'eng',label:'Engineer'}],
+ nodes:[
+  {id:'s',kind:'start',text:'Проблема',lane:'cust'},
+  {id:'t1',kind:'task',text:'Создать тикет',lane:'cust'},
+  {id:'t2',kind:'task',text:'Проверить тикет',lane:'sup'},
+  {id:'g',kind:'gateway_x',text:'Сложная?',lane:'sup'},
+  {id:'t3',kind:'task',text:'Исправить проблему',lane:'eng'},
+  {id:'t4',kind:'task',text:'Ответить клиенту',lane:'sup'},
+  {id:'e',kind:'end',text:'Решено',lane:'sup'}
+ ],
+ extraNodes:[
+  {id:'x1',kind:'fork',text:'Parallel Gateway',why:'Ветки не идут параллельно — это выбор одной из двух, нужен Exclusive Gateway.'},
+  {id:'x2',kind:'task',text:'Выставить счёт',why:'В сценарии нет оплаты.'},
+  {id:'x3',kind:'send',text:'Уведомить директора',why:'Сценарий не упоминает директора.'},
+  {id:'x4',kind:'start',text:'Второй старт',why:'У процесса одна точка начала.'}
+ ],
+ edges:[
+  {from:'s',to:'t1'},{from:'t1',to:'t2'},{from:'t2',to:'g'},
+  {from:'g',to:'t3',label:'Да'},{from:'t3',to:'t4'},
+  {from:'g',to:'t4',label:'Нет'},{from:'t4',to:'e'}
+ ],
+ explanation:'Две ветки Gateway сходятся на одной задаче «Ответить клиенту» — в BPMN это допустимо без merge-шлюза. Параллельный шлюз, счёт и директор — лишние: сценарий их не описывает. Лишний элемент на диаграмме — такая же ошибка, как пропущенный.'},
+
+{id:'d7',level:2,type:'activity',title:'Регистрация пользователя',
+ scenario:'Пользователь заполняет форму. Система проверяет e-mail. Если e-mail УЖЕ ЗАНЯТ — показать ошибку и вернуться к заполнению формы. Если СВОБОДЕН — создать аккаунт, отправить письмо подтверждения, конец. Лишние элементы в библиотеке — не используй их.',
+ nodes:[
+  {id:'s',kind:'start',text:'Initial'},
+  {id:'a1',kind:'task',text:'Заполнить форму'},
+  {id:'a2',kind:'task',text:'Проверить e-mail'},
+  {id:'d',kind:'gateway_x',text:'E-mail занят?'},
+  {id:'a3',kind:'task',text:'Показать ошибку'},
+  {id:'a4',kind:'task',text:'Создать аккаунт'},
+  {id:'a5',kind:'task',text:'Отправить письмо'},
+  {id:'e',kind:'end',text:'Activity Final'}
+ ],
+ extraNodes:[
+  {id:'x1',kind:'fork',text:'Fork',why:'Параллельных веток нет.'},
+  {id:'x2',kind:'join',text:'Join',why:'Без Fork не бывает Join.'},
+  {id:'x3',kind:'task',text:'Оплатить подписку',why:'Оплаты в сценарии нет.'},
+  {id:'x4',kind:'end',text:'Flow Final',why:'Поток не обрывается — он возвращается к форме или доходит до Activity Final.'}
+ ],
+ edges:[
+  {from:'s',to:'a1'},{from:'a1',to:'a2'},{from:'a2',to:'d'},
+  {from:'d',to:'a3',label:'Да'},{from:'a3',to:'a1',back:true},
+  {from:'d',to:'a4',label:'Нет'},{from:'a4',to:'a5'},{from:'a5',to:'e'}
+ ],
+ explanation:'Цикл: ветка «Да» ведёт к «Показать ошибку», и поток ВОЗВРАЩАЕТСЯ назад к «Заполнить форму» — это обратная стрелка, она идёт справа налево. Fork/Join не нужны (ничего не делается параллельно), оплата не описана.'},
+
+{id:'d8',level:2,type:'usecase',title:'Банкомат: снятие наличных',
+ scenario:'Bank Customer снимает наличные (Withdraw Cash). Для этого ВСЕГДА нужна проверка PIN (Verify PIN). Иногда клиент просит распечатать чек (Print Receipt) — необязательно. В библиотеке есть лишние акторы и Use Case.',
+ nodes:[
+  {id:'bc',kind:'actor',text:'Bank Customer'},
+  {id:'wc',kind:'usecase',text:'Withdraw Cash'},
+  {id:'vp',kind:'usecase',text:'Verify PIN'},
+  {id:'pr',kind:'usecase',text:'Print Receipt'}
+ ],
+ extraNodes:[
+  {id:'x1',kind:'actor',text:'Bank Admin',why:'Администратор в сценарии не участвует.'},
+  {id:'x2',kind:'usecase',text:'Transfer Money',why:'Перевод не описан.'},
+  {id:'x3',kind:'usecase',text:'Check Balance',why:'Проверка баланса не описана.'}
+ ],
+ edges:[
+  {from:'bc',to:'wc',kind:'assoc'},
+  {from:'wc',to:'vp',kind:'include'},
+  {from:'pr',to:'wc',kind:'extend'}
+ ],
+ explanation:'«ВСЕГДА нужна проверка PIN» = «include» от Withdraw Cash к Verify PIN. «Иногда чек» = «extend» от Print Receipt к Withdraw Cash. Актор связан с базовым Use Case, а не с включаемыми шагами — Verify PIN сам по себе клиент не запускает.'},
+
+{id:'d9',level:2,type:'class',title:'Библиотечная система',
+ scenario:'Есть Book и Member. Member берёт книги (Association «borrows»). VIPMember — особый тип Member (наследование). В библиотеке есть лишние классы и неподходящие виды связей.',
+ nodes:[
+  {id:'book',kind:'class',text:'Book'},
+  {id:'mem',kind:'class',text:'Member'},
+  {id:'vip',kind:'class',text:'VIPMember'}
+ ],
+ extraNodes:[
+  {id:'x1',kind:'class',text:'Genre',why:'Жанры в сценарии не упоминаются.'},
+  {id:'x2',kind:'class',text:'Librarian',why:'Библиотекарь не описан.'},
+  {id:'x3',kind:'interface',text:'«interface» Searchable',why:'Интерфейсов в сценарии нет.'}
+ ],
+ edges:[
+  {from:'mem',to:'book',kind:'assoc',label:'borrows'},
+  {from:'vip',to:'mem',kind:'generalization'}
+ ],
+ explanation:'«Берёт книги» — обычная Association (книга не часть участника, это не Composition/Aggregation). «VIPMember — особый тип Member» — Generalization, стрелка с пустым треугольником от потомка к родителю. Лишние классы не добавляем: диаграмма описывает ровно то, что есть в требованиях.'},
+
+{id:'d10',level:2,type:'bpmn',title:'Найм сотрудника (Recruiter / Hiring Manager)',
+ scenario:'Рекрутер получает отклик и проводит скрининг. Если кандидат ПОДХОДИТ — Hiring Manager проводит интервью и принимает решение: если ОФФЕР — рекрутер отправляет оффер, конец; иначе рекрутер отправляет отказ, конец. Если кандидат НЕ подходит на скрининге — рекрутер сразу отправляет отказ. Два Gateway, лишние элементы в библиотеке.',
+ lanes:[{id:'rec',label:'Recruiter'},{id:'hm',label:'Hiring Manager'}],
+ nodes:[
+  {id:'s',kind:'start',text:'Отклик получен',lane:'rec'},
+  {id:'t1',kind:'task',text:'Провести скрининг',lane:'rec'},
+  {id:'g1',kind:'gateway_x',text:'Подходит?',lane:'rec'},
+  {id:'t2',kind:'task',text:'Провести интервью',lane:'hm'},
+  {id:'g2',kind:'gateway_x',text:'Оффер?',lane:'hm'},
+  {id:'t3',kind:'send',text:'Отправить оффер',lane:'rec'},
+  {id:'t4',kind:'send',text:'Отправить отказ',lane:'rec'},
+  {id:'e1',kind:'end',text:'Нанят',lane:'rec'},
+  {id:'e2',kind:'end',text:'Отказано',lane:'rec'}
+ ],
+ extraNodes:[
+  {id:'x1',kind:'fork',text:'Parallel Gateway',why:'Параллельных веток нет.'},
+  {id:'x2',kind:'task',text:'Оформить ДМС',why:'Оформление ДМС не описано.'},
+  {id:'x3',kind:'task',text:'Проверить рекомендации',why:'Сценарий не упоминает проверку рекомендаций.'},
+  {id:'x4',kind:'start',text:'Вакансия открыта',why:'Процесс начинается с отклика, а не с открытия вакансии.'}
+ ],
+ edges:[
+  {from:'s',to:'t1'},{from:'t1',to:'g1'},
+  {from:'g1',to:'t2',label:'Да'},{from:'t2',to:'g2'},
+  {from:'g2',to:'t3',label:'Да'},{from:'t3',to:'e1'},
+  {from:'g2',to:'t4',label:'Нет'},{from:'g1',to:'t4',label:'Нет'},
+  {from:'t4',to:'e2'}
+ ],
+ explanation:'Два последовательных Exclusive Gateway. Обе ветки «Нет» ведут в одну задачу «Отправить отказ» — так диаграмма остаётся компактной. Send Task для оффера и отказа — рекрутер отправляет сообщение кандидату, который находится за пределами процесса.'}
+];

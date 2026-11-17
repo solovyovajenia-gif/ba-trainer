@@ -486,13 +486,14 @@ function renderTheoryUML(){
     {id:'overview',label:'📊 Diagram Types'},
     {id:'uml_elements',label:'🔷 UML Elements'},
     {id:'bpmn_elements',label:'🟣 BPMN 2.0 — Элементы / Elements'},
-    {id:'practice_build',label:'🎨 Практика: Построй диаграмму'}
+    {id:'practice_build',label:'🎨 Практика: Построй диаграмму'},
+    {id:'practice_draw',label:'✏️ Практика: Нарисуй диаграмму'}
   ];
   var tabsHtml = tabs.map(function(t){
     return '<div class="ttab'+(theoryTabUML===t.id?' active':'')+'" onclick="switchTabUML(\''+t.id+'\')">'+t.label+'</div>';
   }).join('');
 
-  var panelContent = theoryTabUML==='practice_build' ? renderBuildPractice() : THEORY_UML[theoryTabUML].content;
+  var panelContent = theoryTabUML==='practice_build' ? renderBuildPractice() : theoryTabUML==='practice_draw' ? renderDrawPractice() : THEORY_UML[theoryTabUML].content;
 
   document.getElementById('uapp').innerHTML =
     '<div class="theory-screen">'+
@@ -502,6 +503,7 @@ function renderTheoryUML(){
       '<div class="theory-panel show" id="utp">'+panelContent+'</div>'+
       '<button class="start-btn" onclick="startQuizUML()">🚀 Начать тест (67 вопросов)</button>'+
     '</div>';
+  if(theoryTabUML==='practice_draw') dwBind();
 }
 
 function switchTabUML(id){
@@ -1116,3 +1118,318 @@ Q_UML.push({sec:"uml",lab:"Sequence — выбор правильного фра
 
 
 // UML initialized on demand via switchApp
+
+// ═══════════════════════════════════════════
+// DRAW PRACTICE: free-form diagram drawing
+// ═══════════════════════════════════════════
+var dwState = {level:null, exId:null, nodes:[], edges:[], tool:'select', connectFrom:null, selected:null,
+               edgeKind:'flow', result:null, pendingEdge:null, attempts:0, uidSeq:1, drag:null};
+var DW_W = 820, DW_LANE_H = 120, DW_H_NOLANE = 380, DW_LEFT = 90;
+var DW_FLOW_TYPES = ['bpmn','activity'];
+var DW_EDGE_KINDS = {
+  usecase:[{id:'assoc',label:'— Association'},{id:'include',label:'┄▷ «include»'},{id:'extend',label:'┄▷ «extend»'},{id:'generalization',label:'▷ Generalization'}],
+  'class':[{id:'assoc',label:'— Association'},{id:'generalization',label:'▷ Generalization'},{id:'realization',label:'┄▷ Realization'},{id:'composition',label:'◆ Composition'},{id:'aggregation',label:'◇ Aggregation'}]
+};
+var DW_KIND_ICON = {start:'⚪',end:'⚫',task:'▭',send:'✉',gateway_x:'◆',fork:'▮',join:'▮',actor:'🧍',usecase:'⬭',class:'▭',interface:'▭'};
+var DW_KIND_NAME = {start:'Start',end:'End',task:'Task',send:'Send Task',gateway_x:'Gateway',fork:'Fork',join:'Join',actor:'Actor',usecase:'Use Case',class:'Class',interface:'Interface'};
+
+function dwEx(){ return DRAW_EXERCISES.filter(function(e){return e.id===dwState.exId;})[0]; }
+function dwIsFlow(ex){ return DW_FLOW_TYPES.indexOf(ex.type)!==-1; }
+function dwKindName(ex,kind){
+  if(ex.type==='activity'){ if(kind==='task')return 'Action'; if(kind==='gateway_x')return 'Decision'; if(kind==='start')return 'Initial'; if(kind==='end')return 'Final'; }
+  if(ex.type==='bpmn'){ if(kind==='gateway_x')return 'Exclusive Gateway'; if(kind==='fork')return 'Parallel Gateway'; if(kind==='start')return 'Start Event'; if(kind==='end')return 'End Event'; }
+  return DW_KIND_NAME[kind]||kind;
+}
+function dwLib(ex){
+  var lib = ex.nodes.slice();
+  if(ex.extraNodes){ lib = lib.concat(ex.extraNodes); var seed = ex.id.length; lib.sort(function(a,b){ return ((a.id.charCodeAt(0)*31+a.text.length*seed)%17) - ((b.id.charCodeAt(0)*31+b.text.length*seed)%17); }); }
+  return lib;
+}
+function dwCanvasH(ex){ return ex.lanes ? ex.lanes.length*DW_LANE_H : DW_H_NOLANE; }
+function dwLaneOf(ex,y){ if(!ex.lanes) return null; var i=Math.max(0,Math.min(ex.lanes.length-1,Math.floor(y/DW_LANE_H))); return ex.lanes[i].id; }
+function dwSize(kind){
+  if(kind==='task'||kind==='send') return {w:124,h:38};
+  if(kind==='gateway_x') return {w:40,h:40};
+  if(kind==='start'||kind==='end') return {w:30,h:30};
+  if(kind==='fork'||kind==='join') return {w:12,h:64};
+  if(kind==='actor') return {w:34,h:60};
+  if(kind==='usecase') return {w:136,h:46};
+  return {w:124,h:42}; // class / interface
+}
+function dwRefresh(){ var el=document.getElementById('utp'); if(el){ el.innerHTML=renderDrawPractice(); dwBind(); } }
+function dwRefreshSvg(){ var s=document.getElementById('dw-svg'); if(s) s.innerHTML=dwSvgInner(dwEx()); }
+
+// ─── screens ───
+function renderDrawPractice(){
+  if(!dwState.level) return renderDrawLevels();
+  if(!dwState.exId) return renderDrawList();
+  return renderDrawExercise();
+}
+function renderDrawLevels(){
+  var c1 = DRAW_EXERCISES.filter(function(e){return e.level===1;}).length, c2 = DRAW_EXERCISES.filter(function(e){return e.level===2;}).length;
+  return '<div class="t-h3">✏️ Нарисуй диаграмму</div>'
+    +'<div class="info-box">Полноценное рисование: перетаскивай элементы из палитры на холст, расставляй по Lane и слева направо, соединяй стрелками. Проверяется не порядок кликов, а структура: какие элементы есть, где они стоят и чем соединены.</div>'
+    +'<div class="build-type-grid">'
+    +'<div class="build-type-card" onclick="dwSelectLevel(1)"><div class="bt-icon">🧩</div><h4>Уровень 1 — Собери</h4><p>В палитре только нужные элементы ('+c1+' заданий). Расставь и соедини.</p></div>'
+    +'<div class="build-type-card" onclick="dwSelectLevel(2)"><div class="bt-icon">📚</div><h4>Уровень 2 — Библиотека</h4><p>В палитре есть лишние элементы ('+c2+' заданий). Выбери только нужные.</p></div>'
+    +'</div>';
+}
+function renderDrawList(){
+  var list = DRAW_EXERCISES.filter(function(e){return e.level===dwState.level;});
+  var typeLab = {}; BUILD_TYPES.forEach(function(t){typeLab[t.id]=t.icon+' '+t.label;});
+  return '<div class="t-h3">'+(dwState.level===1?'🧩 Уровень 1 — Собери из готового':'📚 Уровень 2 — Выбери из библиотеки')+'</div>'
+    +'<div class="build-ex-list">'+list.map(function(e,i){
+      return '<div class="build-ex-card" onclick="dwStart(\''+e.id+'\')"><h4>'+(i+1)+'. '+e.title+'</h4><p>'+typeLab[e.type]+' · '+e.nodes.length+' элементов · '+e.edges.length+' связей'+(e.lanes?' · '+e.lanes.length+' Lane':'')+'</p></div>';
+    }).join('')+'</div>'
+    +'<button class="btn btn-g" onclick="dwBackLevels()">← Уровни</button>';
+}
+function dwSelectLevel(l){ dwState.level=l; dwState.exId=null; dwRefresh(); }
+function dwBackLevels(){ dwState.level=null; dwState.exId=null; dwRefresh(); }
+function dwBackList(){ dwState.exId=null; dwRefresh(); }
+function dwStart(id){
+  dwState.exId=id; dwState.nodes=[]; dwState.edges=[]; dwState.tool='select'; dwState.connectFrom=null; dwState.selected=null;
+  dwState.result=null; dwState.pendingEdge=null; dwState.attempts=0; dwState.uidSeq=1;
+  var ex=dwEx(); dwState.edgeKind = dwIsFlow(ex) ? 'flow' : DW_EDGE_KINDS[ex.type][0].id;
+  dwRefresh();
+}
+function dwRetry(){ dwStart(dwState.exId); }
+
+function renderDrawExercise(){
+  var ex=dwEx(), lib=dwLib(ex), flow=dwIsFlow(ex);
+  var html = '<div class="t-h3">'+ex.title+'</div>'
+    +'<div class="build-scenario">📌 '+ex.scenario+'</div>';
+  if(dwState.result && dwState.result.ok){
+    var pct = dwState.attempts<=1?'perfect':dwState.attempts<=3?'good':'rough';
+    var title = pct==='perfect'?'🏆 Идеально! С первой попытки':pct==='good'?'✅ Диаграмма построена верно':'📚 Готово, но стоит повторить теорию';
+    html += '<div class="build-done-banner '+pct+'"><h3>'+title+'</h3><p>Проверок: '+dwState.attempts+'</p></div>';
+  }
+  // toolbar
+  html += '<div class="dw-toolbar">'
+    +'<button class="dw-tool'+(dwState.tool==='select'?' active':'')+'" onclick="dwSetTool(\'select\')">↖ Двигать</button>'
+    +'<button class="dw-tool'+(dwState.tool==='connect'?' active':'')+'" onclick="dwSetTool(\'connect\')">→ Соединить</button>';
+  if(!flow){
+    html += '<span class="dw-sep"></span>' + DW_EDGE_KINDS[ex.type].map(function(k){
+      return '<button class="dw-tool dw-kind'+(dwState.edgeKind===k.id?' active':'')+'" onclick="dwSetKind(\''+k.id+'\')">'+k.label+'</button>';
+    }).join('');
+  }
+  html += '<span class="dw-sep"></span>'
+    +'<button class="dw-tool" onclick="dwDeleteSelected()"'+(dwState.selected?'':' disabled')+'>🗑 Удалить</button>'
+    +'<button class="dw-tool" onclick="dwClear()">✖ Очистить</button>'
+    +'</div>';
+  html += '<div class="dw-hint">'+(dwState.tool==='connect'?(dwState.connectFrom?'Теперь кликни на элемент, КУДА ведёт стрелка':'Кликни на элемент, ОТКУДА идёт стрелка'):'Перетаскивай элементы по холсту. Клик по элементу или стрелке выделяет их для удаления.')+'</div>';
+  // canvas
+  var H=dwCanvasH(ex);
+  html += '<div class="dw-canvas-wrap"><svg id="dw-svg" class="dw-svg" viewBox="0 0 '+DW_W+' '+H+'" xmlns="http://www.w3.org/2000/svg">'+dwSvgInner(ex)+'</svg></div>';
+  // label chooser
+  if(dwState.pendingEdge!==null){
+    var labels=[]; ex.edges.forEach(function(e){ if(e.label && labels.indexOf(e.label)===-1) labels.push(e.label); });
+    html += '<div class="dw-label-box">Подпись для ветки: '+labels.map(function(l){return '<button class="btn btn-p dw-lbl" onclick="dwSetLabel(\''+bpEsc(l)+'\')">'+bpEsc(l)+'</button>';}).join('')
+      +'<button class="btn btn-g dw-lbl" onclick="dwSetLabel(\'\')">без подписи</button></div>';
+  }
+  // palette
+  html += '<div class="dw-pal-title">Палитра — перетащи на холст (или кликни, чтобы добавить)</div><div class="dw-palette">';
+  lib.forEach(function(n){
+    var used = dwState.nodes.some(function(p){return p.src===n.id;});
+    html += '<div class="dw-pal-item'+(used?' used':'')+'" draggable="'+(used?'false':'true')+'" data-src="'+n.id+'" onclick="dwAddFromPalette(\''+n.id+'\')">'
+      +'<span class="dw-pal-icon">'+DW_KIND_ICON[n.kind]+'</span><span class="dw-pal-kind">'+dwKindName(ex,n.kind)+'</span><span class="dw-pal-text">'+bpEsc(n.text)+'</span></div>';
+  });
+  html += '</div>';
+  // result
+  if(dwState.result && !dwState.result.ok){
+    html += '<div class="dw-errors"><b>Проверка '+dwState.attempts+': найдено замечаний — '+dwState.result.errors.length+'</b><ul>'+dwState.result.errors.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+  }
+  if(dwState.result && dwState.result.ok){
+    html += '<div class="build-explanation"><b>Разбор:</b> '+ex.explanation+'</div>'
+      +'<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-p" onclick="dwRetry()">🔄 Нарисовать заново</button><button class="btn btn-g" onclick="dwBackList()">← Другое задание</button></div>';
+  } else {
+    html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="btn btn-p" onclick="dwCheck()">✅ Проверить</button><button class="btn btn-g" onclick="dwBackList()">← Другое задание</button></div>';
+  }
+  return html;
+}
+
+// ─── SVG rendering ───
+function dwSvgInner(ex){
+  var H=dwCanvasH(ex), s='';
+  s += '<defs>'
+    +'<marker id="dwA" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,7 3,0 6" fill="#94a3b8"/></marker>'
+    +'<marker id="dwO" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0,8 3.5,0 7" fill="none" stroke="#c4b5fd" stroke-width="1.2"/></marker>'
+    +'<marker id="dwT" markerWidth="11" markerHeight="9" refX="10" refY="4.5" orient="auto"><polygon points="0 0,10 4.5,0 9" fill="#0f1117" stroke="#e2e8f0" stroke-width="1.2"/></marker>'
+    +'<marker id="dwDF" markerWidth="12" markerHeight="8" refX="1" refY="4" orient="auto"><polygon points="1 4,6 0,11 4,6 8" fill="#e2e8f0"/></marker>'
+    +'<marker id="dwDO" markerWidth="12" markerHeight="8" refX="1" refY="4" orient="auto"><polygon points="1 4,6 0,11 4,6 8" fill="#0f1117" stroke="#e2e8f0" stroke-width="1.2"/></marker>'
+    +'</defs>';
+  s += '<rect x="0" y="0" width="'+DW_W+'" height="'+H+'" fill="#0d1117"/>';
+  if(ex.lanes){
+    ex.lanes.forEach(function(l,i){
+      var y=i*DW_LANE_H;
+      s += '<rect x="0" y="'+y+'" width="'+DW_W+'" height="'+DW_LANE_H+'" fill="'+(i%2?'#0d1117':'#12161f')+'" stroke="#2d3748"/>'
+        +'<rect x="0" y="'+y+'" width="'+DW_LEFT+'" height="'+DW_LANE_H+'" fill="#161b26" stroke="#2d3748"/>'
+        +'<text x="'+(DW_LEFT/2)+'" y="'+(y+DW_LANE_H/2+4)+'" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="700">'+bpEsc(l.label)+'</text>';
+    });
+  } else if(dwState.nodes.length===0){
+    s += '<text x="'+(DW_W/2)+'" y="'+(H/2)+'" text-anchor="middle" fill="#374151" font-size="14">Холст пуст — перетащи элементы из палитры ниже</text>';
+  }
+  dwState.edges.forEach(function(e,i){ s += dwEdgeSvg(ex,e,i); });
+  dwState.nodes.forEach(function(n){ s += dwNodeSvg(ex,n); });
+  return s;
+}
+function dwNodeByUid(uid){ return dwState.nodes.filter(function(n){return n.uid===uid;})[0]; }
+function dwNodeSvg(ex,n){
+  var sel = (dwState.selected && dwState.selected.type==='node' && dwState.selected.uid===n.uid) || dwState.connectFrom===n.uid;
+  var cx=n.x, cy=n.y, k=n.kind, t=bpEsc(n.text), body='';
+  var stroke = sel?'#fbbf24':null;
+  if(k==='start') body = '<circle cx="'+cx+'" cy="'+cy+'" r="15" fill="#1e3a5f" stroke="'+(stroke||'#3b82f6')+'" stroke-width="2"/><text x="'+cx+'" y="'+(cy+28)+'" text-anchor="middle" fill="#93c5fd" font-size="9">'+t+'</text>';
+  else if(k==='end') body = '<circle cx="'+cx+'" cy="'+cy+'" r="15" fill="#1a1f2e" stroke="'+(stroke||'#ef4444')+'" stroke-width="3"/><text x="'+cx+'" y="'+(cy+28)+'" text-anchor="middle" fill="#fca5a5" font-size="9">'+t+'</text>';
+  else if(k==='task'||k==='send'){ var sz=dwSize(k); body = '<rect x="'+(cx-sz.w/2)+'" y="'+(cy-sz.h/2)+'" width="'+sz.w+'" height="'+sz.h+'" rx="10" fill="'+(k==='send'?'#0d3b2e':'#1e3a5f')+'" stroke="'+(stroke||(k==='send'?'#10b981':'#3b82f6'))+'" stroke-width="1.6"'+(k==='send'?' stroke-dasharray="5,2"':'')+'/><text x="'+cx+'" y="'+(cy+4)+'" text-anchor="middle" fill="'+(k==='send'?'#6ee7b7':'#93c5fd')+'" font-size="10">'+(k==='send'?'✉ ':'')+t+'</text>'; }
+  else if(k==='gateway_x') body = '<polygon points="'+cx+','+(cy-20)+' '+(cx+20)+','+cy+' '+cx+','+(cy+20)+' '+(cx-20)+','+cy+'" fill="#1a1f2e" stroke="'+(stroke||'#f59e0b')+'" stroke-width="1.8"/><text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" fill="#fcd34d" font-size="14" font-weight="700">×</text><text x="'+cx+'" y="'+(cy+33)+'" text-anchor="middle" fill="#fcd34d" font-size="9">'+t+'</text>';
+  else if(k==='fork'||k==='join') body = '<rect x="'+(cx-5)+'" y="'+(cy-32)+'" width="10" height="64" rx="2" fill="'+(stroke||'#94a3b8')+'"/><text x="'+cx+'" y="'+(cy+45)+'" text-anchor="middle" fill="#94a3b8" font-size="9">'+t+'</text>';
+  else if(k==='actor') body = '<g stroke="'+(stroke||'#93c5fd')+'" stroke-width="1.8" fill="none"><circle cx="'+cx+'" cy="'+(cy-20)+'" r="8"/><line x1="'+cx+'" y1="'+(cy-12)+'" x2="'+cx+'" y2="'+(cy+8)+'"/><line x1="'+(cx-14)+'" y1="'+(cy-4)+'" x2="'+(cx+14)+'" y2="'+(cy-4)+'"/><line x1="'+cx+'" y1="'+(cy+8)+'" x2="'+(cx-12)+'" y2="'+(cy+26)+'"/><line x1="'+cx+'" y1="'+(cy+8)+'" x2="'+(cx+12)+'" y2="'+(cy+26)+'"/></g><text x="'+cx+'" y="'+(cy+40)+'" text-anchor="middle" fill="#93c5fd" font-size="10">'+t+'</text>';
+  else if(k==='usecase') body = '<ellipse cx="'+cx+'" cy="'+cy+'" rx="68" ry="23" fill="#2e1065" stroke="'+(stroke||'#a78bfa')+'" stroke-width="1.6"/><text x="'+cx+'" y="'+(cy+4)+'" text-anchor="middle" fill="#ddd6fe" font-size="10">'+t+'</text>';
+  else { var sz2=dwSize(k); body = '<rect x="'+(cx-sz2.w/2)+'" y="'+(cy-sz2.h/2)+'" width="'+sz2.w+'" height="'+sz2.h+'" fill="#1e293b" stroke="'+(stroke||'#60a5fa')+'" stroke-width="1.6"/><line x1="'+(cx-sz2.w/2)+'" y1="'+(cy-sz2.h/2+20)+'" x2="'+(cx+sz2.w/2)+'" y2="'+(cy-sz2.h/2+20)+'" stroke="'+(stroke||'#60a5fa')+'"/><text x="'+cx+'" y="'+(cy-sz2.h/2+14)+'" text-anchor="middle" fill="#bfdbfe" font-size="10" font-weight="700">'+t+'</text>'; }
+  return '<g class="dw-node" data-uid="'+n.uid+'" style="cursor:'+(dwState.tool==='connect'?'crosshair':'grab')+'">'+body+'</g>';
+}
+function dwAnchor(n, tx, ty){
+  var sz=dwSize(n.kind), dx=tx-n.x, dy=ty-n.y, len=Math.sqrt(dx*dx+dy*dy)||1;
+  var rx=sz.w/2+4, ry=sz.h/2+4;
+  var t = 1/Math.sqrt((dx*dx)/(rx*rx*len*len)+(dy*dy)/(ry*ry*len*len));
+  t = Math.min(t, len/2);
+  return {x:n.x+dx/len*t, y:n.y+dy/len*t};
+}
+function dwEdgeSvg(ex,e,i){
+  var a=dwNodeByUid(e.from), b=dwNodeByUid(e.to); if(!a||!b) return '';
+  var sel = dwState.selected && dwState.selected.type==='edge' && dwState.selected.idx===i;
+  var p1=dwAnchor(a,b.x,b.y), p2=dwAnchor(b,a.x,a.y);
+  var k=e.kind||'flow', stroke=sel?'#fbbf24':'#94a3b8', dash='', mEnd='url(#dwA)', mStart='', lbl=e.label||'';
+  if(k==='assoc'){ mEnd=''; }
+  else if(k==='include'||k==='extend'){ dash=' stroke-dasharray="6,3"'; mEnd='url(#dwO)'; stroke=sel?'#fbbf24':'#c4b5fd'; lbl='«'+k+'»'; }
+  else if(k==='generalization'){ mEnd='url(#dwT)'; stroke=sel?'#fbbf24':'#e2e8f0'; }
+  else if(k==='realization'){ mEnd='url(#dwT)'; dash=' stroke-dasharray="6,3"'; stroke=sel?'#fbbf24':'#e2e8f0'; }
+  else if(k==='composition'){ mEnd=''; mStart=' marker-start="url(#dwDF)"'; stroke=sel?'#fbbf24':'#e2e8f0'; }
+  else if(k==='aggregation'){ mEnd=''; mStart=' marker-start="url(#dwDO)"'; stroke=sel?'#fbbf24':'#e2e8f0'; }
+  var mx=(p1.x+p2.x)/2, my=(p1.y+p2.y)/2;
+  var s='<g class="dw-edge" data-idx="'+i+'" style="cursor:pointer">'
+    +'<line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="transparent" stroke-width="14"/>'
+    +'<line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="'+stroke+'" stroke-width="1.8"'+dash+(mEnd?' marker-end="'+mEnd+'"':'')+mStart+'/>';
+  if(lbl) s+='<rect x="'+(mx-lbl.length*3.2-4)+'" y="'+(my-16)+'" width="'+(lbl.length*6.4+8)+'" height="14" rx="3" fill="#0d1117"/><text x="'+mx+'" y="'+(my-5)+'" text-anchor="middle" fill="'+(sel?'#fbbf24':'#fcd34d')+'" font-size="10">'+bpEsc(lbl)+'</text>';
+  return s+'</g>';
+}
+
+// ─── interaction ───
+function dwSetTool(t){ dwState.tool=t; dwState.connectFrom=null; dwState.selected=null; dwRefresh(); }
+function dwSetKind(k){ dwState.edgeKind=k; dwState.tool='connect'; dwRefresh(); }
+function dwClear(){ dwState.nodes=[]; dwState.edges=[]; dwState.selected=null; dwState.connectFrom=null; dwState.pendingEdge=null; dwState.result=null; dwRefresh(); }
+function dwDeleteSelected(){
+  var s=dwState.selected; if(!s) return;
+  if(s.type==='edge') dwState.edges.splice(s.idx,1);
+  else { dwState.nodes=dwState.nodes.filter(function(n){return n.uid!==s.uid;}); dwState.edges=dwState.edges.filter(function(e){return e.from!==s.uid&&e.to!==s.uid;}); }
+  dwState.selected=null; dwState.pendingEdge=null; dwRefresh();
+}
+function dwLibNode(ex,src){ return dwLib(ex).filter(function(n){return n.id===src;})[0]; }
+function dwAddNode(src,x,y){
+  var ex=dwEx(); if(dwState.nodes.some(function(p){return p.src===src;})) return;
+  var ln=dwLibNode(ex,src); if(!ln) return;
+  var H=dwCanvasH(ex);
+  x=Math.max(DW_LEFT+40,Math.min(DW_W-40,x)); y=Math.max(30,Math.min(H-30,y));
+  dwState.nodes.push({uid:dwState.uidSeq++, src:src, kind:ln.kind, text:ln.text, x:x, y:y});
+  dwState.result=null; dwRefresh();
+}
+function dwAddFromPalette(src){
+  var ex=dwEx(), H=dwCanvasH(ex), idx=dwState.nodes.length;
+  dwAddNode(src, DW_LEFT+70+(idx%5)*140, 60+Math.floor(idx/5)*90 % (H-60));
+}
+function dwSetLabel(l){ if(dwState.pendingEdge!==null && dwState.edges[dwState.pendingEdge]) dwState.edges[dwState.pendingEdge].label=l; dwState.pendingEdge=null; dwRefresh(); }
+function dwSvgPoint(svg,ev){ var pt=svg.createSVGPoint(); pt.x=ev.clientX; pt.y=ev.clientY; var p=pt.matrixTransform(svg.getScreenCTM().inverse()); return {x:p.x,y:p.y}; }
+
+function dwBind(){
+  var svg=document.getElementById('dw-svg'); if(!svg) return;
+  var ex=dwEx();
+  // palette drag → canvas
+  var items=document.querySelectorAll('.dw-pal-item[draggable="true"]');
+  for(var i=0;i<items.length;i++){ items[i].addEventListener('dragstart',function(ev){ ev.dataTransfer.setData('text/plain',this.getAttribute('data-src')); ev.dataTransfer.effectAllowed='copy'; }); }
+  svg.addEventListener('dragover',function(ev){ ev.preventDefault(); ev.dataTransfer.dropEffect='copy'; });
+  svg.addEventListener('drop',function(ev){ ev.preventDefault(); var src=ev.dataTransfer.getData('text/plain'); if(!src) return; var p=dwSvgPoint(svg,ev); dwAddNode(src,p.x,p.y); });
+  // pointer interaction inside canvas
+  svg.addEventListener('pointerdown',function(ev){
+    var g=ev.target.closest ? ev.target.closest('.dw-node') : null;
+    var eg=ev.target.closest ? ev.target.closest('.dw-edge') : null;
+    if(g){
+      var uid=parseInt(g.getAttribute('data-uid'),10);
+      if(dwState.tool==='connect'){
+        if(dwState.connectFrom===null){ dwState.connectFrom=uid; dwRefresh(); }
+        else if(dwState.connectFrom===uid){ dwState.connectFrom=null; dwRefresh(); }
+        else {
+          var from=dwState.connectFrom, to=uid;
+          var dup=dwState.edges.some(function(e){return e.from===from&&e.to===to;});
+          if(!dup){
+            var kind=dwIsFlow(ex)?'flow':dwState.edgeKind;
+            dwState.edges.push({from:from,to:to,kind:kind,label:''});
+            var fn=dwNodeByUid(from);
+            if(dwIsFlow(ex) && fn && fn.kind==='gateway_x') dwState.pendingEdge=dwState.edges.length-1;
+          }
+          dwState.connectFrom=null; dwState.result=null; dwRefresh();
+        }
+        return;
+      }
+      var n=dwNodeByUid(uid), p=dwSvgPoint(svg,ev);
+      dwState.drag={uid:uid,dx:n.x-p.x,dy:n.y-p.y,moved:false};
+      dwState.selected={type:'node',uid:uid}; dwState.pendingEdge=null;
+      svg.setPointerCapture(ev.pointerId); ev.preventDefault();
+      dwRefreshSvg(); dwToolbarSync();
+    } else if(eg){
+      dwState.selected={type:'edge',idx:parseInt(eg.getAttribute('data-idx'),10)}; dwState.pendingEdge=null; dwRefreshSvg(); dwToolbarSync();
+    } else {
+      if(dwState.selected){ dwState.selected=null; dwRefreshSvg(); dwToolbarSync(); }
+    }
+  });
+  svg.addEventListener('pointermove',function(ev){
+    if(!dwState.drag) return;
+    var n=dwNodeByUid(dwState.drag.uid); if(!n) return;
+    var p=dwSvgPoint(svg,ev), H=dwCanvasH(ex);
+    n.x=Math.max(DW_LEFT+20,Math.min(DW_W-20,p.x+dwState.drag.dx)); n.y=Math.max(20,Math.min(H-20,p.y+dwState.drag.dy));
+    dwState.drag.moved=true; dwRefreshSvg();
+  });
+  function endDrag(ev){ if(dwState.drag){ if(dwState.drag.moved) dwState.result=null; dwState.drag=null; } }
+  svg.addEventListener('pointerup',endDrag); svg.addEventListener('pointercancel',endDrag);
+}
+function dwToolbarSync(){ var b=document.querySelector('.dw-toolbar button[onclick="dwDeleteSelected()"]'); if(b) b.disabled=!dwState.selected; }
+
+// ─── checking ───
+function dwCheck(){
+  var ex=dwEx(), errors=[], flow=dwIsFlow(ex);
+  dwState.attempts++;
+  var bySrc={}; dwState.nodes.forEach(function(n){ bySrc[n.src]=n; });
+  function nm(def){ return dwKindName(ex,def.kind)+' «'+bpEsc(def.text)+'»'; }
+  ex.nodes.forEach(function(d){ if(!bySrc[d.id]) errors.push('Не хватает элемента: '+nm(d)+'.'); });
+  (ex.extraNodes||[]).forEach(function(d){ if(bySrc[d.id]) errors.push('Лишний элемент: '+nm(d)+'. '+bpEsc(d.why||'')); });
+  if(ex.lanes){
+    var laneLabel={}; ex.lanes.forEach(function(l){laneLabel[l.id]=l.label;});
+    ex.nodes.forEach(function(d){ var n=bySrc[d.id]; if(n && dwLaneOf(ex,n.y)!==d.lane) errors.push(nm(d)+' стоит не в той Lane: должен быть в «'+laneLabel[d.lane]+'» (это делает '+laneLabel[d.lane]+').'); });
+  }
+  var uidToSrc={}; dwState.nodes.forEach(function(n){ uidToSrc[n.uid]=n.src; });
+  var userEdges=dwState.edges.map(function(e,i){ return {from:uidToSrc[e.from],to:uidToSrc[e.to],kind:e.kind||'flow',label:e.label||'',idx:i,matched:false}; });
+  var defName={}; ex.nodes.concat(ex.extraNodes||[]).forEach(function(d){defName[d.id]=d.text;});
+  function edgeName(e){ return '«'+bpEsc(defName[e.from]||'?')+'» → «'+bpEsc(defName[e.to]||'?')+'»'; }
+  ex.edges.forEach(function(req){
+    var reqKind=req.kind||'flow', undirected=(reqKind==='assoc');
+    var cand=userEdges.filter(function(u){ return !u.matched && ((u.from===req.from&&u.to===req.to) || (undirected&&u.from===req.to&&u.to===req.from)); });
+    if(!cand.length){
+      if(bySrc[req.from]&&bySrc[req.to]){
+        var rev=userEdges.filter(function(u){return !u.matched&&u.from===req.to&&u.to===req.from;})[0];
+        if(rev && !undirected){ rev.matched=true; errors.push('Связь '+edgeName(req)+' направлена в обратную сторону.'+(reqKind==='include'?' «include» идёт от базового Use Case к включаемому.':reqKind==='extend'?' «extend» идёт от расширяющего Use Case к базовому.':reqKind==='generalization'?' Generalization идёт от потомка к родителю.':'')); }
+        else errors.push('Нет связи '+edgeName(req)+(reqKind!=='flow'?' ('+reqKind+')':'')+'.');
+      } else errors.push('Нет связи '+edgeName(req)+' — сначала добавь оба элемента.');
+      return;
+    }
+    var u=cand[0]; u.matched=true;
+    if(u.kind!==reqKind) errors.push('Связь '+edgeName(req)+' должна быть '+reqKind+', а не '+u.kind+'.');
+    if(flow && req.label!==undefined && req.label!=='' && u.label!==req.label) errors.push('Ветка '+edgeName(req)+' должна быть подписана «'+bpEsc(req.label)+'»'+(u.label?', а не «'+bpEsc(u.label)+'»':'')+'.');
+    if(flow){
+      var a=bySrc[req.from], b=bySrc[req.to];
+      if(!req.back && b.x < a.x-10) errors.push('Поток '+edgeName(req)+' идёт справа налево — основной поток должен идти слева направо, переставь элементы.');
+      if(req.back && b.x > a.x+10) errors.push('Связь '+edgeName(req)+' — это возврат назад (цикл), она должна вести влево, к более раннему шагу.');
+    }
+  });
+  userEdges.forEach(function(u){ if(!u.matched) errors.push('Лишняя связь '+edgeName(u)+': в сценарии такого перехода нет.'); });
+  dwState.result={ok:errors.length===0, errors:errors};
+  dwRefresh();
+  var r=document.querySelector('.dw-errors,.build-done-banner'); if(r) r.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
