@@ -2,6 +2,18 @@
 // and is Russian for now; English content is the next step. Add keys here, use t('key') in app.js.
 var I18N = {
   ru: {
+    theory:'Теория', practice:'Практика', of:'из', score:'Счёт', question:'Вопрос', answer:'Ответить', next:'Далее →', results:'Результаты →', back:'← Назад', theory_btn:'📚 Теория',
+    correct:'✅ Верно! ', incorrect:'❌ Неверно. ', explanation:'Пояснение:', test_done:'Тест завершён!', total:'Итого', by_type:'По типам вопросов', restart:'🔄 Заново', review:'📋 Просмотр',
+    g_expert:'🏆 Эксперт', g_adv:'⭐ Продвинутый', g_conf:'✅ Уверенный', g_prog:'📈 Прогресс', g_learn:'📚 Учись дальше',
+    qt_concept:'Концепция', qt_classify:'Классификация', qt_write:'Формулирование', qt_choose:'Выбор', qt_case:'Кейс',
+    ba_hero:'📋 Требования & Методологии', ba_hero_sub:'На основе фидбека Andersen: BABOK v3, классификация требований, техники выявления, User Stories, Agile/Scrum. Изучи материал, затем — 58 вопросов.',
+    build_intro:'Дано условие задачи. Кликай подготовленные элементы В ПРАВИЛЬНОМ ПОРЯДКЕ, чтобы построить диаграмму. Часть элементов — «отвлекающие» (лишние или из другой ветки) — их использовать не нужно.',
+    exercises_n:'задания', pick_ex:'выбери задание', back_types:'← Назад к выбору диаграммы', step:'Шаг', mistakes:'Ошибок', mistakes_build:'Ошибок при построении',
+    build_empty:'Диаграмма пока пуста — кликай элементы ниже по порядку', b_perfect:'🏆 Идеально! Без единой ошибки', b_good:'✅ Хорошо, диаграмма построена', b_rough:'📚 Построено, но стоит повторить теорию', retry:'🔄 Повторить',
+    e_missing:'Не хватает элемента: ', e_extra:'Лишний элемент: ', e_lane:' стоит не в той Lane: должен быть в «{l}» (это делает {l}).',
+    e_rev:'Связь {e} направлена в обратную сторону.', e_rev_inc:' «include» идёт от базового Use Case к включаемому.', e_rev_ext:' «extend» идёт от расширяющего Use Case к базовому.', e_rev_gen:' Generalization идёт от потомка к родителю.',
+    e_noedge:'Нет связи ', e_add_both:' — сначала добавь оба элемента.', e_kind:'Связь {e} должна быть {a}, а не {b}.', e_label:'Ветка {e} должна быть подписана «{l}»', e_label_not:', а не «{l}»',
+    e_backwards:'Поток {e} идёт справа налево — основной поток должен идти слева направо, переставь элементы.', e_loop:'Связь {e} — это возврат назад (цикл), она должна вести влево, к более раннему шагу.', e_extra_edge:'Лишняя связь {e}: в сценарии такого перехода нет.',
     nav_ba:'📋 Требования & Методологии', nav_uml:'🎯 UML & BPMN Диаграммы',
     hdr_ba:'📋 BA Trainer — Требования & Методологии', hdr_uml:'🎯 UML & BPMN 2.0 Trainer',
     badge_theory:'Теория', badge_practice:'Практика', badge_uml:'UML', badge_bpmn:'BPMN',
@@ -29,6 +41,18 @@ var I18N = {
     errors_title:'Проверка {a}: найдено замечаний — {n}'
   },
   en: {
+    theory:'Theory', practice:'Practice', of:'of', score:'Score', question:'Question', answer:'Answer', next:'Next →', results:'Results →', back:'← Back', theory_btn:'📚 Theory',
+    correct:'✅ Correct! ', incorrect:'❌ Incorrect. ', explanation:'Explanation:', test_done:'Test complete!', total:'Total', by_type:'By question type', restart:'🔄 Restart', review:'📋 Review',
+    g_expert:'🏆 Expert', g_adv:'⭐ Advanced', g_conf:'✅ Confident', g_prog:'📈 Progressing', g_learn:'📚 Keep learning',
+    qt_concept:'Concept', qt_classify:'Classification', qt_write:'Writing', qt_choose:'Choice', qt_case:'Case',
+    ba_hero:'📋 Requirements & Methodologies', ba_hero_sub:'Based on Andersen feedback: BABOK v3, requirements classification, elicitation techniques, User Stories, Agile/Scrum. Study the material, then take 58 questions.',
+    build_intro:'You are given a task statement. Click the prepared elements IN THE RIGHT ORDER to build the diagram. Some elements are distractors (extra or from another branch) and must not be used.',
+    exercises_n:'exercises', pick_ex:'pick an exercise', back_types:'← Back to diagram types', step:'Step', mistakes:'Mistakes', mistakes_build:'Mistakes while building',
+    build_empty:'The diagram is empty — click the elements below in order', b_perfect:'🏆 Perfect! Not a single mistake', b_good:'✅ Good, the diagram is built', b_rough:'📚 Built, but revisit the theory', retry:'🔄 Retry',
+    e_missing:'Missing element: ', e_extra:'Extra element: ', e_lane:' is in the wrong Lane: it belongs in “{l}” ({l} performs it).',
+    e_rev:'Connection {e} points the wrong way.', e_rev_inc:' «include» goes from the base Use Case to the included one.', e_rev_ext:' «extend» goes from the extending Use Case to the base one.', e_rev_gen:' Generalization goes from the child to the parent.',
+    e_noedge:'No connection ', e_add_both:' — add both elements first.', e_kind:'Connection {e} should be {a}, not {b}.', e_label:'Branch {e} should be labelled “{l}”', e_label_not:', not “{l}”',
+    e_backwards:'Flow {e} goes right to left — the main flow should go left to right, rearrange the elements.', e_loop:'Connection {e} is a loop back; it should lead left, to an earlier step.', e_extra_edge:'Extra connection {e}: the scenario has no such transition.',
     nav_ba:'📋 Requirements & Methodologies', nav_uml:'🎯 UML & BPMN Diagrams',
     hdr_ba:'📋 BA Trainer — Requirements & Methodologies', hdr_uml:'🎯 UML & BPMN 2.0 Trainer',
     badge_theory:'Theory', badge_practice:'Practice', badge_uml:'UML', badge_bpmn:'BPMN',
@@ -71,12 +95,22 @@ function applyStaticI18n(){
   var sw = document.getElementById('lang-switch');
   if(sw) sw.textContent = LANG==='ru' ? 'EN' : 'RU';
   var note = document.getElementById('content-notice');
-  if(note){ note.textContent = t('content_notice'); note.style.display = t('content_notice') ? 'block' : 'none'; }
+  if(note){ var show = LANG!=='ru' && !DATA_SETS[LANG]; note.textContent = t('content_notice'); note.style.display = show ? 'block' : 'none'; }
 }
 function setLang(l){
   LANG = I18N[l] ? l : 'ru';
   try { localStorage.setItem('ba_lang', LANG); } catch(e){}
   applyStaticI18n();
+  applyData(LANG);
   if(typeof rerenderAll === 'function') rerenderAll();
 }
 function toggleLang(){ setLang(LANG==='ru' ? 'en' : 'ru'); }
+
+// ─── content data sets per language (registered by data.ru.js / data.en.js) ───
+var DATA_SETS = {};
+var TC, Q, TABS, THEORY_UML, SVGS_UML, Q_UML, BUILD_TYPES, BUILD_EXERCISES, DRAW_EXERCISES;
+function applyData(lang){
+  var D = DATA_SETS[lang] || DATA_SETS.ru;
+  TC=D.TC; Q=D.Q; TABS=D.TABS; THEORY_UML=D.THEORY_UML; SVGS_UML=D.SVGS_UML; Q_UML=D.Q_UML;
+  BUILD_TYPES=D.BUILD_TYPES; BUILD_EXERCISES=D.BUILD_EXERCISES; DRAW_EXERCISES=D.DRAW_EXERCISES;
+}
