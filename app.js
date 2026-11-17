@@ -1,13 +1,6 @@
 // ═══ APP LOGIC ═══
 applyData(LANG);
-function switchApp(which) {
-  document.getElementById('section-ba').className = 'section' + (which==='ba'?' show':'');
-  document.getElementById('section-uml').className = 'section' + (which==='uml'?' show':'');
-  document.getElementById('nav-ba').className = 'app-nav-btn' + (which==='ba'?' active':'');
-  document.getElementById('nav-uml').className = 'app-nav-btn' + (which==='uml'?' active':'');
-  if(which==='uml' && !umlInited) { umlInited=true; renderTheoryUML(); }
-}
-var umlInited = false;
+var umlInited = true;
 
 // ═══════════════════════════
 // BA TRAINER CODE
@@ -26,14 +19,14 @@ function renderTheory(){
   document.getElementById('pscore').textContent='';
   document.getElementById('pfill').style.width='0%';
   var tabsHtml=TABS.map(function(t){
-    return '<div class="tab'+(theoryTab===t.id?' active':'')+'" onclick="switchTab(\''+t.id+'\')">'+t.label+'</div>';
+    return '<div class="tab'+(theoryTab===t.id?' active':'')+'" onclick="go(\'ba-theory/'+t.id+'\')">'+t.label+'</div>';
   }).join('');
   document.getElementById('app').innerHTML=
     '<div class="th-hero"><h2>'+t('ba_hero')+'</h2>'
     +'<p>'+t('ba_hero_sub')+'</p></div>'
     +'<div class="tabs">'+tabsHtml+'</div>'
     +'<div id="tp">'+TC[theoryTab]+'</div>'
-    +'<button class="start-btn" onclick="startQuiz()">'+t('start_quiz_ba')+'</button>';
+    +theoryNextCta('ba');
 }
 
 function switchTab(id){theoryTab=id;renderTheory();}
@@ -90,11 +83,11 @@ function renderQ(){
 }
 
 function pick(i){if(results[cur]!==null)return;chosen[cur]=i;renderQ();}
-function submit(){if(chosen[cur]===null)return;var ok=chosen[cur]===Q[cur].ans;results[cur]=ok;if(ok)score++;renderQ();}
+function submit(){if(chosen[cur]===null)return;var ok=chosen[cur]===Q[cur].ans;results[cur]=ok;if(ok)score++;saveProgress();renderQ();}
 function nxt(){if(cur<Q.length-1){cur++;renderQ();}else{renderScore();}}
 function prv(){if(cur>0){cur--;renderQ();}}
 function goTo(i){cur=i;renderQ();}
-function backToTheory(){state='theory';renderTheory();}
+function backToTheory(){go('ba-theory/'+theoryTab);}
 
 function renderScore(){
   var th=0,pr=0,thT=0,prT=0;
@@ -134,7 +127,7 @@ function renderScore(){
     +'</div></div>';
 }
 
-function restart(){cur=0;score=0;results=new Array(Q.length).fill(null);chosen=new Array(Q.length).fill(null);state='quiz';renderQ();}
+function restart(){cur=0;score=0;results=new Array(Q.length).fill(null);chosen=new Array(Q.length).fill(null);state='quiz';saveProgress();renderQ();}
 renderTheory();
 
 
@@ -460,7 +453,7 @@ function clickBuildEl(elId){
   var expected = ex.correctOrder[bpState.placed.length];
   if(elId===expected){
     bpState.placed.push(elId);
-    if(bpState.placed.length===ex.correctOrder.length) bpState.done=true;
+    if(bpState.placed.length===ex.correctOrder.length){ bpState.done=true; PROGRESS.build[ex.id]=bpState.mistakes; saveProgress(); }
     refreshBuildPanel();
   } else {
     bpState.mistakes++;
@@ -479,30 +472,27 @@ function typeLabel(t){return{concept:'Concept',choose_diagram:'Choose Diagram',m
 
 // ─── THEORY SCREEN ───
 function renderTheoryUML(){
-  document.getElementById('uplabel').textContent = t('theory_ref_uml');
-  document.getElementById('upscore').textContent = '';
-  document.getElementById('upfill').style.width = '0%';
+  document.getElementById('plabel').textContent = t('theory_ref_uml');
+  document.getElementById('pscore').textContent = '';
+  document.getElementById('pfill').style.width = '0%';
 
   var tabs = [
     {id:'overview',label:t('tab_overview')},
     {id:'uml_elements',label:t('tab_uml_el')},
-    {id:'bpmn_elements',label:t('tab_bpmn_el')},
-    {id:'practice_build',label:t('tab_build')},
-    {id:'practice_draw',label:t('tab_draw')}
+    {id:'bpmn_elements',label:t('tab_bpmn_el')}
   ];
-  var tabsHtml = tabs.map(function(t){
-    return '<div class="ttab'+(theoryTabUML===t.id?' active':'')+'" onclick="switchTabUML(\''+t.id+'\')">'+t.label+'</div>';
+  var isPractice = theoryTabUML==='practice_build'||theoryTabUML==='practice_draw';
+  var tabsHtml = isPractice ? '' : tabs.map(function(t){
+    return '<div class="ttab'+(theoryTabUML===t.id?' active':'')+'" onclick="go(\'dg-theory/'+t.id+'\')">'+t.label+'</div>';
   }).join('');
 
   var panelContent = theoryTabUML==='practice_build' ? renderBuildPractice() : theoryTabUML==='practice_draw' ? renderDrawPractice() : THEORY_UML[theoryTabUML].content;
 
-  document.getElementById('uapp').innerHTML =
+  document.getElementById('app').innerHTML =
     '<div class="theory-screen">'+
-      '<h2>📚 '+t('theory_ref_uml')+'</h2>'+
-      '<p class="sub">'+t('theory_sub')+'</p>'+
-      '<div class="theory-tabs">'+tabsHtml+'</div>'+
+      (isPractice ? '' : '<h2>📚 '+t('dg_theory_title')+'</h2><p class="sub">'+t('theory_sub')+'</p><div class="theory-tabs">'+tabsHtml+'</div>')+
       '<div class="theory-panel show" id="utp">'+panelContent+'</div>'+
-      '<button class="start-btn" onclick="startQuizUML()">'+t('start_quiz_uml')+'</button>'+
+      (isPractice ? '' : theoryNextCta('dg'))+
     '</div>';
   if(theoryTabUML==='practice_draw') dwBind();
 }
@@ -538,9 +528,9 @@ function renderQUML(){
   var sel  = chosenUML[curUML];
   var keys = ['A','B','C','D'];
 
-  document.getElementById('uplabel').textContent = t('question')+' '+(curUML+1)+' '+t('of')+' '+Q_UML.length;
-  document.getElementById('upscore').textContent  = 'Score: '+scoreUML;
-  document.getElementById('upfill').style.width   = (((curUML+1)/67)*100).toFixed(0)+'%';
+  document.getElementById('plabel').textContent = t('question')+' '+(curUML+1)+' '+t('of')+' '+Q_UML.length;
+  document.getElementById('pscore').textContent  = 'Score: '+scoreUML;
+  document.getElementById('pfill').style.width   = (((curUML+1)/Q_UML.length)*100).toFixed(0)+'%';
 
   var optsHtml = '';
   for(var i=0;i<q.opts.length;i++){
@@ -566,7 +556,7 @@ function renderQUML(){
   var nextBtn   = done?'<button class="btn btn-p" onclick="nxtUML()">'+(curUML===Q_UML.length-1?t('results'):t('next'))+'</button>':'';
   var theoryBtn = '<button class="btn btn-g" onclick="backToTheoryUML()">'+t('theory_btn')+'</button>';
 
-  document.getElementById('uapp').innerHTML =
+  document.getElementById('app').innerHTML =
     '<div class="dots">'+renderDotsUML()+'</div>'+
     '<span class="sec-label '+secClass(q.sec)+'">'+q.lab+'</span>'+
     '<span class="q-type">'+typeLabel(q.type)+'</span>'+
@@ -592,12 +582,13 @@ function submitUML(){
   var ok=chosenUML[curUML]===Q_UML[curUML].ans;
   resultsUML[curUML]=ok;
   if(ok)scoreUML++;
+  saveProgress();
   renderQUML();
 }
 function nxtUML(){if(curUML<Q_UML.length-1){curUML++;renderQUML();}else{renderScoreUML();}}
 function prvUML(){if(curUML>0){curUML--;renderQUML();}}
 function goToUML(i){curUML=i;renderQUML();}
-function backToTheoryUML(){stateUML='theory';renderTheoryUML();}
+function backToTheoryUML(){go('dg-theory/'+(theoryTabUML.indexOf('practice_')===0?'overview':theoryTabUML));}
 
 // ─── SCORE SCREEN ───
 function renderScoreUML(){
@@ -613,9 +604,9 @@ function renderScoreUML(){
   var pct=Math.round(total/grandTotal*100);
   var grade=pct>=90?'🏆 Expert':pct>=75?'⭐ Advanced':pct>=60?'✅ Proficient':'📚 Keep Practicing';
 
-  document.getElementById('upfill').style.width='100%';
-  document.getElementById('uplabel').textContent=t('test_done');
-  document.getElementById('upscore').textContent=t('total')+': '+total+'/'+grandTotal+' ('+pct+'%)';
+  document.getElementById('pfill').style.width='100%';
+  document.getElementById('plabel').textContent=t('test_done');
+  document.getElementById('pscore').textContent=t('total')+': '+total+'/'+grandTotal+' ('+pct+'%)';
 
   // per-type breakdown
   var types=['concept','choose_diagram','missing_element','read_diagram','draw_diagram'];
@@ -641,7 +632,7 @@ function renderScoreUML(){
     }
   });
 
-  document.getElementById('uapp').innerHTML=
+  document.getElementById('app').innerHTML=
     '<div class="score-wrap">'+
       '<div class="score-big">'+total+'/'+grandTotal+'</div>'+
       '<div class="score-sub">'+grade+' · '+pct+'%</div>'+
@@ -664,9 +655,10 @@ function renderScoreUML(){
 
 function restartUML(){
   curUML=0;scoreUML=0;
-  resultsUML=new Array(67).fill(null);
-  chosenUML=new Array(67).fill(null);
+  resultsUML=new Array(Q_UML.length).fill(null);
+  chosenUML=new Array(Q_UML.length).fill(null);
   stateUML='quiz';
+  saveProgress();
   renderQUML();
 }
 
@@ -982,12 +974,114 @@ function dwCheck(){
   });
   userEdges.forEach(function(u){ if(!u.matched) errors.push(t('e_extra_edge',{e:edgeName(u)})); });
   dwState.result={ok:errors.length===0, errors:errors};
+  if(dwState.result.ok){ PROGRESS.draw[ex.id]=dwState.attempts; saveProgress(); }
   dwRefresh();
   var r=document.querySelector('.dw-errors,.build-done-banner'); if(r) r.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-// re-render current screens after a language switch
-function rerenderAll(){
-  if(state==='theory') renderTheory(); else if(state==='quiz') renderQ(); else renderScore();
-  if(umlInited){ if(stateUML==='theory') renderTheoryUML(); else if(stateUML==='quiz') renderQUML(); else renderScoreUML(); }
+// re-render current screen after a language switch
+function rerenderAll(){ route(); }
+
+
+// ═══════════════════════════════════════════
+// APP SHELL: progress, sidebar, router
+// ═══════════════════════════════════════════
+var PROGRESS = {ba:{results:null,chosen:null}, dg:{results:null,chosen:null}, build:{}, draw:{}, visited:{}};
+function loadProgress(){
+  try{ var p=JSON.parse(localStorage.getItem('ba_progress')||'null'); if(p&&typeof p==='object'){ PROGRESS.build=p.build||{}; PROGRESS.draw=p.draw||{}; PROGRESS.visited=p.visited||{};
+    if(p.ba&&p.ba.results&&p.ba.results.length===Q.length){ results=p.ba.results; chosen=p.ba.chosen; score=results.filter(function(r){return r===true;}).length; }
+    if(p.dg&&p.dg.results&&p.dg.results.length===Q_UML.length){ resultsUML=p.dg.results; chosenUML=p.dg.chosen; scoreUML=resultsUML.filter(function(r){return r===true;}).length; }
+  } }catch(e){}
 }
+function saveProgress(){
+  PROGRESS.ba={results:results,chosen:chosen}; PROGRESS.dg={results:resultsUML,chosen:chosenUML};
+  try{ localStorage.setItem('ba_progress',JSON.stringify(PROGRESS)); }catch(e){}
+  renderSidebar();
+}
+function resetProgress(){
+  if(!confirm(t('reset_confirm'))) return;
+  PROGRESS={ba:{},dg:{},build:{},draw:{},visited:{}};
+  results=new Array(Q.length).fill(null); chosen=new Array(Q.length).fill(null); score=0; cur=0; state='theory';
+  resultsUML=new Array(Q_UML.length).fill(null); chosenUML=new Array(Q_UML.length).fill(null); scoreUML=0; curUML=0; stateUML='theory';
+  try{ localStorage.removeItem('ba_progress'); }catch(e){}
+  go('ba-theory/'+TABS[0].id);
+}
+function answered(arr){ return arr.filter(function(r){return r!==null;}).length; }
+function sectionPct(sec){
+  if(sec==='ba-theory'){ var v=TABS.filter(function(x){return PROGRESS.visited['ba-theory/'+x.id];}).length; return Math.round(v/TABS.length*100); }
+  if(sec==='ba-practice') return Math.round(answered(results)/Q.length*100);
+  if(sec==='dg-theory'){ var keys=['overview','uml_elements','bpmn_elements']; var v2=keys.filter(function(k){return PROGRESS.visited['dg-theory/'+k];}).length; return Math.round(v2/keys.length*100); }
+  if(sec==='dg-practice'){ var tot=Q_UML.length+BUILD_EXERCISES.length+DRAW_EXERCISES.length; var d=answered(resultsUML)+Object.keys(PROGRESS.build).length+Object.keys(PROGRESS.draw).length; return Math.round(d/tot*100); }
+  return 0;
+}
+
+var ROUTE = {sec:'ba-theory', sub:null};
+var SB_OPEN = {};
+function sbSections(){
+  return [
+    {id:'ba-theory', ico:'📘', title:t('sb_ba_theory'), items:TABS.map(function(x){return {id:x.id,label:x.label};})},
+    {id:'ba-practice', ico:'✍️', title:t('sb_ba_practice'), items:[{id:'quiz',label:t('sb_quiz',{n:Q.length}),done:answered(results)+'/'+Q.length}]},
+    {id:'dg-theory', ico:'📐', title:t('sb_dg_theory'), items:[{id:'overview',label:t('tab_overview')},{id:'uml_elements',label:t('tab_uml_el')},{id:'bpmn_elements',label:t('tab_bpmn_el')}]},
+    {id:'dg-practice', ico:'🎨', title:t('sb_dg_practice'), items:[
+      {id:'quiz',label:t('sb_quiz',{n:Q_UML.length}),done:answered(resultsUML)+'/'+Q_UML.length},
+      {id:'build',label:t('sb_build'),done:Object.keys(PROGRESS.build).length+'/'+BUILD_EXERCISES.length},
+      {id:'draw',label:t('sb_draw'),done:Object.keys(PROGRESS.draw).length+'/'+DRAW_EXERCISES.length}]}
+  ];
+}
+function renderSidebar(){
+  var el=document.getElementById('sidebar'); if(!el) return;
+  var h='';
+  sbSections().forEach(function(s){
+    var active=ROUTE.sec===s.id, open=SB_OPEN[s.id]!==undefined?SB_OPEN[s.id]:active, pct=sectionPct(s.id);
+    h+='<div class="sb-sec'+(active?' active':'')+(open?' open':'')+'">'
+      +'<button class="sb-head" onclick="sbHead(\''+s.id+'\')"><span class="sb-ico">'+s.ico+'</span><span class="sb-title">'+s.title+'</span><span class="sb-pct">'+pct+'%</span><span class="sb-chev">▶</span></button>'
+      +'<div class="sb-bar"><div style="width:'+pct+'%"></div></div>'
+      +'<div class="sb-items">'+s.items.map(function(it){
+        var a=active&&ROUTE.sub===it.id;
+        return '<button class="sb-item'+(a?' active':'')+'" onclick="go(\''+s.id+'/'+it.id+'\')">'+it.label+(it.done?'<span class="sb-done">'+it.done+'</span>':'')+'</button>';
+      }).join('')+'</div></div>';
+  });
+  h+='<div class="sb-foot">'+t('sb_progress_note')+' <button onclick="resetProgress()">'+t('sb_reset')+'</button></div>';
+  el.innerHTML=h;
+}
+function sbHead(id){
+  var s=sbSections().filter(function(x){return x.id===id;})[0];
+  if(ROUTE.sec===id){ SB_OPEN[id]=!(SB_OPEN[id]!==undefined?SB_OPEN[id]:true); renderSidebar(); return; }
+  SB_OPEN[id]=true; go(id+'/'+s.items[0].id);
+}
+function sbToggle(){ document.body.classList.toggle('sb-open'); }
+function sbClose(){ document.body.classList.remove('sb-open'); }
+
+function go(path){ if(location.hash.slice(1)===path) route(); else location.hash=path; }
+function route(){
+  var path=location.hash.slice(1)||('ba-theory/'+TABS[0].id);
+  var parts=path.split('/'); ROUTE={sec:parts[0],sub:parts[1]||null};
+  var validSec=['ba-theory','ba-practice','dg-theory','dg-practice'];
+  if(validSec.indexOf(ROUTE.sec)===-1){ ROUTE={sec:'ba-theory',sub:TABS[0].id}; }
+  sbClose(); window.scrollTo(0,0);
+  if(ROUTE.sec==='ba-theory'){
+    if(!TC[ROUTE.sub]) ROUTE.sub=TABS[0].id;
+    theoryTab=ROUTE.sub; state='theory'; PROGRESS.visited['ba-theory/'+theoryTab]=1; saveProgress(); renderTheory();
+  } else if(ROUTE.sec==='ba-practice'){
+    ROUTE.sub='quiz';
+    if(answered(results)===Q.length){ state='done'; renderScore(); } else { state='quiz'; if(results[cur]!==null){ var nx=results.indexOf(null); if(nx!==-1) cur=nx; } renderQ(); }
+  } else if(ROUTE.sec==='dg-theory'){
+    if(!THEORY_UML[ROUTE.sub]) ROUTE.sub='overview';
+    theoryTabUML=ROUTE.sub; stateUML='theory'; PROGRESS.visited['dg-theory/'+theoryTabUML]=1; saveProgress(); renderTheoryUML(); document.getElementById('plabel').textContent=t('sb_dg_theory');
+  } else if(ROUTE.sec==='dg-practice'){
+    if(['quiz','build','draw'].indexOf(ROUTE.sub)===-1) ROUTE.sub='quiz';
+    if(ROUTE.sub==='quiz'){ if(answered(resultsUML)===Q_UML.length){ stateUML='done'; renderScoreUML(); } else { stateUML='quiz'; if(resultsUML[curUML]!==null){ var nx2=resultsUML.indexOf(null); if(nx2!==-1) curUML=nx2; } renderQUML(); } }
+    else { stateUML='theory'; theoryTabUML = ROUTE.sub==='build' ? 'practice_build' : 'practice_draw'; renderTheoryUML(); document.getElementById('plabel').textContent=t('sb_dg_practice')+' · '+(ROUTE.sub==='build'?t('sb_build'):t('sb_draw')); }
+  }
+  renderSidebar();
+}
+function theoryNextCta(which){
+  var cont = which==='ba'
+    ? ('<button class="btn btn-p" onclick="go(\'ba-practice/quiz\')">'+t('cta_quiz_ba')+'</button>')
+    : ('<button class="btn btn-p" onclick="go(\'dg-practice/quiz\')">'+t('cta_quiz_dg')+'</button><button class="btn btn-g" onclick="go(\'dg-practice/build\')">'+t('sb_build')+'</button><button class="btn btn-g" onclick="go(\'dg-practice/draw\')">'+t('sb_draw')+'</button>');
+  return '<div class="next-cta">'+cont+'<span class="hint">'+t('cta_hint')+'</span></div>';
+}
+// quiz screens: keep the sidebar in sync when the user navigates inside the quiz
+window.addEventListener('hashchange', route);
+loadProgress();
+route();

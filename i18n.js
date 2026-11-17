@@ -2,6 +2,10 @@
 // and is Russian for now; English content is the next step. Add keys here, use t('key') in app.js.
 var I18N = {
   ru: {
+    brand:'BA Trainer', sb_ba_theory:'Теория BA', sb_ba_practice:'Практика BA', sb_dg_theory:'Диаграммы: теория', sb_dg_practice:'Диаграммы: практика',
+    sb_quiz:'Тест ({n} вопросов)', sb_build:'Построй диаграмму', sb_draw:'Нарисуй диаграмму', sb_progress_note:'Прогресс сохраняется в этом браузере.', sb_reset:'Сбросить',
+    reset_confirm:'Сбросить весь прогресс (ответы, выполненные задания)?', dg_theory_title:'Диаграммы — теория',
+    cta_quiz_ba:'🚀 Перейти к тесту', cta_quiz_dg:'🚀 Перейти к тесту', cta_hint:'Прогресс теста сохраняется, можно вернуться к теории в любой момент.',
     theory:'Теория', practice:'Практика', of:'из', score:'Счёт', question:'Вопрос', answer:'Ответить', next:'Далее →', results:'Результаты →', back:'← Назад', theory_btn:'📚 Теория',
     correct:'✅ Верно! ', incorrect:'❌ Неверно. ', explanation:'Пояснение:', test_done:'Тест завершён!', total:'Итого', by_type:'По типам вопросов', restart:'🔄 Заново', review:'📋 Просмотр',
     g_expert:'🏆 Эксперт', g_adv:'⭐ Продвинутый', g_conf:'✅ Уверенный', g_prog:'📈 Прогресс', g_learn:'📚 Учись дальше',
@@ -41,6 +45,10 @@ var I18N = {
     errors_title:'Проверка {a}: найдено замечаний — {n}'
   },
   en: {
+    brand:'BA Trainer', sb_ba_theory:'BA Theory', sb_ba_practice:'BA Practice', sb_dg_theory:'Diagrams: Theory', sb_dg_practice:'Diagrams: Practice',
+    sb_quiz:'Test ({n} questions)', sb_build:'Build a diagram', sb_draw:'Draw a diagram', sb_progress_note:'Progress is saved in this browser.', sb_reset:'Reset',
+    reset_confirm:'Reset all progress (answers, completed exercises)?', dg_theory_title:'Diagrams — Theory',
+    cta_quiz_ba:'🚀 Go to the test', cta_quiz_dg:'🚀 Go to the test', cta_hint:'Test progress is saved; you can return to the theory at any time.',
     theory:'Theory', practice:'Practice', of:'of', score:'Score', question:'Question', answer:'Answer', next:'Next →', results:'Results →', back:'← Back', theory_btn:'📚 Theory',
     correct:'✅ Correct! ', incorrect:'❌ Incorrect. ', explanation:'Explanation:', test_done:'Test complete!', total:'Total', by_type:'By question type', restart:'🔄 Restart', review:'📋 Review',
     g_expert:'🏆 Expert', g_adv:'⭐ Advanced', g_conf:'✅ Confident', g_prog:'📈 Progressing', g_learn:'📚 Keep learning',

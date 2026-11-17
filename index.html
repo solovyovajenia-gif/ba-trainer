@@ -8,40 +8,25 @@
 </head>
 <body>
 
-<div class="app-nav">
-  <button class="app-nav-btn active" onclick="switchApp('ba')" id="nav-ba" data-i18n="nav_ba">📋 Требования & Методологии</button>
-  <button class="app-nav-btn" onclick="switchApp('uml')" id="nav-uml" data-i18n="nav_uml">🎯 UML & BPMN Диаграммы</button>
-  <button class="lang-switch" id="lang-switch" onclick="toggleLang()" title="Язык / Language">EN</button>
-</div>
+<header class="topbar">
+  <button class="burger" id="burger" onclick="sbToggle()" aria-label="Menu">☰</button>
+  <div class="brand"><span class="brand-logo">BA</span><span class="brand-name" data-i18n="brand">BA Trainer</span></div>
+  <div class="topbar-right">
+    <button class="lang-switch" id="lang-switch" onclick="toggleLang()" title="Язык / Language">EN</button>
+  </div>
+</header>
 <div class="content-notice" id="content-notice" style="display:none"></div>
 
-<div id="section-ba" class="section show">
-  <!-- BA TRAINER HEADER -->
-  <div class="hdr">
-    <h1 data-i18n="hdr_ba">📋 BA Trainer — Требования & Методологии</h1>
-    <span class="badge b1" style="margin-left:auto"><span data-i18n="badge_theory">Теория</span> ×20</span>
-    <span class="badge b2"><span data-i18n="badge_practice">Практика</span> ×43</span>
-  </div>
-  <div class="pg">
-    <div class="pg-meta"><span id="plabel" data-i18n="theory_ref">Теоретический справочник</span><span id="pscore"></span></div>
-    <div class="pg-bg"><div class="pg-fill" id="pfill" style="width:0%"></div></div>
-  </div>
-  <div class="main" id="app"></div>
-</div>
-
-<div id="section-uml" class="section">
-  <!-- UML TRAINER HEADER -->
-  <div class="hdr">
-    <h1>🎯 UML &amp; BPMN 2.0 Trainer</h1>
-    <span class="badge bt" style="margin-left:auto">Theory ×10</span>
-    <span class="badge bu">UML ×20</span>
-    <span class="badge bb">BPMN ×31</span>
-  </div>
-  <div class="pg">
-    <div class="pg-meta"><span id="uplabel">Theory Reference</span><span id="upscore"></span></div>
-    <div class="pg-bg"><div class="pg-fill" id="upfill" style="width:0%"></div></div>
-  </div>
-  <div class="main" id="uapp"></div>
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <div class="sb-backdrop" id="sb-backdrop" onclick="sbClose()"></div>
+  <main class="content">
+    <div class="pg">
+      <div class="pg-meta"><span id="plabel"></span><span id="pscore"></span></div>
+      <div class="pg-bg"><div class="pg-fill" id="pfill" style="width:0%"></div></div>
+    </div>
+    <div class="main" id="app"></div>
+  </main>
 </div>
 
 <script src="i18n.js"></script>
