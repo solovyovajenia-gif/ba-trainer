@@ -234,8 +234,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1117;color:#e2e8f
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#fff;font-size:1rem}
 .brand-logo{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#10b981);color:#fff;font-size:0.75rem;font-weight:900;letter-spacing:.02em}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.lang-switch{padding:6px 12px;border-radius:7px;border:1px solid #2d3748;background:#1a1f2e;color:#93c5fd;font-size:0.78rem;font-weight:700;cursor:pointer}
-.lang-switch:hover{border-color:#3b82f6}
+.lang-toggle{display:inline-flex;border:1px solid #2d3748;border-radius:8px;background:#1a1f2e;padding:3px;gap:2px}
+.lang-toggle button{padding:4px 10px;border:none;border-radius:6px;background:transparent;color:#64748b;font-size:0.76rem;font-weight:700;cursor:pointer;transition:all .15s}
+.lang-toggle button:hover{color:#cbd5e1}
+.lang-toggle button.active{background:#3b82f6;color:#fff}
 .burger{display:none;width:38px;height:38px;border-radius:8px;border:1px solid #2d3748;background:#1a1f2e;color:#e2e8f0;font-size:1.1rem;cursor:pointer}
 .content-notice{background:#1e3a5f;color:#bfdbfe;font-size:0.78rem;padding:7px 16px;border-bottom:1px solid #2d3748}
 .layout{display:flex;min-height:calc(100vh - 54px)}

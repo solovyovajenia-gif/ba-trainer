@@ -100,8 +100,8 @@ function applyStaticI18n(){
   document.documentElement.lang = LANG;
   var els = document.querySelectorAll('[data-i18n]');
   for(var i=0;i<els.length;i++){ els[i].textContent = t(els[i].getAttribute('data-i18n')); }
-  var sw = document.getElementById('lang-switch');
-  if(sw) sw.textContent = LANG==='ru' ? 'EN' : 'RU';
+  var sw = document.querySelectorAll('#lang-switch button');
+  for(var j=0;j<sw.length;j++){ sw[j].className = sw[j].getAttribute('data-lang')===LANG ? 'active' : ''; }
   var note = document.getElementById('content-notice');
   if(note){ var show = LANG!=='ru' && !DATA_SETS[LANG]; note.textContent = t('content_notice'); note.style.display = show ? 'block' : 'none'; }
 }

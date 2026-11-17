@@ -12,7 +12,7 @@
   <button class="burger" id="burger" onclick="sbToggle()" aria-label="Menu">☰</button>
   <div class="brand"><span class="brand-logo">BA</span><span class="brand-name" data-i18n="brand">BA Trainer</span></div>
   <div class="topbar-right">
-    <button class="lang-switch" id="lang-switch" onclick="toggleLang()" title="Язык / Language">EN</button>
+    <div class="lang-toggle" id="lang-switch" title="Язык / Language"><button data-lang="ru" onclick="setLang('ru')">RU</button><button data-lang="en" onclick="setLang('en')">EN</button></div>
   </div>
 </header>
 <div class="content-notice" id="content-notice" style="display:none"></div>
