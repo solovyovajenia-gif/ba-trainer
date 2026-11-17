@@ -3,14 +3,14 @@
 // ═══ DATA: theory content, questions, exercises ═══
 var TC = {
 req:'<div class="t-h3">What is a requirement?</div>'
-+'<div class="info-box">A requirement is <b>a description of a condition or capability that a system must have or implement in order to satisfy a stakeholder need or a contract</b> (IEEE 830). Put simply: <b>a requirement answers the question "what should the system do or have?"</b>, not "how should it be implemented?".</div>'
++'<div class="info-box">A requirement is <b>a description of a condition or capability that a system must have or implement in order to satisfy a stakeholder need or a contract</b> (IEEE 610.12 / ISO/IEC/IEEE 24765). Put simply: <b>a requirement answers the question "what should the system do or have?"</b>, not "how should it be implemented?".</div>'
 +'<div class="t-h3">Qualities of a good requirement (SMART + Wiegers attributes)</div>'
 +'<div class="tw"><table>'
 +'<tr><th>Quality</th><th>What it means</th><th>Bad</th><th>Good</th></tr>'
 +'<tr><td><b style="color:#6ee7b7">Specific</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Specific</span></td><td>Understood unambiguously without clarification</td><td>"The system must be user-friendly"</td><td>"A new user completes registration in ≤ 3 minutes"</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Measurable</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Measurable</span></td><td>Can be checked: met or not met</td><td>"The system must be fast"</td><td>"API response time ≤ 200ms at 500 RPS"</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Achievable</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Achievable</span></td><td>Feasible within available resources and technology</td><td>"Guaranteed 100% availability"</td><td>"Availability ≥ 99.9% per month"</td></tr>'
-+'<tr><td><b style="color:#6ee7b7">Traceable</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Traceable</span></td><td>Can be linked to a source and a test case</td><td>A requirement with no ID or source</td><td>REQ-042, source: stakeholder Ivanov, test TC-17</td></tr>'
++'<tr><td><b style="color:#6ee7b7">Traceable</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Traceable</span></td><td>Can be linked to a source and a test case</td><td>A requirement with no ID or source</td><td>REQ-042, source: stakeholder J. Smith, test TC-17</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Atomic</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Atomic</span></td><td>Describes one condition, not several at once</td><td>"The system must authenticate and log"</td><td>Two separate requirements</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Consistent</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Consistent</span></td><td>Does not conflict with other requirements</td><td>REQ-01: "Only 1 session" and REQ-02: "Simultaneous login from 5 devices"</td><td>Aligned requirements</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Complete</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Complete</span></td><td>Covers all behavior variants</td><td>"The system validates the password" (and if it is wrong, what then?)</td><td>Main flow and all exceptions are described</td></tr>'
@@ -23,11 +23,12 @@ req:'<div class="t-h3">What is a requirement?</div>'
 +'<tr><td><b style="color:#6ee7b7">Complete</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Complete</span></td><td>Contains all necessary information</td><td>"The system must be secure"</td><td>"Data is encrypted with AES-256, access via JWT token"</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Correct</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Correct</span></td><td>Accurately describes the required behavior</td><td>"The user can log in"</td><td>"The user enters email+password, the system issues a JWT token"</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Consistent</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Consistent</span></td><td>Does not conflict with other requirements</td><td>Requirement A: "10% discount for everyone" / Requirement B: "discounts for VIP only"</td><td>Aligned requirements with no conflicts</td></tr>'
-+'<tr><td><b style="color:#6ee7b7">Measurable / Verifiable</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Measurable / Verifiable</span></td><td>Fulfillment can be checked</td><td>"The system must be fast"</td><td>"API response time ≤ 200ms at 1000 RPS"</td></tr>'
-+'<tr><td><b style="color:#6ee7b7">Traceable</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Traceable</span></td><td>Linked to a business goal and a test case</td><td>A requirement "hanging in the air"</td><td>Linked: BG-01 → US-05 → TC-12</td></tr>'
++'<tr><td><b style="color:#6ee7b7">Verifiable</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Verifiable</span></td><td>Fulfillment can be checked</td><td>"The system must be fast"</td><td>"API response time ≤ 200ms at 1000 RPS"</td></tr>'
++'<tr><td><b style="color:#6ee7b7">Traceable</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Traceable</span></td><td>Linked to a business goal and a test case</td><td>An orphan requirement (no link to a goal or test)</td><td>Linked: BG-01 → US-05 → TC-12</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Prioritized</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Prioritized</span></td><td>Has a priority (Must/Should/Could)</td><td>All 200 requirements are equally important</td><td>Must: 30, Should: 80, Could: 90</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Unambiguous</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Unambiguous</span></td><td>Understood the same way by everyone</td><td>"The system must work properly"</td><td>A concrete behavior specification</td></tr>'
 +'</table></div>'
++'<div class="info-box">Note (Wiegers): Complete, Correct, Feasible, Necessary, Prioritized, Unambiguous and Verifiable describe an individual requirement; Consistent, Traceable and Modifiable are attributes of the requirements SPECIFICATION as a whole.</div>'
 +'<div class="t-h3">Karl Wiegers\' requirements model</div>'
 +'<div class="info-box">Wiegers identifies <b>3 levels of requirements</b> (business → user → functional) and <b>additional categories</b> (non-functional, quality attributes, business rules, system, constraints, external interfaces). This is not a hierarchy of importance but different perspectives on describing the same system.</div>'
 +'<div class="tw"><table>'
@@ -38,12 +39,13 @@ req:'<div class="t-h3">What is a requirement?</div>'
 +'<tr style="background:#1e3a5f22"><td colspan="4" style="color:#64748b;font-size:0.75rem;padding:6px 9px">⬇ Additional categories — exist at all levels</td></tr>'
 +'<tr><td><b style="color:#c4b5fd">Non-Functional Requirements</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Non-Functional Requirements</span></td><td>HOW WELL? System quality?</td><td>NFR table in the SRS</td><td>"API response time — no more than 200ms at 1000 RPS"</td></tr>'
 +'<tr><td><b style="color:#c4b5fd">Quality Attributes</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Quality Attributes</span></td><td>Which quality characteristics matter?</td><td>Quality section of the SRS</td><td>Reliability, Performance, Security, Usability, Scalability</td></tr>'
-+'<tr><td><b style="color:#f87171">Business Rules</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Business Rules</span></td><td>Which domain rules constrain the system?</td><td>Glossary, Rules</td><td>"The discount applies only to orders ≥ 5000 RUB"</td></tr>'
++'<tr><td><b style="color:#f87171">Business Rules</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Business Rules</span></td><td>Which domain rules constrain the system?</td><td>Glossary, Rules</td><td>"The discount applies only to orders ≥ $5000"</td></tr>'
 +'<tr><td><b style="color:#94a3b8">System Requirements</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">System Requirements</span></td><td>What environment and infrastructure are needed?</td><td>System section of the SRS</td><td>"The system runs in Chrome 110+, Safari 16+"</td></tr>'
-+'<tr><td><b style="color:#94a3b8">Constraints</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Constraints</span></td><td>What cannot be changed during design?</td><td>Constraints in the SRS</td><td>"Use PostgreSQL only", "Budget — 2 million RUB"</td></tr>'
-+'<tr><td><b style="color:#94a3b8">External Interfaces</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">External Interfaces</span></td><td>How does the system interact with others?</td><td>Interface Spec</td><td>"Integration with 1C via REST API", "SMS via an SMS provider"</td></tr>'
++'<tr><td><b style="color:#94a3b8">Constraints</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Constraints</span></td><td>What cannot be changed during design?</td><td>Constraints in the SRS</td><td>"Use PostgreSQL only", "Budget — $2 million"</td></tr>'
++'<tr><td><b style="color:#94a3b8">External Interfaces</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">External Interfaces</span></td><td>How does the system interact with others?</td><td>Interface Spec</td><td>"Integration with the ERP system (e.g. SAP) via REST API", "SMS via an SMS provider"</td></tr>'
 +'</table></div>'
-+'<div class="t-h3">Quality attributes — FURPS+</div>'
++'<div class="t-h3">Common quality attributes (NFR categories)</div>'
++'<div class="info-box">FURPS+ = Functionality, Usability, Reliability, Performance, Supportability (+ constraints: design, implementation, interface, physical).</div>'
 +'<div class="cards">'
 +'<div class="card c3"><h4>⚡ Performance<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Performance</span></h4><p>Response time, throughput, load. Example: "500 transactions/sec"</p></div>'
 +'<div class="card c3"><h4>🔒 Security<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Security</span></h4><p>Authentication, authorization, encryption, action audit.</p></div>'
@@ -56,7 +58,7 @@ req:'<div class="t-h3">What is a requirement?</div>'
 +'<div class="tw"><table><tr><th></th><th>Business Rule</th><th>Functional Requirement</th></tr>'
 +'<tr><td><b>Essence</b></td><td>A domain rule that exists independently of IT</td><td>Behavior of the system that implements the rule</td></tr>'
 +'<tr><td><b>Source</b></td><td>Business, regulator, legislation</td><td>BA, SA based on the business rule</td></tr>'
-+'<tr><td><b>Example</b></td><td>"Discount — for orders ≥ 5000 RUB"</td><td>"The system automatically applies a 10% discount if the total is ≥ 5000 RUB"</td></tr>'
++'<tr><td><b>Example</b></td><td>"Discount — for orders ≥ $5000"</td><td>"The system automatically applies a 10% discount if the total is ≥ $5000"</td></tr>'
 +'<tr><td><b>Where is it stored?</b></td><td>Business rules glossary, a separate SRS section</td><td>Main body of the SRS, functional specifications</td></tr>'
 +'</table></div>'
 +'<div class="t-h3">Verification vs Validation</div>'
@@ -66,7 +68,7 @@ req:'<div class="t-h3">What is a requirement?</div>'
 +'</div>',
 
 methodologies:'<div class="t-h3">Classification of methodologies 2026</div>'
-+'<div class="info-box">It is important to understand the levels: <b>Philosophy → Approach → Framework → Practices</b>. Agile is a philosophy, Scrum is a framework within it, TDD is a specific practice. According to the Russoft 2025 survey, 71% of Russian IT companies use hybrid models.</div>'
++'<div class="info-box">It is important to understand the levels: <b>Philosophy → Approach → Framework → Practices</b>. Agile is a philosophy, Scrum is a framework within it, TDD is a specific practice. Most industry surveys (e.g. the State of Agile report) show that the majority of organizations use hybrid models.</div>'
 +'<div class="tw"><table>'
 +'<tr><th>Level</th><th>What it is</th><th>Examples</th></tr>'
 +'<tr><td><b style="color:#f59e0b">Philosophy</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Philosophy</span></td><td>Values and principles without specific steps</td><td>Agile, Lean</td></tr>'
@@ -77,12 +79,12 @@ methodologies:'<div class="t-h3">Classification of methodologies 2026</div>'
 +'<div class="t-h3">Full list of current methodologies 2026</div>'
 +'<div class="tw"><table>'
 +'<tr><th>Methodology</th><th>Type</th><th>Essence</th><th>When to use</th></tr>'
-+'<tr><td><b style="color:#ef4444">Waterfall</b></td><td>Approach</td><td>Sequential phases: requirements→design→development→testing→deployment. Each phase is completed before the next begins</td><td>Fixed requirements, government contracts, software built to GOST standards, fixed budget and deadline</td></tr>'
++'<tr><td><b style="color:#ef4444">Waterfall</b></td><td>Approach</td><td>Sequential phases: requirements→design→development→testing→deployment. Each phase is completed before the next begins</td><td>Fixed requirements, government contracts, regulated industries (medical, aerospace), fixed budget and deadline</td></tr>'
 +'<tr><td><b style="color:#f59e0b">Incremental</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Incremental</span></td><td>Approach</td><td>The system is built in parts (increments), each adding new functionality to what is already done. Requirements are fixed up front, but delivery is in parts</td><td>Large systems where early delivery of key functions is needed but requirements are stable</td></tr>'
 +'<tr><td><b style="color:#f59e0b">Iterative</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Iterative</span></td><td>Approach</td><td>The system is built through repeated cycles (iterations), each refining and extending the previous one. Requirements may change</td><td>Complex projects with uncertain requirements, prototyping</td></tr>'
 +'<tr><td><b style="color:#f59e0b">Spiral</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Spiral</span></td><td>Approach</td><td>Iterative + risk analysis on every loop. A historically important model — the predecessor of Agile</td><td>High-risk projects, large systems with uncertainty</td></tr>'
 +'<tr><td><b style="color:#10b981">Agile</b></td><td>Philosophy</td><td>An umbrella term. The 2001 Manifesto: individuals over processes, working software over documentation, customer collaboration over contract, responding to change over following a plan</td><td>Wherever requirements change and fast feedback is needed</td></tr>'
-+'<tr><td><b style="color:#3b82f6">Scrum</b></td><td>Framework (Agile)</td><td>Sprints of 1-4 weeks, roles (PO, SM, Dev Team), ceremonies (Planning, Daily, Review, Retro). A product increment every sprint</td><td>Product teams, startups, SaaS, mobile apps</td></tr>'
++'<tr><td><b style="color:#3b82f6">Scrum</b></td><td>Framework (Agile)</td><td>Sprints of 1-4 weeks, accountabilities (Product Owner, Scrum Master, Developers), events (Planning, Daily, Review, Retro). A product increment every sprint</td><td>Product teams, startups, SaaS, mobile apps</td></tr>'
 +'<tr><td><b style="color:#3b82f6">Kanban</b></td><td>Method (Agile/Lean)</td><td>Visualizing the flow of work, WIP limits, continuous delivery without iterations. Metrics: Lead Time, Cycle Time</td><td>Support, service teams, a continuous flow of tasks</td></tr>'
 +'<tr><td><b style="color:#8b5cf6">SAFe 6.0</b></td><td>Scaling framework</td><td>Scrum at the portfolio and program level. PI Planning every 8-12 weeks. Roles: RTE, System Architect. ESG metrics in version 6.0</td><td>Large enterprises of 50+ people, multiple teams, synchronization needed</td></tr>'
 +'<tr><td><b style="color:#8b5cf6">LeSS</b></td><td>Scaling framework</td><td>Large-Scale Scrum. Minimal bureaucracy, one Product Backlog for all teams</td><td>An alternative to SAFe when a heavy structure is not needed</td></tr>'
@@ -287,16 +289,16 @@ sql:'<div class="t-h3">Why does a BA need SQL?</div>'
 +'<span class="kw">ROLLBACK</span>; <span class="kw">-- cancel everything (both UPDATEs are rolled back)</span>'
 +'</div>',
 
-elicit:'<div class="t-h3">9 requirements elicitation techniques (BABOK v3)</div>'
+elicit:'<div class="t-h3">Key elicitation techniques (BABOK v3)</div>'
 +'<div class="cards">'
 +'<div class="card c1"><h4>🎤 Interview<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Interview</span></h4><p>Structured (a list of questions) or unstructured (follow-up questions). For a deep understanding of one person\'s problem.</p></div>'
 +'<div class="card c2"><h4>🧠 Workshop<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Workshop</span></h4><p>Group session. Roles: facilitator, participants, scribe. For aligning the views of several stakeholders.</p></div>'
 +'<div class="card c1"><h4>👁 Observation<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Observation</span></h4><p>The analyst watches the user at work. Reveals tacit knowledge — things people do automatically and cannot describe.</p></div>'
 +'<div class="card c2"><h4>📄 Document Analysis<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Document Analysis</span></h4><p>Studying regulations, instructions, reports. Done BEFORE meetings — so you arrive prepared.</p></div>'
-+'<div class="card c1"><h4>📋 Survey<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Survey / Questionnaire</span></h4><p>Written data collection. Good for a large audience or a closed corporate culture.</p></div>'
++'<div class="card c1"><h4>📋 Survey or Questionnaire<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Survey / Questionnaire</span></h4><p>Written data collection. Good for a large audience or a closed corporate culture.</p></div>'
 +'<div class="card c2"><h4>🎨 Prototyping<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Prototyping</span></h4><p>Mock-ups to refine requirements. Helps stakeholders "see" the system and articulate requirements.</p></div>'
 +'<div class="card c1"><h4>💡 Brainstorming<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Brainstorming</span></h4><p>Generating ideas without criticism. Then — evaluation and filtering. Open teams.</p></div>'
-+'<div class="card c2"><h4>👥 Focus Group<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Focus Group</span></h4><p>Selected stakeholders discuss ideas after a brainstorming session.</p></div>'
++'<div class="card c2"><h4>👥 Focus Group<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Focus Group</span></h4><p>A moderated discussion with a pre-qualified group of participants (typically 6-12) to elicit attitudes and opinions about a product, service or opportunity.</p></div>'
 +'<div class="card c1"><h4>🔌 Interface Analysis<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Interface Analysis</span></h4><p>How systems interact with each other. Integration requirements.</p></div>'
 +'</div>'
 +'<div class="t-h3">Which technique to use when?</div>'
@@ -305,7 +307,7 @@ elicit:'<div class="t-h3">9 requirements elicitation techniques (BABOK v3)</div>
 +'<tr><td>Many stakeholders, consensus needed</td><td>Workshop</td></tr>'
 +'<tr><td>The user cannot explain what they do</td><td>Observation</td></tr>'
 +'<tr><td>Regulations and documents exist</td><td>Document Analysis (first of all)</td></tr>'
-+'<tr><td>Large audience, closed culture</td><td>Survey</td></tr>'
++'<tr><td>Large audience, closed culture</td><td>Survey or Questionnaire</td></tr>'
 +'<tr><td>Stakeholders cannot picture the system abstractly</td><td>Prototyping</td></tr>'
 +'</table></div>'
 +'<div class="t-h3">Open vs closed questions in an interview</div>'
@@ -359,7 +361,7 @@ artifacts:'<div class="t-h3">⚡ Quick Definitions (memorize in 5 seconds)</div>
 +'<span class="kw">Exception E1 (not an alternative!):</span> <span class="val">Email not found → For security reasons the system does NOT say outright "email is not registered" (protection against User Enumeration) and instead shows: "If this email exists, we have sent a link"</span><br>'
 +'<span class="kw">Exception E2:</span> <span class="val">Link expired (TTL elapsed) → Error page "Link has expired" with a "Request a new link" button</span>'
 +'</div>'
-+'<div class="info-box" style="border-color:#ef4444"><b>⚠️ Common mistake in the example above:</b> Alternative scenario A is actually an ERROR (Exception Flow), not an alternative (Alternative Flow) — this confusion appears even in ready-made templates generated by AI tools. Breakdown below.</div>'
++'<div class="info-box" style="border-color:#ef4444"><b>⚠️ Common mistake in such templates:</b> a wrong-password or "email not found" branch is often labeled Alternative Flow A, although it is an Exception Flow — this confusion appears even in ready-made templates generated by AI tools. Breakdown below.</div>'
 
 +'<div class="t-h3">⚠️ Main vs Alternative vs Exception Flow — how not to mix them up</div>'
 +'<div class="info-box yellow">This is one of the most common mistakes in practice — even ready-made ChatGPT answers confuse these flow types. The key distinction: <b>Alternative Flow is a user CHOICE that leads to SUCCESS by another path. Exception Flow is an ERROR or INTERRUPTION that leads to FAILURE or a retry.</b></div>'
@@ -426,16 +428,16 @@ artifacts:'<div class="t-h3">⚡ Quick Definitions (memorize in 5 seconds)</div>
 agile:'<div class="t-h3">Scrum — roles</div>'
 +'<div class="cards">'
 +'<div class="card c4"><h4>Product Owner <small style="color:#f59e0b80">(PO)</small></h4><p>Owns the backlog and priorities. Makes decisions about product content.</p></div>'
-+'<div class="card c1"><h4>Scrum Master <small style="color:#93c5fd80">(SM)</small></h4><p>Facilitates the process, removes blockers, shields the team from outside interference.</p></div>'
-+'<div class="card c2"><h4>Development Team <small style="color:#6ee7b780">(Dev Team)</small></h4><p>A cross-functional team of 3-9 people. Decides for itself how much to take into the sprint.</p></div>'
++'<div class="card c1"><h4>Scrum Master <small style="color:#93c5fd80">(SM)</small></h4><p>Facilitates the process, coaches the team and removes impediments.</p></div>'
++'<div class="card c2"><h4>Developers</h4><p>Cross-functional; the whole Scrum Team is 10 or fewer people. Decides for itself how much to take into the sprint.</p></div>'
 +'<div class="card c3"><h4>BA in Scrum<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">BA in Scrum</span></h4><p>Supports the Product Owner: writes user stories and acceptance criteria, runs backlog refinement, translates between business and the team.</p></div>'
 +'</div>'
-+'<div class="t-h3">Scrum ceremonies</div>'
-+'<div class="tw"><table><tr><th>Ceremony</th><th>Purpose</th><th>Duration</th></tr>'
-+'<tr><td><b>Sprint Planning</b><br><small style="color:#64748b">Sprint Planning</small></td><td>Select work items, agree on the sprint goal</td><td>Up to 8h/month</td></tr>'
-+'<tr><td><b>Daily Scrum</b><br><small style="color:#64748b">Daily Scrum</small></td><td>Sync: done, plans, blockers</td><td>15 min</td></tr>'
-+'<tr><td><b>Sprint Review</b><br><small style="color:#64748b">Sprint Review</small></td><td>Demonstrate the increment to stakeholders</td><td>Up to 4h/month</td></tr>'
-+'<tr><td><b>Retrospective</b><br><small style="color:#64748b">Retrospective</small></td><td>Improve the team\'s process</td><td>Up to 3h/month</td></tr>'
++'<div class="t-h3">Scrum events</div>'
++'<div class="tw"><table><tr><th>Event</th><th>Purpose</th><th>Duration</th></tr>'
++'<tr><td><b>Sprint Planning</b><br><small style="color:#64748b">Sprint Planning</small></td><td>Select work items, agree on the sprint goal</td><td>Max 8h for a one-month Sprint (shorter for shorter Sprints)</td></tr>'
++'<tr><td><b>Daily Scrum</b><br><small style="color:#64748b">Daily Scrum</small></td><td>Inspect progress toward the Sprint Goal, adapt the plan</td><td>15 min</td></tr>'
++'<tr><td><b>Sprint Review</b><br><small style="color:#64748b">Sprint Review</small></td><td>Demonstrate the increment to stakeholders</td><td>Max 4h for a one-month Sprint</td></tr>'
++'<tr><td><b>Sprint Retrospective</b><br><small style="color:#64748b">Sprint Retrospective</small></td><td>Improve the team\'s process</td><td>Max 3h for a one-month Sprint</td></tr>'
 +'<tr><td><b>Backlog Refinement</b><br><small style="color:#64748b">Backlog Refinement</small></td><td>Clarify and estimate items for future sprints</td><td>~10% of the sprint</td></tr>'
 +'</table></div>'
 +'<div class="t-h3">Kanban vs Scrum — key differences</div>'
@@ -450,7 +452,7 @@ agile:'<div class="t-h3">Scrum — roles</div>'
 +'<div class="card c1"><h4>Story Points<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Relative estimate of task complexity</span></h4><p>A relative measure of complexity (not time). Accounts for volume + complexity + uncertainty. Method: Planning Poker, Fibonacci scale.</p></div>'
 +'<div class="card c4"><h4>MoSCoW<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Requirements prioritization method</span></h4><p>Must / Should / Could / Won\'t. Quick for an MVP. "Must" = what the product cannot work without.</p></div>'
 +'<div class="card c2"><h4>RICE<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Prioritization method: Reach×Impact×Confidence/Effort</span></h4><p>Reach × Impact × Confidence / Effort. Produces a numeric priority. More objective than MoSCoW.</p></div>'
-+'<div class="card c3"><h4>Kano Model<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">User satisfaction model</span></h4><p>Basic / Performance / Delighters. For understanding what creates a WOW effect and what is simply expected.</p></div>'
++'<div class="card c3"><h4>Kano Model<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">User satisfaction model</span></h4><p>Must-be (Basic) / One-dimensional (Performance) / Attractive (Delighters). For understanding what creates a WOW effect and what is simply expected.</p></div>'
 +'<div class="card c1" style="grid-column:1/-1"><h4>⚖️ WSJF (Weighted Shortest Job First)<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Weighted prioritization of the shortest jobs</span></h4><p>SAFe method: <b>Cost of Delay ÷ Job Size</b>. The most valuable and quickest work goes first. Used to prioritize features, epics, and stories.</p></div>'
 +'</div>'
 +'<div class="t-h3">💸 Cost of Delay and WSJF — in detail</div>'
@@ -479,7 +481,7 @@ agile:'<div class="t-h3">Scrum — roles</div>'
 +'<tr><td>UI rebranding</td><td>5</td><td>2</td><td>1</td><td>8</td><td>13</td><td><b style="color:#f59e0b">0.62</b></td><td>🥉 3rd</td></tr>'
 +'</table></div>'
 +'<div class="t-h3">WSJF scoring scale — which scores to use</div>'
-+'<div class="info-box yellow"><b>Available values: 1, 2, 3, 5, 8, 13, 21</b> (Fibonacci scale). Principle: estimates are RELATIVE, not absolute. First the team takes a "reference" item and assigns it a base value (e.g. 3 or 5), then estimates everything else relative to it.</div>'
++'<div class="info-box yellow"><b>Available values: 1, 2, 3, 5, 8, 13, 20</b> (SAFe modified Fibonacci). Principle: estimates are RELATIVE, not absolute. First the team takes a "reference" item and assigns it a base value (e.g. 3 or 5), then estimates everything else relative to it.</div>'
 +'<div class="tw"><table>'
 +'<tr><th>Score</th><th>Meaning for CoD components (business value, time criticality, risk)</th><th>Meaning for Job Size</th></tr>'
 +'<tr><td><b style="color:#6ee7b7">1</b></td><td>Almost no value / almost no urgency</td><td>A 1-2 hour task, trivial</td></tr>'
@@ -488,7 +490,7 @@ agile:'<div class="t-h3">Scrum — roles</div>'
 +'<tr><td><b style="color:#f59e0b">5</b></td><td>Average value / moderate urgency (base reference)</td><td>A week of work</td></tr>'
 +'<tr><td><b style="color:#f59e0b">8</b></td><td>High value / noticeable urgency</td><td>2 weeks (a sprint)</td></tr>'
 +'<tr><td><b style="color:#ef4444">13</b></td><td>Very high / critical urgency (there is a deadline)</td><td>A month of work</td></tr>'
-+'<tr><td><b style="color:#ef4444">21</b></td><td>Extreme / "on fire", huge losses if delayed</td><td>A quarter or more — needs decomposition</td></tr>'
++'<tr><td><b style="color:#ef4444">20</b></td><td>Extreme / "on fire", huge losses if delayed</td><td>A quarter or more — needs decomposition</td></tr>'
 +'</table></div>'
 +'<div class="t-h3">How to run WSJF estimation in practice</div>'
 +'<div class="info-box green"><b>Step 1:</b> Gather the team (PO, BA, leads). <b>Step 2:</b> Pick an "average" item as the reference (5 points). <b>Step 3:</b> Score each CoD component relative to the reference (Planning Poker). <b>Step 4:</b> Estimate Job Size separately — it is the amount of work, not value. <b>Step 5:</b> Calculate WSJF = CoD ÷ Job Size. <b>Step 6:</b> Sort by WSJF descending — the highest priorities go to the top.</div>'
@@ -503,11 +505,11 @@ agile:'<div class="t-h3">Scrum — roles</div>'
 
 ba_role:'<div class="t-h3">6 BABOK v3 Knowledge Areas</div>'
 +'<div class="cards">'
-+'<div class="card c1"><h4>1. Planning and Monitoring<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">1. Business Analysis Planning and Monitoring</span></h4><p>How to organize BA work. Choosing the approach, managing information.</p></div>'
++'<div class="card c1"><h4>1. Business Analysis Planning and Monitoring<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">1. Business Analysis Planning and Monitoring</span></h4><p>How to organize BA work. Choosing the approach, managing information.</p></div>'
 +'<div class="card c2"><h4>2. Elicitation and Collaboration<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">2. Elicitation and Collaboration</span></h4><p>Requirements gathering techniques. Managing stakeholder communication.</p></div>'
 +'<div class="card c4"><h4>3. Requirements Life Cycle Management<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">3. Requirements Life Cycle Management</span></h4><p>Traceability, prioritization, change management.</p></div>'
 +'<div class="card c3"><h4>4. Strategy Analysis<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">4. Strategy Analysis</span></h4><p>Understand the context. SWOT, current-state and target-state analysis.</p></div>'
-+'<div class="card c1"><h4>5. Requirements Analysis and Design<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">5. Requirements Analysis and Design Definition</span></h4><p>Modeling, verification, validation. US, Use Case, BPMN.</p></div>'
++'<div class="card c1"><h4>5. Requirements Analysis and Design Definition<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">5. Requirements Analysis and Design Definition</span></h4><p>Modeling, verification, validation. US, Use Case, BPMN.</p></div>'
 +'<div class="card c2"><h4>6. Solution Evaluation<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">6. Solution Evaluation</span></h4><p>Measuring value, assessing limitations, recommendations.</p></div>'
 +'</div>'
 +'<div class="t-h3">Requirements Traceability (RTM)</div>'
@@ -515,7 +517,7 @@ ba_role:'<div class="t-h3">6 BABOK v3 Knowledge Areas</div>'
 +'<div class="t-h3">Requirements Life Cycle</div>'
 +'<div class="info-box">Elicitation → Analysis → Documentation → Verification → Validation → Change Management. In Agile, this is an iterative cycle every sprint.</div>'
 +'<div class="t-h3">Requirements Conflicts: How to Resolve Them</div>'
-+'<div class="info-box yellow">1) Record the conflict. 2) Organize a meeting with all stakeholders. 3) Uncover each party\'s root goals. 4) Find a compromise. The BA is a mediator, not an arbiter. Stakeholders make the decision.</div>',
++'<div class="info-box yellow">1) Record the conflict. 2) Organize a meeting with all stakeholders. 3) Uncover each party\'s root goals. 4) Find a compromise. The BA facilitates, but does not decide. Stakeholders make the decision.</div>',
 
 discovery_docs:'<div class="t-h3">Comparison: Discovery Phase · SRS · Vision/Scope</div>'
 +'<div class="info-box">Three key concepts that are often confused or mixed up. Each answers its own question and lives at its own stage of the project.</div>'
@@ -580,7 +582,7 @@ discovery_docs:'<div class="t-h3">Comparison: Discovery Phase · SRS · Vision/S
 +'<div class="info-box">Discovery outputs: <b>Vision & Scope document, Problem Statement, High-Level User Stories (Epics), As-Is and To-Be BPMN diagrams, Stakeholder Map, Personas</b>. Discovery precedes writing the SRS.</div>'
 
 +'<div class="t-h3">📋 SRS — Software Requirements Specification</div>'
-+'<div class="info-box">The SRS (IEEE 830 / GOST 34) is a formal document describing everything the system must do. The main BA artifact in Waterfall projects. In Agile, the role of the SRS is partly played by the Product Backlog + AC.</div>'
++'<div class="info-box">The SRS (IEEE 830 / ISO/IEC/IEEE 29148) is a formal document describing everything the system must do. The main BA artifact in Waterfall projects. In Agile, the role of the SRS is partly played by the Product Backlog + AC.</div>'
 +'<div class="tw"><table>'
 +'<tr><th>SRS section</th><th>What it contains</th></tr>'
 +'<tr><td><b style="color:#f59e0b">1. Introduction</b><br><span style="font-size:0.72rem;color:#64748b">Introduction</span></td><td>Purpose of the document, scope, definitions and abbreviations, references to other documents</td></tr>'
@@ -601,7 +603,7 @@ discovery_docs:'<div class="t-h3">Comparison: Discovery Phase · SRS · Vision/S
 +'<tr><td><b style="color:#93c5fd">Scope</b><br><span style="font-size:0.72rem;color:#64748b">Project boundaries</span></td><td>What is INCLUDED in the first version (in scope)</td><td>"Online current account opening, debit card issuance"</td></tr>'
 +'<tr><td><b style="color:#ef4444">Out of Scope</b><br><span style="font-size:0.72rem;color:#64748b">Outside the boundaries</span></td><td>What is explicitly NOT included: critically important to record!</td><td>"Credit products, business accounts, mobile app: not included in version 1.0"</td></tr>'
 +'<tr><td><b style="color:#94a3b8">Stakeholders</b><br><span style="font-size:0.72rem;color:#64748b">Interested parties</span></td><td>List of stakeholders, their roles and interests</td><td>"Head of Retail: sponsor; Bank client: end user"</td></tr>'
-+'<tr><td><b style="color:#94a3b8">Risks & Assumptions</b><br><span style="font-size:0.72rem;color:#64748b">Risks and assumptions</span></td><td>Key project risks and accepted assumptions</td><td>"Assumption: the regulator\'s API is available for integration. Risk: changes to the digital signature law"</td></tr>'
++'<tr><td><b style="color:#94a3b8">Risks & Assumptions</b><br><span style="font-size:0.72rem;color:#64748b">Risks and assumptions</span></td><td>Key project risks and accepted assumptions</td><td>"Assumption: the regulator\'s API is available for integration. Risk: changes to e-signature regulation"</td></tr>'
 +'</table></div>'
 +'<div class="info-box green"><b>Why Out of Scope is critically important:</b> without an explicit "what is NOT included", every stakeholder completes the scope in their own head. This is the main cause of scope creep: requirements that "everyone assumed" but nobody recorded suddenly "appear" during the project.</div>'
 
@@ -874,7 +876,7 @@ var Q = [
  q:"How does a business rule differ from a functional requirement?",
  opts:["A business rule is the same as a functional requirement, just worded differently","A business rule describes a domain constraint (independent of the system); a functional requirement describes how the system must behave","A business rule is always defined by the developer, a functional requirement by the business","A business rule is not documented — it is a verbal agreement"],
  ans:1,
- exp:"A business rule is a rule of the subject domain that does not depend on an IT system. Example: 'Discount on orders from 5,000 RUB'. Functional requirement: 'The system automatically applies a 10% discount if the total is ≥ 5,000 RUB' — how the system implements the business rule."},
+ exp:"A business rule is a rule of the subject domain that does not depend on an IT system. Example: 'Discount on orders from $5,000'. Functional requirement: 'The system automatically applies a 10% discount if the total is ≥ $5,000' — how the system implements the business rule."},
 
 {sec:"theory",lab:"Elicitation Techniques",type:"concept",
  q:"At the start of a project the analyst has no access to users, but does have regulations, instructions, and reports. Which technique should be used first?",
@@ -884,9 +886,9 @@ var Q = [
 
 {sec:"theory",lab:"Elicitation Techniques",type:"concept",
  q:"Cashier users cannot articulate how they work — 'we just do it the way we're used to.' Which technique fits best?",
- opts:["Survey — ask questions in writing","Observation — the analyst watches the user's real work","Brainstorming — generating ideas","Interface analysis — study the current system"],
+ opts:["Survey or Questionnaire — ask questions in writing","Observation — the analyst watches the user's real work","Brainstorming — generating ideas","Interface analysis — study the current system"],
  ans:1,
- exp:"Observation is ideal for uncovering tacit knowledge — what people do automatically and cannot put into words. The analyst sits alongside and records the actual actions, the steps the user 'forgot' to mention."},
+ exp:"Observation is ideal for uncovering tacit knowledge — what people do automatically and cannot put into words. The analyst shadows the user and records the actual actions, the steps the user 'forgot' to mention."},
 
 {sec:"theory",lab:"Elicitation Techniques",type:"concept",
  q:"You need to align requirements among 8 stakeholders from different departments with conflicting opinions. What is most effective?",
@@ -1004,7 +1006,7 @@ var Q = [
 {sec:"practice",lab:"Elicitation Techniques",type:"choose",
  ctx:"Project: warehouse automation. Warehouse workers work in 3 shifts, and many cannot clearly describe their process. Some processes are not documented anywhere.",
  q:"Which combination of techniques should be used first?",
- opts:["Survey all warehouse workers — cover everyone at once","A workshop with warehouse management — they know how it should be","Document analysis + Observation of warehouse workers on the job","Prototype the interface and show it to the warehouse workers"],
+ opts:["Survey or Questionnaire for all warehouse workers — cover everyone at once","A workshop with warehouse management — they know how it should be","Document analysis + Observation of warehouse workers on the job","Prototype the interface and show it to the warehouse workers"],
  ans:2,
  exp:"1) Document analysis — study what exists (instructions, reports, Excel). 2) Observation — warehouse workers do automatically what they cannot describe. Only by seeing the process will you uncover implicit requirements. A workshop with management describes 'how it should be', not 'how it is'. A prototype is too early."},
 
@@ -1081,7 +1083,7 @@ var Q = [
 {sec:"practice",lab:"Case: Loyalty Program",type:"case",
  ctx:"Continued. The BA formulates the US: 'As a shopper, I want to see my bonus points balance, so that I understand what discount I can count on.'",
  q:"Which Acceptance Criterion for this US is most correct?",
- opts:["'Points are displayed'","'Given the user is logged in to their account, When the system loads the page, Then it displays: current balance (N points), the equivalent in rubles, and accrual history for the last 90 days'","'The system must be fast when displaying points'","'The user can see the points'"],
+ opts:["'Points are displayed'","'Given the user is logged in to their account, When the system loads the page, Then it displays: current balance (N points), the equivalent in USD, and accrual history for the last 90 days'","'The system must be fast when displaying points'","'The user can see the points'"],
  ans:1,
  exp:"A good AC: Given/When/Then, specific elements with specific data. QA writes an automated test from this AC. Option 1 cannot be verified. Option 3 is an NFR. Option 4 is a rephrasing of the US."},
 
@@ -1093,11 +1095,11 @@ var Q = [
  exp:"'Fast' → 'Page load < 2 sec with 500 users'. 'Reliably' → 'Availability ≥ 99.5%/month'. 'Authorization' → decompose: email/password login, Google OAuth, 2FA. Every requirement must be verifiable."},
 
 {sec:"practice",lab:"Requirements Conflict",type:"choose",
- ctx:"Sales Director: 'The discount is applied automatically for all category A customers.' CFO: 'Discounts > 10,000 RUB are confirmed manually by a controller.'",
+ ctx:"Sales Director: 'The discount is applied automatically for all category A customers.' CFO: 'Discounts > $10,000 are confirmed manually by a controller.'",
  q:"How does the BA resolve the conflict?",
  opts:["Implement both requirements at the same time","Side with whoever has the higher position","Record the conflict, call a meeting with both, uncover the root goals, and find a compromise","Ignore the CFO — sales matter more"],
  ans:2,
- exp:"Requirements conflicts are normal. Approach: 1) Record the conflict. 2) Call a meeting + the sponsor. 3) Uncover the goals: sales want speed, finance wants control. 4) Compromise: auto-discount up to 10k, manual confirmation above. The BA is a mediator, not an arbiter."},
+ exp:"Requirements conflicts are normal. Approach: 1) Record the conflict. 2) Call a meeting + the sponsor. 3) Uncover the goals: sales want speed, finance wants control. 4) Compromise: auto-discount up to 10k, manual confirmation above. The BA facilitates, but does not decide."},
 
 {sec:"practice",lab:"Case: Onboarding",type:"case",
  ctx:"HR Director: 'We need an onboarding system.' The BA found out: onboarding takes 2 weeks of manual work. New employees don't know who to turn to. IT does not create access on time.",
@@ -1179,16 +1181,16 @@ var Q = [
  exp:"\"Make it better\" is not a gap but a wish: it cannot be estimated, turned into a requirement, or traced through the RTM. A proper gap always rests on measurable As-Is and To-Be (time, cost, number of errors) and names the specific missing element (system, process, role) that must be added or changed."},
 
 {sec:"practice",lab:"Gap Analysis",type:"case",
- ctx:"As-Is: the customer requests a product return by calling the call center, the operator manually creates a ticket in 1C, average processing time is 3 days. To-Be (company goal): the customer submits the return themselves in their account area, the ticket lands in 1C automatically, processing takes up to 1 day.",
+ ctx:"As-Is: the customer requests a product return by calling the call center, the operator manually creates a ticket in the ERP system, average processing time is 3 days. To-Be (company goal): the customer submits the return themselves in their account area, the ticket lands in the ERP system automatically, processing takes up to 1 day.",
  q:"Which of the following gaps is formulated CORRECTLY and is ready to be turned into requirements?",
  opts:[
   "\"Returns need to be processed faster\"",
-  "\"A 'Product Return' section is needed in the account area with a request form + integration of the account area with 1C to create the return ticket automatically, which removes manual entry by the operator and cuts processing time from 3 days to 1 day\"",
+  "\"A 'Product Return' section is needed in the account area with a request form + integration of the account area with the ERP system to create the return ticket automatically, which removes manual entry by the operator and cuts processing time from 3 days to 1 day\"",
   "\"The call center works poorly, operators need training\"",
-  "\"1C needs to be replaced with another system\""
+  "\"The ERP system needs to be replaced with another system\""
  ],
  ans:1,
- exp:"A proper gap links specific missing functionality (a section in the account area + 1C integration) to a measurable improvement (3 days → 1 day) and explicitly names which manual step is eliminated (operator entry). This is already a ready foundation for an Epic/User Stories, unlike vague wishes such as \"faster\" or \"better\"."},
+ exp:"A proper gap links specific missing functionality (a section in the account area + ERP integration) to a measurable improvement (3 days → 1 day) and explicitly names which manual step is eliminated (operator entry). This is already a ready foundation for an Epic/User Stories, unlike vague wishes such as \"faster\" or \"better\"."},
 
 {sec:"theory",lab:"Business Case & ROI",type:"concept",
  q:"A warehouse inventory automation project costs $40,000. It is expected to save the company $8,000 per month by reducing errors and manual work. What are the approximate Payback Period and first-year ROI?",
@@ -1234,7 +1236,7 @@ var Q = [
   "Write a long formal 5-page CR document, because any change requires the full process regardless of context"
  ],
  ans:2,
- exp:"Even in Agile, \"burning\" requests should not bypass the process entirely; otherwise the team lives in constant interruptions (breaking the Sprint Goal) and the PO loses control over priorities. The right balance: quickly record and assess the request, escalate the urgency if needed, but the decision to include it in the sprint is made by the PO with the team, not by the BA alone over a private chat."},
+ exp:"Even in Agile, urgent (\"fire-drill\") requests should not bypass the process entirely; otherwise the team lives in constant interruptions (breaking the Sprint Goal) and the PO loses control over priorities. The right balance: quickly record and assess the request, escalate the urgency if needed, but the decision to include it in the sprint is made by the PO with the team, not by the BA alone over a private chat."},
 
 
 {sec:"theory",lab:"Monolith vs Microservices",type:"concept",
@@ -1338,7 +1340,7 @@ Q.push({sec:"practice",lab:"Practice — Final",type:"case",
 // SQL questions
 Q.push({sec:"practice",lab:"SQL — basic queries",type:"case",
  ctx:"Table orders: id, customer_id, status, total_amount, created_at\nTable customers: id, name, email, city",
- q:"Select all orders with status 'completed' and an amount over 5000 RUB, sorted by date (newest first). Which query is correct?",
+ q:"Select all orders with status 'completed' and an amount over $5000, sorted by date (newest first). Which query is correct?",
  opts:[
   "SELECT * FROM orders WHERE status = 'completed' OR total_amount > 5000 ORDER BY created_at DESC",
   "SELECT * FROM orders WHERE status = 'completed' AND total_amount > 5000 ORDER BY created_at DESC",
@@ -1361,7 +1363,7 @@ Q.push({sec:"practice",lab:"SQL — JOIN",type:"case",
  exp:"LEFT JOIN returns ALL customers from the left table (customers), even if they have no matches in orders (then o.id = NULL). COUNT(o.id) counts non-null id values, so customers without orders get 0, not 1 (COUNT(*) would give 1 because of the row itself). INNER JOIN would drop customers without orders. GROUP BY c.id, c.name: it is correct to include the primary key."});
 
 Q.push({sec:"practice",lab:"SQL — GROUP BY & HAVING",type:"case",
- ctx:"Table orders: id, customer_id, status, total_amount, created_at\n\nTask: find customers who placed MORE THAN 3 orders and show their total revenue, but only if it exceeds 10,000 RUB.",
+ ctx:"Table orders: id, customer_id, status, total_amount, created_at\n\nTask: find customers who placed MORE THAN 3 orders and show their total revenue, but only if it exceeds $10,000.",
  q:"Which query solves the task?",
  opts:[
   "SELECT customer_id, COUNT(*) as cnt, SUM(total_amount) as total FROM orders WHERE COUNT(*) > 3 AND SUM(total_amount) > 10000 GROUP BY customer_id",
@@ -1373,7 +1375,7 @@ Q.push({sec:"practice",lab:"SQL — GROUP BY & HAVING",type:"case",
  exp:"HAVING is a filter AFTER grouping, specifically for aggregate functions such as COUNT, SUM, AVG, etc. WHERE cannot be used with aggregate functions; that is a syntax error. The order: FROM → WHERE (if there is a row filter) → GROUP BY → HAVING → SELECT → ORDER BY. In option C, WHERE comes AFTER GROUP BY, which is invalid syntax; WHERE always comes before GROUP BY."});
 
 Q.push({sec:"practice",lab:"SQL — BA practice",type:"choose",
- ctx:"A BA works with the development team. The database has a table users (id, email, status, created_at) and a table payments (id, user_id, amount, created_at, status). You need to check: 'How many active users made at least one payment over 1000 RUB in the last 30 days?'",
+ ctx:"A BA works with the development team. The database has a table users (id, email, status, created_at) and a table payments (id, user_id, amount, created_at, status). You need to check: 'How many active users made at least one payment over $1000 in the last 30 days?'",
  q:"Which approach to writing the query is correct?",
  opts:[
   "SELECT COUNT(*) FROM users WHERE status = 'active'",
@@ -1385,13 +1387,13 @@ Q.push({sec:"practice",lab:"SQL — BA practice",type:"choose",
  exp:"The correct query: 1) JOIN the two tables on user_id. 2) WHERE filters active users (u.status = 'active'), the amount (p.amount > 1000), the period (p.created_at >= the date 30 days ago) and the payment status. 3) COUNT(DISTINCT p.user_id) counts unique users, excluding duplicates (if one user has several payments). Option A counts all active users regardless of payments. Option C is a cross join without a proper join condition."});
 
 Q.push({sec:"practice",lab:"SQL — INSERT",type:"case",
- ctx:"Table customers: id (auto), name, email, city, created_at\nYou need to add a new customer: Maria Sidorova, maria@test.ru, Kazan.",
+ ctx:"Table customers: id (auto), name, email, city, created_at\nYou need to add a new customer: Maria Lopez, maria@example.com, Austin.",
  q:"Which query correctly adds the new customer?",
  opts:[
-  "INSERT customers (name, email, city) VALUES ('Maria Sidorova', 'maria@test.ru', 'Kazan')",
-  "INSERT INTO customers (name, email, city) VALUES ('Maria Sidorova', 'maria@test.ru', 'Kazan')",
-  "INSERT INTO customers VALUES ('Maria Sidorova', 'maria@test.ru', 'Kazan')",
-  "ADD INTO customers (name, email, city) VALUES ('Maria Sidorova', 'maria@test.ru', 'Kazan')"
+  "INSERT customers (name, email, city) VALUES ('Maria Lopez', 'maria@example.com', 'Austin')",
+  "INSERT INTO customers (name, email, city) VALUES ('Maria Lopez', 'maria@example.com', 'Austin')",
+  "INSERT INTO customers VALUES ('Maria Lopez', 'maria@example.com', 'Austin')",
+  "ADD INTO customers (name, email, city) VALUES ('Maria Lopez', 'maria@example.com', 'Austin')"
  ],
  ans:1,
  exp:"The correct syntax: INSERT INTO table (columns) VALUES (values). The INTO keyword is mandatory in standard SQL. Option C is dangerous: VALUES without a column list requires ALL columns in the right order, including id and created_at, and breaks if there is an auto-increment or DEFAULT. Always list the columns explicitly; it protects you from schema changes."});
@@ -1477,10 +1479,10 @@ Q.push({sec:"practice",lab:"WSJF — Cost of Delay",type:"concept",
   "The budget allocated to the job that burns away when it is delayed"
  ],
  ans:1,
- exp:"Cost of Delay is the value lost per unit of delay time. If a payment gateway integration brings 1 million RUB/month, every month of delay costs 1 million. CoD consists of three components: User-Business Value + Time Criticality + Risk Reduction / Opportunity Enablement. They are estimated relative to each other on the Fibonacci scale."});
+ exp:"Cost of Delay is the value lost per unit of delay time. If a payment gateway integration brings $1 million/month, every month of delay costs 1 million. CoD consists of three components: User-Business Value + Time Criticality + Risk Reduction / Opportunity Enablement. They are estimated relative to each other on the Fibonacci scale."});
 
 Q.push({sec:"practice",lab:"WSJF — calculation",type:"case",
- ctx:"A fintech startup team scored 3 jobs with WSJF (Fibonacci scale: 1, 2, 3, 5, 8, 13):\n\nJob A — SBP integration: Business Value=8, Time Criticality=13, Risk Reduction=5, Job Size=5\nJob B — Analytics dashboard: Business Value=13, Time Criticality=3, Risk Reduction=2, Job Size=8\nJob C — UI rebranding: Business Value=5, Time Criticality=2, Risk Reduction=1, Job Size=13",
+ ctx:"A fintech startup team scored 3 jobs with WSJF (Fibonacci scale: 1, 2, 3, 5, 8, 13):\n\nJob A — Instant payments integration: Business Value=8, Time Criticality=13, Risk Reduction=5, Job Size=5\nJob B — Analytics dashboard: Business Value=13, Time Criticality=3, Risk Reduction=2, Job Size=8\nJob C — UI rebranding: Business Value=5, Time Criticality=2, Risk Reduction=1, Job Size=13",
  q:"Calculate the WSJF for each job and determine the correct priority order.",
  opts:[
   "B → A → C (B has the highest business value, 13, so take it first)",
@@ -1489,7 +1491,7 @@ Q.push({sec:"practice",lab:"WSJF — calculation",type:"case",
   "B → C → A (the most valuable first, then the smallest, then the rest)"
  ],
  ans:1,
- exp:"Calculation: A: CoD = 8+13+5 = 26, WSJF = 26÷5 = 5.2 🥇. B: CoD = 13+3+2 = 18, WSJF = 18÷8 = 2.25 🥈. C: CoD = 5+2+1 = 8, WSJF = 8÷13 = 0.62 🥉. Key insight: the Dashboard (B) has the HIGHEST business value (13) but loses because of low time criticality and large size. The SBP integration wins thanks to high time criticality: a market window, competitors have already launched. WSJF shows that maximum business value ≠ maximum priority."});
+ exp:"Calculation: A: CoD = 8+13+5 = 26, WSJF = 26÷5 = 5.2 🥇. B: CoD = 13+3+2 = 18, WSJF = 18÷8 = 2.25 🥈. C: CoD = 5+2+1 = 8, WSJF = 8÷13 = 0.62 🥉. Key insight: the Dashboard (B) has the HIGHEST business value (13) but loses because of low time criticality and large size. The instant payments integration wins thanks to high time criticality: a market window, competitors have already launched. WSJF shows that maximum business value ≠ maximum priority."});
 
 Q.push({sec:"practice",lab:"WSJF — application",type:"choose",
  ctx:"A Product Owner is choosing between jobs:\nJob X: WSJF = 8.5 (CoD=17, Job Size=2)\nJob Y: WSJF = 4.0 (CoD=20, Job Size=5)\nJob Z: WSJF = 2.0 (CoD=10, Job Size=5)\nHowever, job Z is a technical dependency for job X: without Z, job X is impossible.",
@@ -1559,7 +1561,7 @@ var THEORY_UML = {
         +'<h4>⚪ Events<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Events</span></h4><p>Start / Intermediate / End. Types: Message, Timer, Error, Signal, Escalation, Conditional.</p></div>'
       +'<div class="dt-card bpmn">'
         +'<div class="dt-svg"><svg viewBox="0 0 140 70" width="130" height="65" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="20" width="50" height="30" rx="6" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.3"/><line x1="24" y1="30" x2="56" y2="30" stroke="#93c5fd" stroke-width="1.2"/><line x1="24" y1="38" x2="46" y2="38" stroke="#93c5fd" stroke-width="1.2"/><rect x="75" y="20" width="50" height="30" rx="6" fill="none" stroke="#8b5cf6" stroke-width="1.3" stroke-dasharray="4,2"/><text x="100" y="39" text-anchor="middle" fill="#c4b5fd" font-size="7">Service</text></svg></div>'
-        +'<h4>📦 Tasks<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Tasks</span></h4><p>User, Service, Send, Receive, Script, Business Rule, Manual, Call Activity.</p></div>'
+        +'<h4>📦 Tasks<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Tasks</span></h4><p>Task types: User, Service, Send, Receive, Script, Business Rule, Manual (plus Sub-Process and Call Activity as other Activity kinds).</p></div>'
       +'</div></div>'
   },
   uml_elements: {
@@ -1998,17 +2000,17 @@ var THEORY_UML = {
   },
   bpmn_elements: {
     title: "BPMN 2.0 — Core Notation Objects",
-    content: '<div class="t-section"><h3>8 Core BPMN Objects</h3>'
-      +'<div class="info-box">The BPMN business process modeling language is built on 8 core objects. BPMN is not a language for describing IT systems; it is a notation for describing the domain of a real business, where both software and people take part.</div>'
+    content: '<div class="t-section"><h3>BPMN Core Element Categories</h3>'
+      +'<div class="info-box">The BPMN 2.0 specification (OMG) groups its elements into five categories: Flow Objects (Events, Activities, Gateways), Data (Data Objects, Data Inputs/Outputs, Data Stores), Connecting Objects (Sequence Flow, Message Flow, Association, Data Association), Swimlanes (Pools, Lanes) and Artifacts (Group, Text Annotation). BPMN is not a language for describing IT systems; it is a notation for describing the domain of a real business, where both software and people take part.</div>'
       +'<div class="elements-grid">'
       +'<div class="el-card bpmn"><div class="el-icon">⚪</div><div class="el-info"><h4>Event<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Event</span></h4><p>Something that happens in the course of the process. Start, End or Intermediate.</p></div></div>'
       +'<div class="el-card bpmn"><div class="el-icon">▭</div><div class="el-info"><h4>Activity<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Activity</span></h4><p>Work that must be performed at a step of the process. Drawn as a rectangle.</p></div></div>'
-      +'<div class="el-card bpmn"><div class="el-icon">◇</div><div class="el-info"><h4>Gateway / Fork<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Gateway</span></h4><p>A control node for conditional branching of the process. Drawn as a diamond.</p></div></div>'
+      +'<div class="el-card bpmn"><div class="el-icon">◇</div><div class="el-info"><h4>Gateway<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Gateway</span></h4><p>A control node for conditional branching of the process. Drawn as a diamond.</p></div></div>'
       +'<div class="el-card bpmn"><div class="el-icon">→</div><div class="el-info"><h4>Flow<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Flow</span></h4><p>A connection between elements showing the execution order or message exchange.</p></div></div>'
       +'<div class="el-card bpmn"><div class="el-icon">📄</div><div class="el-info"><h4>Data<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Data</span></h4><p>Data objects and documents needed to start an activity, or produced as its result.</p></div></div>'
-      +'<div class="el-card bpmn"><div class="el-icon">📎</div><div class="el-info"><h4>Artefacts<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Artefact</span></h4><p>Objects that are not activities: groups, text annotations.</p></div></div>'
-      +'<div class="el-card bpmn"><div class="el-icon">▥</div><div class="el-info"><h4>Lane<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Swimlane</span></h4><p>A partition inside a pool that shows a specific process participant (role).</p></div></div>'
-      +'<div class="el-card bpmn"><div class="el-icon">▤</div><div class="el-info"><h4>Pool<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Pool</span></h4><p>An object that describes one whole process on the diagram. May contain lanes.</p></div></div>'
+      +'<div class="el-card bpmn"><div class="el-icon">📎</div><div class="el-info"><h4>Artifacts<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Artifact</span></h4><p>Objects that are not activities: groups, text annotations.</p></div></div>'
+      +'<div class="el-card bpmn"><div class="el-icon">▥</div><div class="el-info"><h4>Lane<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Lane</span></h4><p>A sub-partition within a Pool that shows a specific process participant (role).</p></div></div>'
+      +'<div class="el-card bpmn"><div class="el-icon">▤</div><div class="el-info"><h4>Pool<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Pool</span></h4><p>Represents a Participant (organization, system or role) in a Collaboration and contains its process. May contain lanes.</p></div></div>'
       +'</div>'
 
       +'<h3 style="margin-top:18px">Event (in detail)</h3>'
@@ -2033,7 +2035,7 @@ var THEORY_UML = {
       +'<div class="info-box">Activities are divided into atomic ones (Task — indivisible) and compound ones (broken down into simpler activities when detailed further).</div>'
       +'<div class="elements-grid">'
       +'<div class="el-card bpmn"><div class="el-icon">▭</div><div class="el-info"><h4>Task<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Task</span></h4><p>A unit of work. If marked with a "+" symbol, it is a Sub-Process and can be detailed further.</p></div></div>'
-      +'<div class="el-card bpmn"><div class="el-icon">⚏</div><div class="el-info"><h4>Transaction<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Transaction</span></h4><p>A set of logically related activities. An execution protocol (all or nothing) can be defined for a transaction.</p></div></div>'
+      +'<div class="el-card bpmn"><div class="el-icon">⚏</div><div class="el-info"><h4>Transaction<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Transaction</span></h4><p>A set of logically related activities. A transaction protocol (all-or-nothing: successful completion, cancellation with compensation, or hazard) applies to it.</p></div></div>'
       +'<div class="el-card bpmn"><div class="el-icon">⌗</div><div class="el-info"><h4>Event Sub-Process<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Event Sub-Process</span></h4><p>Placed inside another process. Triggered by its own start event. Can interrupt the parent process or run in parallel with it.</p></div></div>'
       +'<div class="el-card bpmn"><div class="el-icon">⊞</div><div class="el-info"><h4>Call Activity<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Call Activity</span></h4><p>An entry point to a globally defined sub-process that is reused in different places of the model.</p></div></div>'
       +'</div>'
@@ -2060,27 +2062,27 @@ var THEORY_UML = {
       +'<polygon points="50,20 80,50 50,80 20,50" fill="#1a1f2e" stroke="#f59e0b" stroke-width="2"/>'
       +'<line x1="34" y1="34" x2="66" y2="66" stroke="#f59e0b" stroke-width="2"/>'
       +'<line x1="66" y1="34" x2="34" y2="66" stroke="#f59e0b" stroke-width="2"/>'
-      +'<text x="50" y="95" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="bold">Exclusive OR</text>'
+      +'<text x="50" y="95" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="bold">Exclusive (XOR)</text>'
       +'<text x="50" y="106" text-anchor="middle" fill="#64748b" font-size="8">Exclusive Gateway (XOR)</text>'
       +'<polygon points="200,20 230,50 200,80 170,50" fill="#1a1f2e" stroke="#3b82f6" stroke-width="2"/>'
       +'<line x1="187" y1="50" x2="213" y2="50" stroke="#3b82f6" stroke-width="2"/>'
       +'<line x1="200" y1="37" x2="200" y2="63" stroke="#3b82f6" stroke-width="2"/>'
-      +'<text x="200" y="95" text-anchor="middle" fill="#3b82f6" font-size="9" font-weight="bold">AND operator</text>'
+      +'<text x="200" y="95" text-anchor="middle" fill="#3b82f6" font-size="9" font-weight="bold">Parallel (AND)</text>'
       +'<text x="200" y="106" text-anchor="middle" fill="#64748b" font-size="8">Parallel Gateway (AND)</text>'
       +'<polygon points="350,20 380,50 350,80 320,50" fill="#1a1f2e" stroke="#8b5cf6" stroke-width="2"/>'
       +'<circle cx="350" cy="50" r="10" fill="none" stroke="#8b5cf6" stroke-width="2"/>'
-      +'<text x="350" y="95" text-anchor="middle" fill="#8b5cf6" font-size="9" font-weight="bold">OR operator</text>'
+      +'<text x="350" y="95" text-anchor="middle" fill="#8b5cf6" font-size="9" font-weight="bold">Inclusive (OR)</text>'
       +'<text x="350" y="106" text-anchor="middle" fill="#64748b" font-size="8">Inclusive Gateway (OR)</text>'
       +'</svg></div>'
       +'<div class="tw"><table>'
       +'<tr><th>Type</th><th>On split</th><th>On merge</th></tr>'
-      +'<tr><td><b style="color:#f59e0b">Exclusive OR</b><br><span style="font-size:0.72rem;color:#64748b">Exclusive Gateway (XOR)</span></td><td>Routes the flow along only ONE outgoing branch (data-driven)</td><td>Waits for ONE incoming branch to complete, then activates the outgoing flow</td></tr>'
-      +'<tr><td><b style="color:#3b82f6">AND operator</b><br><span style="font-size:0.72rem;color:#64748b">Parallel Gateway (AND)</span></td><td>Activates ALL outgoing branches simultaneously</td><td>Waits for ALL incoming branches to complete, then activates the outgoing flow</td></tr>'
-      +'<tr><td><b style="color:#8b5cf6">OR operator</b><br><span style="font-size:0.72rem;color:#64748b">Inclusive Gateway (OR)</span></td><td>Activates ONE or MORE branches</td><td>All active incoming branches must be completed</td></tr>'
+      +'<tr><td><b style="color:#f59e0b">Exclusive Gateway (XOR)</b><br><span style="font-size:0.72rem;color:#64748b">data-based exclusive decision</span></td><td>Routes the flow along only ONE outgoing branch (data-driven)</td><td>Passes each arriving token straight through without synchronization</td></tr>'
+      +'<tr><td><b style="color:#3b82f6">Parallel Gateway (AND)</b><br><span style="font-size:0.72rem;color:#64748b">parallel split and join</span></td><td>Activates ALL outgoing branches simultaneously</td><td>Waits for ALL incoming branches to complete, then activates the outgoing flow</td></tr>'
+      +'<tr><td><b style="color:#8b5cf6">Inclusive Gateway (OR)</b><br><span style="font-size:0.72rem;color:#64748b">multi-choice split and join</span></td><td>Activates ONE or MORE branches</td><td>All active incoming branches must be completed</td></tr>'
       +'</table></div>'
 
-      +'<h3 style="margin-top:18px">Pool & Swimlane</h3>'
-      +'<div class="info-box">A Pool is an object that describes one whole process on the diagram; a diagram may contain several pools. A Swimlane is a partition inside a pool that shows a specific participant (role, department, system). Pools and lanes reflect the distribution of responsibilities. Lanes allow pools and other lanes to be divided hierarchically. Message exchange between Pools is shown with a Message Flow.</div>'
+      +'<h3 style="margin-top:18px">Pool & Lane</h3>'
+      +'<div class="info-box">A Pool represents a Participant (an organization, system or role) in a Collaboration and contains that participant\'s process; a diagram may contain several pools. A Lane is a sub-partition within a Pool that shows a specific participant (role, department, system). Pools and lanes reflect the distribution of responsibilities. Lanes allow pools and other lanes to be divided hierarchically. Message exchange between Pools is shown with a Message Flow.</div>'
       +'<div class="svgdemo"><svg viewBox="0 0 540 130" width="520" height="125" xmlns="http://www.w3.org/2000/svg">'
       +'<rect x="10" y="10" width="240" height="100" rx="4" fill="#0d1117" stroke="#3b82f6" stroke-width="2"/>'
       +'<rect x="10" y="10" width="26" height="100" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>'
@@ -2117,7 +2119,7 @@ var THEORY_UML = {
       +'</svg></div>'
       +'<div class="info-box green">A Data Object shows which data/documents are needed to start an activity or are the result of a completed activity. For one participant an object may be a result, for another a starting condition (for example: "Order" is the result for the manager and the start of work for the warehouse). A Message shows a relationship between two process participants: email, chat, SMS, website correspondence, etc.</div>'
 
-      +'<h3 style="margin-top:18px">Artefacts (2 types)</h3>'
+      +'<h3 style="margin-top:18px">Artifacts (2 types)</h3>'
       +'<div class="tw"><table>'
       +'<tr><th>Type</th><th>Description</th></tr>'
       +'<tr><td><b style="color:#6ee7b7">Group of objects</b><br><span style="font-size:0.72rem;color:#64748b">Group</span></td><td>Combines several elements under a common symbol to save space on the diagram. A rounded rectangle drawn with a dash-dot line.</td></tr>'
@@ -2127,12 +2129,12 @@ var THEORY_UML = {
       +'<h3 style="margin-top:18px">Executable vs Non-Executable Processes</h3>'
       +'<div class="tw"><table>'
       +'<tr><th></th><th>Executable<br><span style="font-size:0.72rem;color:#64748b">Executable</span></th><th>Non-Executable<br><span style="font-size:0.72rem;color:#64748b">Non-Executable</span></th></tr>'
-      +'<tr><td><b>Purpose</b></td><td>Actually runs in a BPMS (Bizagi, Comindware, ELMA)</td><td>Demonstrates the business model to people</td></tr>'
+      +'<tr><td><b>Purpose</b></td><td>Actually runs in a BPMS (Camunda, Bizagi, Appian)</td><td>Demonstrates the business model to people</td></tr>'
       +'<tr><td><b>Notation requirements</b></td><td>Strict compliance with BPMN rules — otherwise the software cannot execute the model</td><td>Following the rules is needed only for mutual understanding</td></tr>'
       +'<tr><td><b>Who uses it</b></td><td>Companies with a process-based approach, real-time tracking</td><td>Analysts and managers to illustrate ideas and bottlenecks</td></tr>'
       +'<tr><td><b>Complexity</b></td><td>Requires deep BPMN knowledge, like writing an algorithm</td><td>Beginners are advised to start with this type</td></tr>'
       +'</table></div>'
-      +'<div class="info-box yellow">BPM (Business Process Modeling) is the environment where you model a process (alone or as a team). BPMS (Business Process Management System) is a system that executes the created models: Bizagi, Comindware, ELMA, etc.</div>'
+      +'<div class="info-box yellow">BPMN (Business Process Model and Notation) is the modeling language; BPM (Business Process Management) is the discipline. A BPMS (Business Process Management System) executes the models: Camunda, Bizagi, etc.</div>'
   }
 };
 
@@ -2460,13 +2462,13 @@ var Q_UML = [
  q:"In BPMN 2.0, which Gateway routes the flow to the first event that occurs (e.g., payment received OR timer expired)?",
  opts:["Parallel Gateway (AND) — starts all paths simultaneously","Exclusive Gateway (XOR) — takes one path based on a condition","Event-Based Gateway — takes the path of whichever event occurs first","Inclusive Gateway (OR) — activates one or more paths"],
  ans:2,
- exp:"The Event-Based Gateway (hexagon inside a double circle) is designed specifically for a race between events. It is followed by catching events (Message, Timer, etc.). Whichever event occurs first — that path is taken. XOR works with data conditions, not events."},
+ exp:"The Event-Based Gateway (a diamond containing a double circle with a pentagon inside) is designed specifically for a race between events. It is followed by catching events (Message, Timer, etc.). Whichever event occurs first — that path is taken. XOR works with data conditions, not events."},
 
 {sec:"theory",lab:"Theory — Notation & Concepts",type:"concept",
  q:"How does a Call Activity differ from a Sub-Process in BPMN 2.0?",
  opts:["Call Activity — a globally reusable process (thick border); Sub-Process — locally embedded (thin border)","Sub-Process — global; Call Activity — local","Call Activity cannot have Boundary Events; Sub-Process can","They are identical — the only difference is visual rendering"],
  ans:0,
- exp:"A Call Activity (thick/bold border + '+') invokes a GLOBALLY defined process — it is reused from several places and versioned separately. A Sub-Process (thin border + '+') is embedded LOCALLY in the parent process. Rule: if the same piece of logic is invoked in 3+ places — make it a Call Activity."},
+ exp:"A Call Activity (thick/bold border + '+') invokes a GLOBALLY defined process — it is reused from several places and versioned separately. A Sub-Process (thin border + '+') is embedded LOCALLY in the parent process. Rule: if the same piece of logic is invoked in 2+ places — make it a Call Activity."},
 
 {sec:"theory",lab:"Theory — Notation & Concepts",type:"concept",
  q:"In BPMN: what is a Non-Interrupting Boundary Event and how does it visually differ from an Interrupting one?",
@@ -2476,7 +2478,7 @@ var Q_UML = [
 
 {sec:"theory",lab:"Theory — Notation & Concepts",type:"concept",
  q:"Which notation on a Class Diagram denotes interface REALIZATION (implements)?",
- opts:["Solid line with a filled triangle (inheritance)","Dashed line with an open (hollow) triangle, arrow pointing to the interface","Dashed line with a dependency arrow (open arrowhead)","Solid line with a filled diamond (composition)"],
+ opts:["Solid line with a hollow triangle (inheritance)","Dashed line with an open (hollow) triangle, arrow pointing to the interface","Dashed line with a dependency arrow (open arrowhead)","Solid line with a filled diamond (composition)"],
  ans:1,
  exp:"Realization (implementing an interface) = dashed line + open (hollow) triangle arrowhead, pointing FROM the class TO the interface. Solid + open triangle = Generalization (inheritance). Confusing Realization with Generalization is one of the most common interview mistakes."},
 
@@ -2518,7 +2520,7 @@ var Q_UML = [
  svg:"act1",
  opts:["State Machine Diagram — an object's lifecycle","Sequence Diagram — object interaction over time","Activity Diagram — a flow of actions with a Decision Node","Use Case Diagram — system functions"],
  ans:2,
- exp:"In the diagram: Initial Node (filled circle), Action (rectangle 'Submit Request'), Decision Node (diamond with conditions [approved]/[rejected]), two Actions, Final Node (double circle). This is an Activity Diagram. A State Machine uses states with named borders, not rectangular actions. A diamond in Activity = Decision; in State Machine = Choice pseudo-state."},
+ exp:"In the diagram: Initial Node (filled circle), Action (rectangle 'Submit Request'), Decision Node (diamond with conditions [approved]/[rejected]), two Actions, Activity Final (circle with a filled dot inside). This is an Activity Diagram. A State Machine uses states with named borders, not rectangular actions. A diamond in Activity = Decision; in State Machine = Choice pseudo-state."},
 
 {sec:"uml",lab:"UML — Class",type:"missing_element",
  q:"On a Class Diagram: Order (1) — ? — Customer. A Customer can have many Orders. What should replace «?» (the multiplicity on the Order side)?",
@@ -2540,10 +2542,10 @@ var Q_UML = [
  exp:"A dashed arrow with an open (hollow) arrowhead = Return Message — the reply to a preceding synchronous call. Always paired: if A called B (solid filled arrow), then B returns to A with a dashed arrow. Async message = solid open arrow. Create = dashed arrow to the new object's box. Destroy = X at the end of the lifeline."},
 
 {sec:"uml",lab:"UML — Class",type:"read_diagram",
- q:"In a Class Diagram: a solid line with a FILLED triangle (▲), arrow from Dog to Animal. What does it mean?",
+ q:"In a Class Diagram: a solid line with a HOLLOW triangle (▷), arrow from Dog to Animal. What does it mean?",
  opts:["Interface realization — Dog implements Animal","Generalization (inheritance) — Dog inherits from Animal. The arrow ALWAYS goes from subclass to superclass","Association — Dog is linked to Animal","Dependency — Dog uses Animal"],
  ans:1,
- exp:"Solid line + filled/open triangle = Generalization (inheritance). The direction is ALWAYS from subclass to superclass (Dog → Animal). Do not confuse it with Realization (dashed + triangle = implements an interface). Diamond = Aggregation/Composition. Open arrow = Association. Dashed + open arrow = Dependency."},
+ exp:"Solid line + hollow (unfilled) triangle = Generalization (inheritance). The direction is ALWAYS from subclass to superclass (Dog → Animal). Do not confuse it with Realization (dashed + triangle = implements an interface). Diamond = Aggregation/Composition. Open arrow = Association. Dashed + open arrow = Dependency."},
 
 {sec:"uml",lab:"UML — Class",type:"choose_diagram",
  q:"You need to show a microservice architecture: OrderService requires the IInventory interface, which is implemented by InventoryService. Which notation is CORRECT for a Class/Component diagram?",
@@ -2613,7 +2615,7 @@ var Q_UML = [
  q:"In BPMN 2.0, which element is used to wait for ONE of several possible messages (e.g., either a payment confirmation or a cancellation from the client — whichever arrives first)?",
  opts:["Parallel Gateway (AND) with two Receive Tasks","Event-Based Gateway with two catching Message Events","Inclusive Gateway (OR) with two Message Events","XOR Gateway with two conditions"],
  ans:1,
- exp:"The Event-Based Gateway (hexagon inside a double circle) creates a 'race condition' between events. It is followed by catching Intermediate Events (Message, Timer, etc.) — whichever event occurs first, that path is activated. AND would start BOTH paths. XOR works with data conditions, not events."},
+ exp:"The Event-Based Gateway (a diamond containing a double circle with a pentagon inside) creates a 'race condition' between events. It is followed by catching Intermediate Events (Message, Timer, etc.) — whichever event occurs first, that path is activated. AND would start BOTH paths. XOR works with data conditions, not events."},
 
 {sec:"bpmn",lab:"BPMN — Pools & Lanes",type:"read_diagram",
  q:"The diagram has two Pools: 'E-Shop' and 'Payment GW'. Between them is a dashed line with an arrow. What does this connection represent?",
@@ -2626,7 +2628,7 @@ var Q_UML = [
  q:"You need to model a task performed AUTOMATICALLY by the system (a call to an external API). Which Task type should be used in BPMN 2.0?",
  opts:["User Task — performed by a human WITH system support (via UI/BPMS)","Service Task — performed automatically by the system, no human involved","Manual Task — performed by a human OUTSIDE the system (no BPMS, not tracked)","Script Task — an embedded script runs automatically"],
  ans:1,
- exp:"Service Task (⚙️) = automatic execution by the system (API call, integration, DB query) — no human involved. The critical distinction per the ELMA article: User Task = human + system (the BPMS tracks execution). Manual Task = human WITHOUT the system (the BPMS neither controls nor tracks it — e.g., hold a meeting, install equipment at the client's site). Script Task = embedded code, automatic like a Service Task, but without calling an external service."},
+ exp:"Service Task (⚙️) = automatic execution by the system (API call, integration, DB query) — no human involved. The critical distinction per BPMN 2.0: User Task = human + system (the BPMS tracks execution). Manual Task = human WITHOUT the system (the BPMS neither controls nor tracks it — e.g., hold a meeting, install equipment at the client's site). Script Task = embedded code, automatic like a Service Task, but without calling an external service."},
 
 {sec:"bpmn",lab:"BPMN — Sub-Processes",type:"concept",
  q:"The 'KYC Verification' process is used in 5 different business processes: account opening, loan, insurance, etc. How should this be modeled correctly in BPMN 2.0?",
@@ -2656,7 +2658,7 @@ var Q_UML = [
  q:"A manager holds a meeting with a client. This meeting happens outside the system — the BPMS neither controls nor tracks its execution. Which Task type should be used?",
  opts:["User Task — a human performs the task through the BPMS interface","Manual Task — a human performs the action OUTSIDE the system, the BPMS does not track it","Service Task — performed automatically by the system","None Task — the task type is undefined"],
  ans:1,
- exp:"Manual Task (✋) = a task performed by a human outside the system, without IT tools. The BPMS neither controls it nor tracks whether it was done. Examples from the ELMA article: hold a meeting, install equipment at the client's site, sign a paper document. The key difference from a User Task: the BPMS assigns a User Task to the performer in its interface and tracks it. A Manual Task is a reminder that the action must be done at all, but the system plays no part in it."},
+ exp:"Manual Task (✋) = a task performed by a human outside the system, without IT tools. The BPMS neither controls it nor tracks whether it was done. Typical examples: hold a meeting, install equipment at the client's site, sign a paper document. The key difference from a User Task: the BPMS assigns a User Task to the performer in its interface and tracks it. A Manual Task is a reminder that the action must be done at all, but the system plays no part in it."},
 
 {sec:"bpmn",lab:"BPMN — Collaboration",type:"read_diagram",
  q:"In a BPMN diagram, a task is in Lane 'Credit Department' inside Pool 'Bank'. A Sequence Flow comes into it from Lane 'Loan Officer' (same Pool). This is:",
@@ -3014,15 +3016,16 @@ var DRAW_EXERCISES = [
   {id:'d',kind:'gateway_x',text:'PIN correct?'},
   {id:'a3',kind:'task',text:'Select amount'},
   {id:'a4',kind:'task',text:'Dispense cash'},
+  {id:'m',kind:'merge',text:'Merge'},
   {id:'a5',kind:'task',text:'Return card'},
   {id:'e',kind:'end',text:'Activity Final'}
  ],
  edges:[
   {from:'s',to:'a1'},{from:'a1',to:'a2'},{from:'a2',to:'d'},
-  {from:'d',to:'a3',label:'Yes'},{from:'a3',to:'a4'},{from:'a4',to:'a5'},
-  {from:'d',to:'a5',label:'No'},{from:'a5',to:'e'}
+  {from:'d',to:'a3',label:'Yes'},{from:'a3',to:'a4'},{from:'a4',to:'m'},
+  {from:'d',to:'m',label:'No'},{from:'m',to:'a5'},{from:'a5',to:'e'}
  ],
- explanation:'A Decision Node (◆) has one input and several outputs with guard conditions [Yes]/[No]. Both branches converge on the Action "Return card" — in UML Activity, several incoming flows into one action are allowed (an implicit merge). There is a single Activity Final (◉).'},
+ explanation:'A Decision Node (◆) has one incoming edge and several outgoing edges with guards [Yes]/[No]. Both branches come together in a Merge Node (◇): in UML Activity, several incoming edges straight into an Action mean an implicit Join (the action waits for ALL of them), so alternative branches must be merged first. After the Merge comes "Return card" and a single Activity Final (◉).'},
 
 {id:'d3',level:1,type:'bpmn',title:'Online store order processing',
  scenario:'An order is received. The system checks stock in the warehouse. If the item is IN STOCK, it reserves it and hands it to the courier (Send Task), end. If NOT, it notifies the customer about the shortage, end. One Pool without Lanes: just lay the process out from left to right.',
@@ -3041,7 +3044,7 @@ var DRAW_EXERCISES = [
   {from:'g',to:'t2',label:'Yes'},{from:'t2',to:'t3'},{from:'t3',to:'e1'},
   {from:'g',to:'t4',label:'No'},{from:'t4',to:'e2'}
  ],
- explanation:'A classic linear process with one Exclusive Gateway. A Send Task (✉, dashed) is a task that sends a message to another participant (the courier). Note: the Gateway itself does nothing, it only routes — the stock check happens BEFORE it.'},
+ explanation:'A classic linear process with one Exclusive Gateway. A Send Task (filled envelope icon ✉) is a task that sends a message to another participant (the courier). Note: the Gateway itself does nothing, it only routes — the stock check happens BEFORE it.'},
 
 {id:'d4',level:1,type:'usecase',title:'Online store: order with a discount',
  scenario:'The Customer places an order (Place Order). Placing an order ALWAYS includes payment (Make Payment). Sometimes the buyer applies a promo code (Apply Discount Code) — an optional extension of Place Order. Draw a Use Case Diagram with the correct directions of "include" and "extend".',
@@ -3341,8 +3344,8 @@ SVGS_UML.dr5 = '<svg viewBox="0 0 520 190" width="500" height="185" xmlns="http:
 +'<marker id="dr5d" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto"><polygon points="0 3,8 0,8 6" fill="#94a3b8"/></marker>'
 +'</defs>'
 +'<line x1="150" y1="70" x2="198" y2="65" stroke="#94a3b8" stroke-width="1.5"/>'
-+'<text x="163" y="60" fill="#64748b" font-size="9">1</text>'
-+'<text x="185" y="60" fill="#64748b" font-size="9">1..*</text>'
++'<text x="163" y="60" fill="#64748b" font-size="9">1..*</text>'
++'<text x="185" y="60" fill="#64748b" font-size="9">1</text>'
 +'<polygon points="198,65 186,59 186,71" fill="none" stroke="#94a3b8" stroke-width="1.5"/>'
 +'<line x1="150" y1="80" x2="378" y2="60" stroke="#94a3b8" stroke-width="1.5"/>'
 +'<polygon points="150,80 162,74 162,86" fill="#94a3b8"/>'
@@ -3399,37 +3402,37 @@ Q_UML.push({sec:"uml",lab:"UML — Reading Diagrams",type:"read_diagram",
  svg:"dr5",
  opts:[
   "Order → Customer: inheritance; Order ◆ OrderItem: dependency; Order ---▷ IPayable: association",
-  "Order → Customer: association (1 order to 1..* Customer); Order ◆ OrderItem: composition (an OrderItem cannot exist without its Order); Order ---▷ IPayable: interface realization",
+  "Customer 1 — 1..* Order: association (each Order belongs to exactly one Customer; a Customer has one or more Orders); Order ◆ OrderItem: composition (an OrderItem cannot exist without its Order); Order ---▷ IPayable: interface realization",
   "Order → Customer: association; Order ◆ OrderItem: aggregation (hollow diamond); Order ---▷ IPayable: dependency",
   "All three arrows are different kinds of inheritance in UML"
  ],
  ans:1,
- exp:"Three different relationships: 1) Open arrow (→) = Association. Order is linked to Customer with multiplicity 1 to 1..*. 2) Filled diamond (◆) = Composition — strong ownership: an OrderItem cannot exist without its Order; deleting the Order deletes its OrderItems. A hollow diamond = Aggregation (weak ownership). 3) Dashed line + open triangle = Realization — Order implements IPayable. Solid line + triangle = Generalization (inheritance)."});
+ exp:"Three different relationships: 1) Open arrow (→) = Association. Customer 1 — 1..* Order: each Order belongs to exactly one Customer; a Customer has one or more Orders. 2) Filled diamond (◆) = Composition — strong ownership: an OrderItem cannot exist without its Order; deleting the Order deletes its OrderItems. A hollow diamond = Aggregation (weak ownership). 3) Dashed line + open triangle = Realization — Order implements IPayable. Solid line + triangle = Generalization (inheritance)."});
 
 
 // ─── INIT ───
 // ─── NEW QUESTIONS: Article-based BPMN terminology (bilingual) ───
 Q_UML.push({sec:"bpmn",lab:"BPMN — Core Objects",type:"concept",
- q:"How many core object types does the BPMN business process modeling language consist of? Name them.",
+ q:"How does the BPMN 2.0 specification (OMG) group its core elements?",
  opts:[
-  "5 objects: Event, Activity, Gateway, Flow, Pool",
-  "8 objects: Event, Activity, Gateway, Flow, Data, Artefact, Swimlane, Pool",
-  "3 objects: Task, Gateway, Event",
-  "10 objects, including Lane, Pool, Message, Data, Group, Annotation, Event, Gateway, Flow, Activity"
+  "Into 3 categories: Tasks, Gateways and Events — everything else is decoration",
+  "Into 5 categories: Flow Objects (Events, Activities, Gateways), Data (Data Objects, Data Inputs/Outputs, Data Stores), Connecting Objects (Sequence Flow, Message Flow, Association, Data Association), Swimlanes (Pools, Lanes) and Artifacts (Group, Text Annotation)",
+  "Into 8 independent objects: Event, Activity, Gateway, Flow, Data, Artifact, Lane, Pool — with no further grouping",
+  "Into 10 flat objects: Lane, Pool, Message, Data, Group, Annotation, Event, Gateway, Flow, Activity"
  ],
  ans:1,
- exp:"BPMN is built on 8 core objects: Event, Activity, Gateway, Flow, Data, Artefact, Swimlane, Pool. This is the foundation of the notation — all other elements (event types, gateway types, task types) are variations of these core objects."});
+ exp:"The OMG BPMN 2.0 specification defines five element categories. Flow Objects (Events, Activities, Gateways) define the behavior; Data (Data Objects, Data Inputs/Outputs, Data Stores) shows what information is used; Connecting Objects (Sequence Flow, Message Flow, Association, Data Association) link the elements; Swimlanes (Pools, Lanes) group elements by participant; Artifacts (Group, Text Annotation) add extra information without affecting execution. All other elements (event types, gateway types, task types) are variations within these categories."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Activity",type:"concept",
- q:"Which Activity subtype is a set of LOGICALLY RELATED actions for which an execution protocol can be defined (all or nothing)?",
+ q:"Which Activity subtype is a set of LOGICALLY RELATED actions to which a transaction protocol (all-or-nothing: successful completion, cancellation with compensation, or hazard) applies?",
  opts:[
   "Task — a simple unit of work",
-  "Transaction — a set of logically related actions with an execution protocol",
+  "Transaction — a set of logically related actions with a transaction protocol (all-or-nothing)",
   "Call Activity — an entry point to a global sub-process",
   "Event Sub-Process — triggered by its own event"
  ],
  ans:1,
- exp:"A Transaction is a group of actions logically bound into one atomic unit: either ALL of them complete, or ALL of them are ROLLED BACK (by analogy with a database transaction). BPMN explicitly defines an execution protocol for transactions. A Task is the simplest indivisible unit of work. A Call Activity invokes a GLOBALLY defined process. An Event Sub-Process is triggered by an internal event and may interrupt the parent process."});
+ exp:"A Transaction is a group of actions logically bound into one atomic unit: either ALL of them complete, or ALL of them are ROLLED BACK (by analogy with a database transaction). BPMN explicitly defines a transaction protocol (all-or-nothing: successful completion, cancellation with compensation, or hazard). A Task is the simplest indivisible unit of work. A Call Activity invokes a GLOBALLY defined process. An Event Sub-Process is triggered by an internal event and may interrupt the parent process."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Activity",type:"concept",
  q:"How does a Call Activity fundamentally differ from a regular (embedded) Sub-Process?",
@@ -3443,18 +3446,18 @@ Q_UML.push({sec:"bpmn",lab:"BPMN — Activity",type:"concept",
  exp:"A Call Activity invokes a GLOBAL process — it is defined once and can be reused in several different diagrams/processes (for example, a standard KYC check used in account opening, loan issuance and insurance purchase). A Sub-Process is a local decomposition of a specific process, not intended for reuse elsewhere in the model."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Gateways",type:"concept",
- q:"Which gateway is called the data-based exclusive OR operator (Exclusive Gateway, XOR), and how does it behave when splitting?",
+ q:"Which gateway is the data-based Exclusive Gateway (XOR), and how does it behave when splitting?",
  opts:[
   "It activates ALL outgoing branches simultaneously",
-  "When splitting, it routes the flow along ONLY ONE of the outgoing branches; when merging, it waits for ONE incoming branch to complete",
+  "When splitting, it routes the flow along ONLY ONE of the outgoing branches; when merging, it passes each arriving token straight through without synchronization",
   "It activates one or more branches at the performer's discretion",
   "It is used only to launch parallel sub-processes"
  ],
  ans:1,
- exp:"The Exclusive Gateway (exclusive OR operator) is DATA-based (a condition on the data decides which branch is activated). When splitting — only ONE branch. When merging — it waits for ONE completed incoming branch and continues immediately (it does not wait for the others, because the others will never be activated)."});
+ exp:"The Exclusive Gateway (XOR) is DATA-based (a condition on the data decides which branch is activated). When splitting — only ONE branch. When merging — each arriving token passes straight through without synchronization (it does not wait for the other branches, because they will never be activated)."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Gateways",type:"concept",
- q:"The AND operator (Parallel Gateway, AND) — how exactly does it behave when splitting and when synchronizing parallel flows?",
+ q:"The Parallel Gateway (AND) — how exactly does it behave when splitting and when synchronizing parallel flows?",
  opts:[
   "When splitting, one branch is activated by condition; when synchronizing, it waits for the first branch to complete",
   "When splitting into parallel flows, ALL branches are activated SIMULTANEOUSLY; when synchronizing, it waits for ALL incoming branches to complete and then activates the outgoing flow",
@@ -3462,10 +3465,10 @@ Q_UML.push({sec:"bpmn",lab:"BPMN — Gateways",type:"concept",
   "It is used only to stop the process"
  ],
  ans:1,
- exp:"Parallel Gateway (AND operator): when splitting — ALL outgoing branches are activated SIMULTANEOUSLY (parallel execution). When synchronizing (join/merge) — the gateway waits for ALL incoming branches to complete and only then activates the outgoing flow. This rule is strict: an unbalanced AND Split/Join (e.g. a split into 3 branches while the join waits for only 2) is a modeling error."});
+ exp:"Parallel Gateway (AND): when splitting — ALL outgoing branches are activated SIMULTANEOUSLY (parallel execution). When synchronizing (join/merge) — the gateway waits for ALL incoming branches to complete and only then activates the outgoing flow. This rule is strict: an unbalanced AND Split/Join (e.g. a split into 3 branches while the join waits for only 2) is a modeling error."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Gateways",type:"concept",
- q:"The OR operator (Inclusive Gateway, OR) is the most complex gateway. Describe its behavior when splitting and merging.",
+ q:"The Inclusive Gateway (OR) is the most complex gateway. Describe its behavior when splitting and merging.",
  opts:[
   "When splitting, exactly one branch is activated; when merging, it waits for only one branch",
   "When splitting, one OR more branches are activated (depending on conditions); when merging, ALL incoming branches that are running must complete",
@@ -3473,18 +3476,18 @@ Q_UML.push({sec:"bpmn",lab:"BPMN — Gateways",type:"concept",
   "It is used only in non-executable processes"
  ],
  ans:1,
- exp:"Inclusive Gateway (OR operator): when splitting, ONE or MORE branches are activated — how many depends on the conditions on each outgoing branch (anywhere from 1 to all of them). When merging, the gateway must wait for ALL the branches that were actually activated at the split (not all theoretically possible ones). It is the hardest gateway for a BPMN engine, because it requires tracking which paths were started."});
+ exp:"Inclusive Gateway (OR): when splitting, ONE or MORE branches are activated — how many depends on the conditions on each outgoing branch (anywhere from 1 to all of them). When merging, the gateway must wait for ALL the branches that were actually activated at the split (not all theoretically possible ones). It is the hardest gateway for a BPMN engine, because it requires tracking which paths were started."});
 
-Q_UML.push({sec:"bpmn",lab:"BPMN — Pool & Swimlane",type:"concept",
- q:"What do a Pool and a Swimlane show on a BPMN diagram, and how are they related?",
+Q_UML.push({sec:"bpmn",lab:"BPMN — Pool & Lane",type:"concept",
+ q:"What do a Pool and a Lane show on a BPMN diagram, and how are they related?",
  opts:[
   "Pool is a synonym for Lane, they are completely identical",
-  "A Pool describes ONE whole process on the diagram and may contain several Swimlanes showing specific participants of the process (a role, department or system) inside that process",
-  "A Swimlane may contain several Pools inside it",
+  "A Pool represents a Participant (an organization, system or role) in a Collaboration and contains that participant's process; it may contain several Lanes showing specific participants of the process (a role, department or system) inside that process",
+  "A Lane may contain several Pools inside it",
   "A Pool is used only to display data, not participants"
  ],
  ans:1,
- exp:"A Pool describes ONE whole process on the diagram — a single diagram may have several pools (e.g. «Customer» and «Store»). Inside a pool there can be Swimlanes, which show specific participants of the process hidden within the pool: for example, in an order processing process — «Sales Manager», «Head of Sales», «Cashier». Lanes allow pools and other lanes to be divided hierarchically — a tool for distributing responsibilities within one process."});
+ exp:"A Pool represents a Participant (an organization, system or role) in a Collaboration and contains that participant's process — a single diagram may have several pools (e.g. «Customer» and «Store»). Inside a pool there can be Lanes, which show specific participants of the process hidden within the pool: for example, in an order processing process — «Sales Manager», «Head of Sales», «Cashier». Lanes allow pools and other lanes to be divided hierarchically — a tool for distributing responsibilities within one process."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Data Object & Message",type:"concept",
  q:"What is the key feature of a Data Object — can the same data object be BOTH a result AND a starting condition at the same time?",
@@ -3497,27 +3500,27 @@ Q_UML.push({sec:"bpmn",lab:"BPMN — Data Object & Message",type:"concept",
  ans:1,
  exp:"A classic example from the methodology: the data object «Order» is generated by the manager — for them it is the RESULT of a completed action. But the same «Order», once it reaches the warehouse, is the START of their action (picking and shipping the goods). A Data Object shows which data/documents are needed to start an action or are produced by it — a dual nature depending on the participant's point of view."});
 
-Q_UML.push({sec:"bpmn",lab:"BPMN — Artefacts",type:"concept",
- q:"Which TWO types of artefacts exist in BPMN, and what is the difference between them?",
+Q_UML.push({sec:"bpmn",lab:"BPMN — Artifacts",type:"concept",
+ q:"Which TWO types of artifacts exist in BPMN, and what is the difference between them?",
  opts:[
-  "Data Object and Message — these are the two artefact types",
+  "Data Object and Message — these are the two artifact types",
   "Group — for visually combining elements under a common symbol to save space on the diagram; and Text Annotation — for comments and clarifications on the diagram",
-  "Pool and Swimlane are the only artefacts in BPMN",
-  "Start Event and End Event are considered artefacts"
+  "Pool and Lane are the only artifacts in BPMN",
+  "Start Event and End Event are considered artifacts"
  ],
  ans:1,
- exp:"Artefacts are objects that are NOT activities and have no direct relation to process execution. Type 1: Group — a rounded rectangle with a dash-dot border; it visually combines several elements and saves space on the diagram. Type 2: Text Annotation — an open rectangle drawn with a solid line, connected to an object by a dashed line; it serves for comments that improve the readability of the diagram."});
+ exp:"Artifacts are objects that are NOT activities and have no direct relation to process execution. Type 1: Group — a rounded rectangle with a dash-dot border; it visually combines several elements and saves space on the diagram. Type 2: Text Annotation — an open rectangle drawn with a solid line, connected to an object by a dashed line; it serves for comments that improve the readability of the diagram."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Executable Processes",type:"concept",
  q:"What is the fundamental difference between an EXECUTABLE and a NON-EXECUTABLE business process in BPMN?",
  opts:[
   "An executable process is drawn with different software than a non-executable one",
-  "An executable process must strictly follow ALL the rules of the BPMN notation, because it is actually run by dedicated software (Bizagi, Comindware, ELMA); a non-executable process is only needed to demonstrate/study the business model, and minor deviations from the rules are not critical",
+  "An executable process must strictly follow ALL the rules of the BPMN notation, because it is actually run by dedicated software (Camunda, Bizagi, Appian); a non-executable process is only needed to demonstrate/study the business model, and minor deviations from the rules are not critical",
   "A non-executable process cannot contain Gateways",
   "They are synonyms, there is no difference"
  ],
  ans:1,
- exp:"An executable business process must be built in STRICT compliance with the notation rules — otherwise the BPMS (Bizagi, Comindware, ELMA) cannot execute it correctly. It is used in process-oriented enterprises to track work in real time. A non-executable process is needed EXCLUSIVELY to demonstrate a model — it may be an as-is diagram or an illustration of re-engineering; here the rules matter only for mutual understanding between people. Beginners are advised to start with non-executable processes."});
+ exp:"An executable business process must be built in STRICT compliance with the notation rules — otherwise the BPMS (Camunda, Bizagi, Appian) cannot execute it correctly. It is used in process-oriented enterprises to track work in real time. A non-executable process is needed EXCLUSIVELY to demonstrate a model — it may be an as-is diagram or an illustration of re-engineering; here the rules matter only for mutual understanding between people. Beginners are advised to start with non-executable processes."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN vs IT notations",type:"concept",
  q:"Why is it important to understand that BPMN is NOT a language for describing IT systems?",

@@ -674,8 +674,8 @@ var DW_EDGE_KINDS = {
   usecase:[{id:'assoc',label:'— Association'},{id:'include',label:'┄▷ «include»'},{id:'extend',label:'┄▷ «extend»'},{id:'generalization',label:'▷ Generalization'}],
   'class':[{id:'assoc',label:'— Association'},{id:'generalization',label:'▷ Generalization'},{id:'realization',label:'┄▷ Realization'},{id:'composition',label:'◆ Composition'},{id:'aggregation',label:'◇ Aggregation'}]
 };
-var DW_KIND_ICON = {start:'⚪',end:'⚫',task:'▭',send:'✉',gateway_x:'◆',fork:'▮',join:'▮',actor:'🧍',usecase:'⬭',class:'▭',interface:'▭'};
-var DW_KIND_NAME = {start:'Start',end:'End',task:'Task',send:'Send Task',gateway_x:'Gateway',fork:'Fork',join:'Join',actor:'Actor',usecase:'Use Case',class:'Class',interface:'Interface'};
+var DW_KIND_ICON = {start:'⚪',end:'⚫',task:'▭',send:'✉',gateway_x:'◆',merge:'◇',fork:'▮',join:'▮',actor:'🧍',usecase:'⬭',class:'▭',interface:'▭'};
+var DW_KIND_NAME = {start:'Start',end:'End',task:'Task',send:'Send Task',gateway_x:'Gateway',merge:'Merge',fork:'Fork',join:'Join',actor:'Actor',usecase:'Use Case',class:'Class',interface:'Interface'};
 
 function dwEx(){ return DRAW_EXERCISES.filter(function(e){return e.id===dwState.exId;})[0]; }
 function dwIsFlow(ex){ return DW_FLOW_TYPES.indexOf(ex.type)!==-1; }
@@ -693,7 +693,7 @@ function dwCanvasH(ex){ return ex.lanes ? ex.lanes.length*DW_LANE_H : DW_H_NOLAN
 function dwLaneOf(ex,y){ if(!ex.lanes) return null; var i=Math.max(0,Math.min(ex.lanes.length-1,Math.floor(y/DW_LANE_H))); return ex.lanes[i].id; }
 function dwSize(kind){
   if(kind==='task'||kind==='send') return {w:124,h:38};
-  if(kind==='gateway_x') return {w:40,h:40};
+  if(kind==='gateway_x'||kind==='merge') return {w:40,h:40};
   if(kind==='start'||kind==='end') return {w:30,h:30};
   if(kind==='fork'||kind==='join') return {w:12,h:64};
   if(kind==='actor') return {w:34,h:60};
@@ -825,6 +825,7 @@ function dwNodeSvg(ex,n){
   else if(k==='end') body = '<circle cx="'+cx+'" cy="'+cy+'" r="15" fill="#1a1f2e" stroke="'+(stroke||'#ef4444')+'" stroke-width="3"/><text x="'+cx+'" y="'+(cy+28)+'" text-anchor="middle" fill="#fca5a5" font-size="9">'+t+'</text>';
   else if(k==='task'||k==='send'){ var sz=dwSize(k); body = '<rect x="'+(cx-sz.w/2)+'" y="'+(cy-sz.h/2)+'" width="'+sz.w+'" height="'+sz.h+'" rx="10" fill="'+(k==='send'?'#0d3b2e':'#1e3a5f')+'" stroke="'+(stroke||(k==='send'?'#10b981':'#3b82f6'))+'" stroke-width="1.6"'+(k==='send'?' stroke-dasharray="5,2"':'')+'/><text x="'+cx+'" y="'+(cy+4)+'" text-anchor="middle" fill="'+(k==='send'?'#6ee7b7':'#93c5fd')+'" font-size="10">'+(k==='send'?'✉ ':'')+t+'</text>'; }
   else if(k==='gateway_x') body = '<polygon points="'+cx+','+(cy-20)+' '+(cx+20)+','+cy+' '+cx+','+(cy+20)+' '+(cx-20)+','+cy+'" fill="#1a1f2e" stroke="'+(stroke||'#f59e0b')+'" stroke-width="1.8"/><text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" fill="#fcd34d" font-size="14" font-weight="700">×</text><text x="'+cx+'" y="'+(cy+33)+'" text-anchor="middle" fill="#fcd34d" font-size="9">'+t+'</text>';
+  else if(k==='merge') body = '<polygon points="'+cx+','+(cy-20)+' '+(cx+20)+','+cy+' '+cx+','+(cy+20)+' '+(cx-20)+','+cy+'" fill="#1a1f2e" stroke="'+(stroke||'#94a3b8')+'" stroke-width="1.8"/><text x="'+cx+'" y="'+(cy+33)+'" text-anchor="middle" fill="#94a3b8" font-size="9">'+t+'</text>';
   else if(k==='fork'||k==='join') body = '<rect x="'+(cx-5)+'" y="'+(cy-32)+'" width="10" height="64" rx="2" fill="'+(stroke||'#94a3b8')+'"/><text x="'+cx+'" y="'+(cy+45)+'" text-anchor="middle" fill="#94a3b8" font-size="9">'+t+'</text>';
   else if(k==='actor') body = '<g stroke="'+(stroke||'#93c5fd')+'" stroke-width="1.8" fill="none"><circle cx="'+cx+'" cy="'+(cy-20)+'" r="8"/><line x1="'+cx+'" y1="'+(cy-12)+'" x2="'+cx+'" y2="'+(cy+8)+'"/><line x1="'+(cx-14)+'" y1="'+(cy-4)+'" x2="'+(cx+14)+'" y2="'+(cy-4)+'"/><line x1="'+cx+'" y1="'+(cy+8)+'" x2="'+(cx-12)+'" y2="'+(cy+26)+'"/><line x1="'+cx+'" y1="'+(cy+8)+'" x2="'+(cx+12)+'" y2="'+(cy+26)+'"/></g><text x="'+cx+'" y="'+(cy+40)+'" text-anchor="middle" fill="#93c5fd" font-size="10">'+t+'</text>';
   else if(k==='usecase') body = '<ellipse cx="'+cx+'" cy="'+cy+'" rx="68" ry="23" fill="#2e1065" stroke="'+(stroke||'#a78bfa')+'" stroke-width="1.6"/><text x="'+cx+'" y="'+(cy+4)+'" text-anchor="middle" fill="#ddd6fe" font-size="10">'+t+'</text>';

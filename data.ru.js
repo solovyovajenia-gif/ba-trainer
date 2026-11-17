@@ -2,7 +2,7 @@
 (function(){
 var TC = {
 req:'<div class="t-h3">Что такое требование?</div>'
-+'<div class="info-box">Требование — это <b>описание условия или возможности, которой должна обладать система или которую должна реализовывать, чтобы удовлетворить потребность стейкхолдера или контракт</b> (IEEE 830). Проще: <b>требование отвечает на вопрос «что должна делать или чем обладать система?»</b>, но не «как это реализовать».</div>'
++'<div class="info-box">Требование — это <b>описание условия или возможности, которой должна обладать система или которую должна реализовывать, чтобы удовлетворить потребность стейкхолдера или контракт</b> (IEEE 610.12 / ISO/IEC/IEEE 24765). Проще: <b>требование отвечает на вопрос «что должна делать или чем обладать система?»</b>, но не «как это реализовать».</div>'
 +'<div class="t-h3">Качества хорошего требования (SMART + атрибуты Вигерса)</div>'
 +'<div class="tw"><table>'
 +'<tr><th>Качество</th><th>Что значит</th><th>Плохо</th><th>Хорошо</th></tr>'
@@ -22,11 +22,12 @@ req:'<div class="t-h3">Что такое требование?</div>'
 +'<tr><td><b style="color:#6ee7b7">Полное</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Complete</span></td><td>Содержит всю необходимую информацию</td><td>«Система должна быть безопасной»</td><td>«Данные шифруются AES-256, доступ по JWT-токену»</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Корректное</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Correct</span></td><td>Точно описывает нужное поведение</td><td>«Пользователь может войти»</td><td>«Пользователь вводит email+пароль, система выдаёт JWT-токен»</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Непротиворечивое</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Consistent</span></td><td>Не конфликтует с другими требованиями</td><td>Требование А: «скидка 10% всем» / Требование Б: «скидки только VIP»</td><td>Согласованные требования без конфликтов</td></tr>'
-+'<tr><td><b style="color:#6ee7b7">Измеримое / Верифицируемое</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Measurable / Verifiable</span></td><td>Можно проверить выполнение</td><td>«Система должна быть быстрой»</td><td>«Время ответа API ≤ 200ms при 1000 RPS»</td></tr>'
++'<tr><td><b style="color:#6ee7b7">Верифицируемое</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Verifiable</span></td><td>Можно проверить выполнение</td><td>«Система должна быть быстрой»</td><td>«Время ответа API ≤ 200ms при 1000 RPS»</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Трассируемое</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Traceable</span></td><td>Связано с бизнес-целью и тест-кейсом</td><td>Требование «висит в воздухе»</td><td>Связано: BG-01 → US-05 → TC-12</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Приоритизированное</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Prioritized</span></td><td>Имеет приоритет (Must/Should/Could)</td><td>Все 200 требований одинаково важны</td><td>Must: 30, Should: 80, Could: 90</td></tr>'
 +'<tr><td><b style="color:#6ee7b7">Однозначное</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Unambiguous</span></td><td>Понимается одинаково всеми</td><td>«Система должна работать нормально»</td><td>Конкретная спецификация поведения</td></tr>'
 +'</table></div>'
++'<div class="info-box">По Вигерсу атрибуты ОТДЕЛЬНОГО требования — Complete, Correct, Feasible, Necessary, Prioritized, Unambiguous, Verifiable. Consistent, Traceable и Modifiable относятся к СПЕЦИФИКАЦИИ требований в целом.</div>'
 +'<div class="t-h3">Модель требований по Карлу Вигерсу</div>'
 +'<div class="info-box">Вигерс выделяет <b>3 уровня требований</b> (бизнес → пользовательские → функциональные) и <b>дополнительные категории</b> (нефункциональные, атрибуты качества, бизнес-правила, системные, ограничения, внешние интерфейсы). Всё это — не иерархия по важности, а разные ракурсы описания одной системы.</div>'
 +'<div class="tw"><table>'
@@ -42,7 +43,8 @@ req:'<div class="t-h3">Что такое требование?</div>'
 +'<tr><td><b style="color:#94a3b8">Ограничения</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Constraints</span></td><td>Что нельзя изменять при проектировании?</td><td>Constraints в SRS</td><td>«Использовать только PostgreSQL», «Бюджет — 2 млн руб.»</td></tr>'
 +'<tr><td><b style="color:#94a3b8">Внешние интерфейсы</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">External Interfaces</span></td><td>Как система взаимодействует с другими?</td><td>Interface Spec</td><td>«Интеграция с 1С по REST API», «SMS через СМС-провайдер»</td></tr>'
 +'</table></div>'
-+'<div class="t-h3">Атрибуты качества — FURPS+</div>'
++'<div class="t-h3">Типичные атрибуты качества (категории NFR)</div>'
++'<div class="info-box">FURPS+ = Functionality, Usability, Reliability, Performance, Supportability (+ ограничения: design, implementation, interface, physical).</div>'
 +'<div class="cards">'
 +'<div class="card c3"><h4>⚡ Производительность<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Performance</span></h4><p>Время отклика, пропускная способность, нагрузка. Пример: «500 транзакций/сек»</p></div>'
 +'<div class="card c3"><h4>🔒 Безопасность<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Security</span></h4><p>Аутентификация, авторизация, шифрование, аудит действий.</p></div>'
@@ -81,7 +83,7 @@ methodologies:'<div class="t-h3">Классификация методологи
 +'<tr><td><b style="color:#f59e0b">Итеративная</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Iterative</span></td><td>Подход</td><td>Система создаётся через повторяющиеся циклы (итерации), каждый уточняет и дополняет предыдущий. Требования могут меняться</td><td>Сложные проекты с неопределёнными требованиями, прототипирование</td></tr>'
 +'<tr><td><b style="color:#f59e0b">Спиральная</b><br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Spiral</span></td><td>Подход</td><td>Итеративная + анализ рисков на каждом витке. Исторически важная модель — предшественница Agile</td><td>Высокорисковые проекты, большие системы с неопределённостью</td></tr>'
 +'<tr><td><b style="color:#10b981">Agile</b></td><td>Философия</td><td>Зонтичный термин. Манифест 2001: люди важнее процессов, работающий продукт важнее документации, сотрудничество с заказчиком важнее контракта, реакция на изменения важнее плана</td><td>Везде, где требования меняются и нужна быстрая обратная связь</td></tr>'
-+'<tr><td><b style="color:#3b82f6">Scrum</b></td><td>Фреймворк (Agile)</td><td>Спринты 1-4 нед., роли (PO, SM, Dev Team), церемонии (Planning, Daily, Review, Retro). Инкремент продукта каждый спринт</td><td>Продуктовые команды, стартапы, SaaS, мобильные приложения</td></tr>'
++'<tr><td><b style="color:#3b82f6">Scrum</b></td><td>Фреймворк (Agile)</td><td>Спринты 1-4 нед., ответственности (accountabilities: Product Owner, Scrum Master, Developers), события (Planning, Daily, Review, Retro). Инкремент продукта каждый спринт</td><td>Продуктовые команды, стартапы, SaaS, мобильные приложения</td></tr>'
 +'<tr><td><b style="color:#3b82f6">Kanban</b></td><td>Метод (Agile/Lean)</td><td>Визуализация потока задач, WIP-лимиты, непрерывная поставка без итераций. Метрики: Lead Time, Cycle Time</td><td>Поддержка, сервисные команды, непрерывный поток задач</td></tr>'
 +'<tr><td><b style="color:#8b5cf6">SAFe 6.0</b></td><td>Фреймворк масштабирования</td><td>Scrum на уровне портфеля и программы. PI Planning каждые 8-12 нед. Роли: RTE, System Architect. ESG-метрики в версии 6.0</td><td>Крупные enterprise 50+ человек, несколько команд, нужна синхронизация</td></tr>'
 +'<tr><td><b style="color:#8b5cf6">LeSS</b></td><td>Фреймворк масштабирования</td><td>Large-Scale Scrum. Минимум бюрократии, один Product Backlog для всех команд</td><td>Альтернатива SAFe, когда не нужна тяжёлая структура</td></tr>'
@@ -295,7 +297,7 @@ elicit:'<div class="t-h3">9 техник выявления требований
 +'<div class="card c1"><h4>📋 Анкетирование<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Survey / Questionnaire</span></h4><p>Письменный сбор. Хорош при большой аудитории или закрытой корпоративной культуре.</p></div>'
 +'<div class="card c2"><h4>🎨 Прототипирование<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Prototyping</span></h4><p>Макеты для уточнения требований. Помогает стейкхолдерам «увидеть» систему и сформулировать требования.</p></div>'
 +'<div class="card c1"><h4>💡 Мозговой штурм<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Brainstorming</span></h4><p>Генерация идей без критики. Потом — оценка и фильтрация. Открытые команды.</p></div>'
-+'<div class="card c2"><h4>👥 Фокус-группа<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Focus Group</span></h4><p>Отобранные стейкхолдеры обсуждают идеи после мозгового штурма.</p></div>'
++'<div class="card c2"><h4>👥 Фокус-группа<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Focus Group</span></h4><p>Модерируемое обсуждение с заранее отобранной группой участников (обычно 6-12 человек) для выявления отношения и мнений о продукте, услуге или возможности.</p></div>'
 +'<div class="card c1"><h4>🔌 Анализ интерфейсов<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Interface Analysis</span></h4><p>Как системы взаимодействуют друг с другом. Интеграционные требования.</p></div>'
 +'</div>'
 +'<div class="t-h3">Когда использовать какую технику?</div>'
@@ -358,7 +360,7 @@ artifacts:'<div class="t-h3">⚡ Быстрое определение (запо
 +'<span class="kw">Исключение E1 (не альтернатива!):</span> <span class="val">Email не найден → По правилам безопасности система НЕ говорит прямо «email не зарегистрирован» (защита от User Enumeration), а показывает: «Если такой email существует, мы отправили ссылку»</span><br>'
 +'<span class="kw">Исключение E2:</span> <span class="val">Ссылка просрочена (TTL истёк) → Страница ошибки «Ссылка устарела» с кнопкой «Запросить новую ссылку»</span>'
 +'</div>'
-+'<div class="info-box" style="border-color:#ef4444"><b>⚠️ Частая ошибка в примере выше:</b> Альтернативный сценарий A на самом деле ОШИБКА (Exception Flow), а не альтернатива (Alternative Flow) — путаница встречается даже в готовых шаблонах, сгенерированных AI-инструментами. Разбор ниже.</div>'
++'<div class="info-box" style="border-color:#ef4444"><b>⚠️ Частая ошибка в подобных шаблонах:</b> ветку «неверный пароль» или «email не найден» часто называют Alternative Flow A, хотя на самом деле это ОШИБКА (Exception Flow), а не альтернатива (Alternative Flow) — путаница встречается даже в готовых шаблонах, сгенерированных AI-инструментами. Разбор ниже.</div>'
 
 +'<div class="t-h3">⚠️ Main vs Alternative vs Exception Flow — как не путать</div>'
 +'<div class="info-box yellow">Это одна из самых частых ошибок на практике — даже в готовых ответах ChatGPT эти типы потоков путают. Главный критерий разграничения: <b>Alternative Flow — это ВЫБОР пользователя, ведущий к УСПЕХУ другим путём. Exception Flow — это ОШИБКА или ПРЕРЫВАНИЕ, ведущее к НЕУДАЧЕ или повтору.</b></div>'
@@ -423,19 +425,19 @@ artifacts:'<div class="t-h3">⚡ Быстрое определение (запо
 +'<tr><td>BG-02: Сократить отказы</td><td>US-08: Быстрый чекаут</td><td>TC-15, TC-16</td><td>✅ Done</td></tr>'
 +'</table></div>',
 
-agile:'<div class="t-h3">Скрам — роли</div>'
+agile:'<div class="t-h3">Скрам — ответственности (accountabilities)</div>'
 +'<div class="cards">'
 +'<div class="card c4"><h4>Владелец продукта <small style="color:#f59e0b80">(Product Owner)</small></h4><p>Отвечает за бэклог и приоритеты. Принимает решения о содержании продукта.</p></div>'
 +'<div class="card c1"><h4>Скрам-мастер <small style="color:#93c5fd80">(Scrum Master)</small></h4><p>Фасилитирует процесс, убирает блокеры, защищает команду от внешних помех.</p></div>'
-+'<div class="card c2"><h4>Команда разработки <small style="color:#6ee7b780">(Dev Team)</small></h4><p>Кросс-функциональная команда 3-9 человек. Сама выбирает, сколько взять в спринт.</p></div>'
++'<div class="card c2"><h4>Разработчики <small style="color:#6ee7b780">(Developers)</small></h4><p>Кросс-функциональная часть Scrum-команды (вся Scrum-команда — до 10 человек). Сами решают, сколько взять в спринт.</p></div>'
 +'<div class="card c3"><h4>BA в Скраме<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">BA in Scrum</span></h4><p>Помогает владельцу продукта: пишет пользовательские истории и критерии приёмки, ведёт уточнение бэклога, переводит бизнес ↔ команда.</p></div>'
 +'</div>'
-+'<div class="t-h3">Скрам-церемонии</div>'
-+'<div class="tw"><table><tr><th>Церемония</th><th>Цель</th><th>Длит.</th></tr>'
-+'<tr><td><b>Планирование спринта</b><br><small style="color:#64748b">Sprint Planning</small></td><td>Выбрать задачи, договориться о цели спринта</td><td>До 8ч/месяц</td></tr>'
++'<div class="t-h3">Скрам-события (events)</div>'
++'<div class="tw"><table><tr><th>Событие</th><th>Цель</th><th>Длит.</th></tr>'
++'<tr><td><b>Планирование спринта</b><br><small style="color:#64748b">Sprint Planning</small></td><td>Выбрать задачи, договориться о цели спринта</td><td>Макс. 8 ч для спринта в 1 месяц (короче для коротких спринтов)</td></tr>'
 +'<tr><td><b>Ежедневный Scrum</b><br><small style="color:#64748b">Daily Scrum</small></td><td>Синхронизация: сделано, планы, блокеры</td><td>15 мин</td></tr>'
-+'<tr><td><b>Обзор спринта</b><br><small style="color:#64748b">Sprint Review</small></td><td>Демонстрация инкремента стейкхолдерам</td><td>До 4ч/месяц</td></tr>'
-+'<tr><td><b>Ретроспектива</b><br><small style="color:#64748b">Retrospective</small></td><td>Улучшение процесса команды</td><td>До 3ч/месяц</td></tr>'
++'<tr><td><b>Обзор спринта</b><br><small style="color:#64748b">Sprint Review</small></td><td>Демонстрация инкремента стейкхолдерам</td><td>Макс. 4 ч для спринта в 1 месяц (короче для коротких спринтов)</td></tr>'
++'<tr><td><b>Ретроспектива</b><br><small style="color:#64748b">Retrospective</small></td><td>Улучшение процесса команды</td><td>Макс. 3 ч для спринта в 1 месяц (короче для коротких спринтов)</td></tr>'
 +'<tr><td><b>Уточнение бэклога</b><br><small style="color:#64748b">Backlog Refinement</small></td><td>Уточнение и оценка задач будущих спринтов</td><td>~10% спринта</td></tr>'
 +'</table></div>'
 +'<div class="t-h3">Канбан vs Скрам — ключевые отличия</div>'
@@ -479,7 +481,7 @@ agile:'<div class="t-h3">Скрам — роли</div>'
 +'<tr><td>Ребрендинг интерфейса</td><td>5</td><td>2</td><td>1</td><td>8</td><td>13</td><td><b style="color:#f59e0b">0.62</b></td><td>🥉 3-й</td></tr>'
 +'</table></div>'
 +'<div class="t-h3">Шкала оценки WSJF — какие баллы использовать</div>'
-+'<div class="info-box yellow"><b>Доступные значения: 1, 2, 3, 5, 8, 13, 21</b> (шкала Фибоначчи). Принцип: оценки ОТНОСИТЕЛЬНЫЕ, не абсолютные. Сначала команда берёт «эталонный» элемент и присваивает ему базовое значение (например, 3 или 5), затем всё остальное оценивает относительно него.</div>'
++'<div class="info-box yellow"><b>Доступные значения: 1, 2, 3, 5, 8, 13, 20</b> (модифицированная шкала Фибоначчи SAFe). Принцип: оценки ОТНОСИТЕЛЬНЫЕ, не абсолютные. Сначала команда берёт «эталонный» элемент и присваивает ему базовое значение (например, 3 или 5), затем всё остальное оценивает относительно него.</div>'
 +'<div class="tw"><table>'
 +'<tr><th>Балл</th><th>Смысл для CoD-компонентов (бизнес-ценность, срочность, риск)</th><th>Смысл для Job Size</th></tr>'
 +'<tr><td><b style="color:#6ee7b7">1</b></td><td>Почти нет ценности / почти нет срочности</td><td>Задача на 1-2 часа, тривиальная</td></tr>'
@@ -488,7 +490,7 @@ agile:'<div class="t-h3">Скрам — роли</div>'
 +'<tr><td><b style="color:#f59e0b">5</b></td><td>Средняя ценность / умеренная срочность (базовый эталон)</td><td>Неделя работы</td></tr>'
 +'<tr><td><b style="color:#f59e0b">8</b></td><td>Высокая ценность / заметная срочность</td><td>2 недели (спринт)</td></tr>'
 +'<tr><td><b style="color:#ef4444">13</b></td><td>Очень высокая / критичная срочность (есть дедлайн)</td><td>Месяц работы</td></tr>'
-+'<tr><td><b style="color:#ef4444">21</b></td><td>Экстремальная / «горит», потери огромны при задержке</td><td>Квартал и более — нужна декомпозиция</td></tr>'
++'<tr><td><b style="color:#ef4444">20</b></td><td>Экстремальная / «горит», потери огромны при задержке</td><td>Квартал и более — нужна декомпозиция</td></tr>'
 +'</table></div>'
 +'<div class="t-h3">Как проводить оценку WSJF на практике</div>'
 +'<div class="info-box green"><b>Шаг 1:</b> Собрать команду (PO, BA, лиды). <b>Шаг 2:</b> Выбрать «средний» элемент как эталон (5 баллов). <b>Шаг 3:</b> Оценить каждый компонент CoD относительно эталона (Planning Poker). <b>Шаг 4:</b> Оценить Job Size отдельно — это объём работы, не ценность. <b>Шаг 5:</b> Рассчитать WSJF = CoD ÷ Job Size. <b>Шаг 6:</b> Отсортировать по убыванию WSJF — наверх самые приоритетные.</div>'
@@ -1560,7 +1562,7 @@ var THEORY_UML = {
         +'<h4>⚪ Events<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">События</span></h4><p>Start / Intermediate / End. Типы: Message, Timer, Error, Signal, Escalation, Conditional.</p></div>'
       +'<div class="dt-card bpmn">'
         +'<div class="dt-svg"><svg viewBox="0 0 140 70" width="130" height="65" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="20" width="50" height="30" rx="6" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.3"/><line x1="24" y1="30" x2="56" y2="30" stroke="#93c5fd" stroke-width="1.2"/><line x1="24" y1="38" x2="46" y2="38" stroke="#93c5fd" stroke-width="1.2"/><rect x="75" y="20" width="50" height="30" rx="6" fill="none" stroke="#8b5cf6" stroke-width="1.3" stroke-dasharray="4,2"/><text x="100" y="39" text-anchor="middle" fill="#c4b5fd" font-size="7">Service</text></svg></div>'
-        +'<h4>📦 Tasks<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Задачи</span></h4><p>User, Service, Send, Receive, Script, Business Rule, Manual, Call Activity.</p></div>'
+        +'<h4>📦 Tasks<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Задачи</span></h4><p>Типы задач: User, Service, Send, Receive, Script, Business Rule, Manual (плюс Sub-Process и Call Activity как другие виды Activity).</p></div>'
       +'</div></div>'
   },
   uml_elements: {
@@ -1999,17 +2001,17 @@ var THEORY_UML = {
   },
   bpmn_elements: {
     title: "BPMN 2.0 — Базовые объекты нотации / Core Notation Objects",
-    content: '<div class="t-section"><h3>8 базовых объектов BPMN / 8 Core BPMN Objects</h3>'
-      +'<div class="info-box">Язык описания бизнес-процессов BPMN строится на 8 базовых объектах. BPMN — это не язык описания IT-систем, а нотация для описания предметной области реального бизнеса, где участвуют и программы, и люди.</div>'
+    content: '<div class="t-section"><h3>Базовые объекты BPMN — 5 категорий / Core BPMN Objects — 5 Categories</h3>'
+      +'<div class="info-box">По спецификации OMG BPMN 2.0 элементы нотации делятся на 5 категорий: Flow Objects (Events, Activities, Gateways), Data (Data Objects, Data Inputs/Outputs, Data Stores), Connecting Objects (Sequence Flow, Message Flow, Association, Data Association), Swimlanes (Pools, Lanes) и Artifacts (Group, Text Annotation). Ниже — основные элементы этих категорий. BPMN — это не язык описания IT-систем, а нотация для описания предметной области реального бизнеса, где участвуют и программы, и люди.</div>'
       +'<div class="elements-grid">'
       +'<div class="el-card bpmn"><div class="el-icon">⚪</div><div class="el-info"><h4>Событие<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Event</span></h4><p>Событие, которое произошло в процессе. Начальное, конечное или промежуточное.</p></div></div>'
       +'<div class="el-card bpmn"><div class="el-icon">▭</div><div class="el-info"><h4>Действие<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Activity</span></h4><p>Работа, которую нужно выполнить на этапе процесса. Изображается прямоугольником.</p></div></div>'
       +'<div class="el-card bpmn"><div class="el-icon">◇</div><div class="el-info"><h4>Шлюз / Развилка<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Gateway</span></h4><p>Управляющий узел при условном разветвлении процесса. Изображается ромбом.</p></div></div>'
       +'<div class="el-card bpmn"><div class="el-icon">→</div><div class="el-info"><h4>Поток<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Flow</span></h4><p>Связь между элементами, показывающая порядок выполнения или обмен сообщениями.</p></div></div>'
       +'<div class="el-card bpmn"><div class="el-icon">📄</div><div class="el-info"><h4>Данные<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Data</span></h4><p>Объекты данных и документы, нужные для начала действия, или результат действия.</p></div></div>'
-      +'<div class="el-card bpmn"><div class="el-icon">📎</div><div class="el-info"><h4>Артефакты<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Artefact</span></h4><p>Объекты не являющиеся действиями: группы, текстовые аннотации.</p></div></div>'
-      +'<div class="el-card bpmn"><div class="el-icon">▥</div><div class="el-info"><h4>Дорожка<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Swimlane</span></h4><p>Разделение внутри пула, показывающее конкретного участника процесса (роль).</p></div></div>'
-      +'<div class="el-card bpmn"><div class="el-icon">▤</div><div class="el-info"><h4>Пул<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Pool</span></h4><p>Объект, описывающий один процесс на диаграмме целиком. Может содержать дорожки.</p></div></div>'
+      +'<div class="el-card bpmn"><div class="el-icon">📎</div><div class="el-info"><h4>Артефакты<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Artifact</span></h4><p>Объекты не являющиеся действиями: группы, текстовые аннотации.</p></div></div>'
+      +'<div class="el-card bpmn"><div class="el-icon">▥</div><div class="el-info"><h4>Дорожка<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Lane</span></h4><p>Подразделение внутри пула (Pool), показывающее конкретного участника процесса (роль, отдел, систему). Категория в спецификации называется Swimlanes и включает Pools и Lanes.</p></div></div>'
+      +'<div class="el-card bpmn"><div class="el-icon">▤</div><div class="el-info"><h4>Пул<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Pool</span></h4><p>Представляет участника (Participant) взаимодействия — организацию, систему или роль — и содержит его процесс. Может содержать дорожки (Lanes).</p></div></div>'
       +'</div>'
 
       +'<h3 style="margin-top:18px">Event — Событие (детально / in detail)</h3>'
@@ -2034,7 +2036,7 @@ var THEORY_UML = {
       +'<div class="info-box">Действия делятся на элементарные (Task — неделимые) и составные (раскладываются на более простые действия при детализации).</div>'
       +'<div class="elements-grid">'
       +'<div class="el-card bpmn"><div class="el-icon">▭</div><div class="el-info"><h4>Задача<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Task</span></h4><p>Единица работы. Если помечена символом «+», является подпроцессом и может быть детализирована (Sub-Process).</p></div></div>'
-      +'<div class="el-card bpmn"><div class="el-icon">⚏</div><div class="el-info"><h4>Транзакция<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Transaction</span></h4><p>Набор логически связанных действий. Для транзакции может быть определён протокол выполнения (все или ничего).</p></div></div>'
+      +'<div class="el-card bpmn"><div class="el-icon">⚏</div><div class="el-info"><h4>Транзакция<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Transaction</span></h4><p>Набор логически связанных действий. К транзакции применяется транзакционный протокол «всё или ничего»: успешное завершение, отмена с компенсацией (Cancel) или сбой (Hazard).</p></div></div>'
       +'<div class="el-card bpmn"><div class="el-icon">⌗</div><div class="el-info"><h4>Событийный подпроцесс<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Event Sub-Process</span></h4><p>Размещён внутри другого процесса. Запускается своим начальным событием. Может прерывать родительский процесс или идти параллельно.</p></div></div>'
       +'<div class="el-card bpmn"><div class="el-icon">⊞</div><div class="el-info"><h4>Вызывающее действие<br><span style="font-size:0.7rem;color:#64748b;font-weight:400">Call Activity</span></h4><p>Точка входа для глобально определённого подпроцесса, повторно используемого в разных местах модели.</p></div></div>'
       +'</div>'
@@ -2061,27 +2063,27 @@ var THEORY_UML = {
       +'<polygon points="50,20 80,50 50,80 20,50" fill="#1a1f2e" stroke="#f59e0b" stroke-width="2"/>'
       +'<line x1="34" y1="34" x2="66" y2="66" stroke="#f59e0b" stroke-width="2"/>'
       +'<line x1="66" y1="34" x2="34" y2="66" stroke="#f59e0b" stroke-width="2"/>'
-      +'<text x="50" y="95" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="bold">Исключающее ИЛИ</text>'
+      +'<text x="50" y="95" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="bold">Исключающий шлюз</text>'
       +'<text x="50" y="106" text-anchor="middle" fill="#64748b" font-size="8">Exclusive Gateway (XOR)</text>'
       +'<polygon points="200,20 230,50 200,80 170,50" fill="#1a1f2e" stroke="#3b82f6" stroke-width="2"/>'
       +'<line x1="187" y1="50" x2="213" y2="50" stroke="#3b82f6" stroke-width="2"/>'
       +'<line x1="200" y1="37" x2="200" y2="63" stroke="#3b82f6" stroke-width="2"/>'
-      +'<text x="200" y="95" text-anchor="middle" fill="#3b82f6" font-size="9" font-weight="bold">Оператор И</text>'
+      +'<text x="200" y="95" text-anchor="middle" fill="#3b82f6" font-size="9" font-weight="bold">Параллельный шлюз</text>'
       +'<text x="200" y="106" text-anchor="middle" fill="#64748b" font-size="8">Parallel Gateway (AND)</text>'
       +'<polygon points="350,20 380,50 350,80 320,50" fill="#1a1f2e" stroke="#8b5cf6" stroke-width="2"/>'
       +'<circle cx="350" cy="50" r="10" fill="none" stroke="#8b5cf6" stroke-width="2"/>'
-      +'<text x="350" y="95" text-anchor="middle" fill="#8b5cf6" font-size="9" font-weight="bold">Оператор ИЛИ</text>'
+      +'<text x="350" y="95" text-anchor="middle" fill="#8b5cf6" font-size="9" font-weight="bold">Включающий шлюз</text>'
       +'<text x="350" y="106" text-anchor="middle" fill="#64748b" font-size="8">Inclusive Gateway (OR)</text>'
       +'</svg></div>'
       +'<div class="tw"><table>'
       +'<tr><th>Тип / Type</th><th>При разветвлении / On split</th><th>При слиянии / On merge</th></tr>'
-      +'<tr><td><b style="color:#f59e0b">Исключающее ИЛИ</b><br><span style="font-size:0.72rem;color:#64748b">Exclusive Gateway (XOR)</span></td><td>Направляет поток только по ОДНОЙ исходящей ветви (управляется данными)</td><td>Ждёт завершения ОДНОЙ входящей ветви, активирует исходящий поток</td></tr>'
-      +'<tr><td><b style="color:#3b82f6">Оператор И</b><br><span style="font-size:0.72rem;color:#64748b">Parallel Gateway (AND)</span></td><td>Активирует ВСЕ исходящие ветви одновременно</td><td>Ждёт завершения ВСЕХ входящих ветвей, затем активирует исходящий поток</td></tr>'
-      +'<tr><td><b style="color:#8b5cf6">Оператор ИЛИ</b><br><span style="font-size:0.72rem;color:#64748b">Inclusive Gateway (OR)</span></td><td>Активирует ОДНУ или БОЛЕЕ ветвей</td><td>Все выполняющиеся входящие ветви должны быть завершены</td></tr>'
+      +'<tr><td><b style="color:#f59e0b">Исключающий шлюз</b><br><span style="font-size:0.72rem;color:#64748b">Exclusive Gateway (XOR)</span></td><td>Направляет поток только по ОДНОЙ исходящей ветви (управляется данными)</td><td>Каждый пришедший токен пропускает дальше сразу, без синхронизации</td></tr>'
+      +'<tr><td><b style="color:#3b82f6">Параллельный шлюз</b><br><span style="font-size:0.72rem;color:#64748b">Parallel Gateway (AND)</span></td><td>Активирует ВСЕ исходящие ветви одновременно</td><td>Ждёт завершения ВСЕХ входящих ветвей, затем активирует исходящий поток</td></tr>'
+      +'<tr><td><b style="color:#8b5cf6">Включающий шлюз</b><br><span style="font-size:0.72rem;color:#64748b">Inclusive Gateway (OR)</span></td><td>Активирует ОДНУ или БОЛЕЕ ветвей</td><td>Все выполняющиеся входящие ветви должны быть завершены</td></tr>'
       +'</table></div>'
 
-      +'<h3 style="margin-top:18px">Pool & Swimlane — Пул и дорожки</h3>'
-      +'<div class="info-box">Pool (Пул) — объект, описывающий один процесс на диаграмме целиком; на диаграмме может быть несколько пулов. Swimlane (дорожка) — деление внутри пула, показывающее конкретного участника (роль, отдел, систему). Пулы и дорожки отражают распределение обязанностей. Дорожки позволяют иерархически делить пулы и другие дорожки. Обмен сообщениями между Pool задаётся потоком сообщений (Message Flow).</div>'
+      +'<h3 style="margin-top:18px">Pool & Lane — Пул и дорожки</h3>'
+      +'<div class="info-box">Pool (Пул) представляет участника (Participant) взаимодействия (Collaboration) — организацию, систему или роль — и содержит процесс этого участника; на диаграмме может быть несколько пулов. Lane (дорожка) — подразделение внутри пула, показывающее конкретного участника (роль, отдел, систему). В спецификации Pools и Lanes вместе образуют категорию Swimlanes. Пулы и дорожки отражают распределение обязанностей. Дорожки позволяют иерархически делить пулы и другие дорожки. Обмен сообщениями между Pool задаётся потоком сообщений (Message Flow).</div>'
       +'<div class="svgdemo"><svg viewBox="0 0 540 130" width="520" height="125" xmlns="http://www.w3.org/2000/svg">'
       +'<rect x="10" y="10" width="240" height="100" rx="4" fill="#0d1117" stroke="#3b82f6" stroke-width="2"/>'
       +'<rect x="10" y="10" width="26" height="100" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>'
@@ -2118,7 +2120,7 @@ var THEORY_UML = {
       +'</svg></div>'
       +'<div class="info-box green">Data Object (Объект данных) указывает, какие данные/документы нужны для начала действия или являются результатом завершённого действия. Для одного участника объект может быть результатом, для другого — стартовым условием (например: «Заказ» — результат для менеджера, начало работы для склада). Message (Сообщение) отображает отношение между двумя участниками процесса: Email, чат, SMS, переписка на сайте и т.д.</div>'
 
-      +'<h3 style="margin-top:18px">Artefact — Артефакты (2 типа)</h3>'
+      +'<h3 style="margin-top:18px">Artifacts — Артефакты (2 типа)</h3>'
       +'<div class="tw"><table>'
       +'<tr><th>Тип / Type</th><th>Описание / Description</th></tr>'
       +'<tr><td><b style="color:#6ee7b7">Группа объектов</b><br><span style="font-size:0.72rem;color:#64748b">Group</span></td><td>Объединяет несколько элементов под общим символом для экономии места на диаграмме. Прямоугольник со скруглёнными углами, пунктирная линия с точками.</td></tr>'
@@ -2133,7 +2135,7 @@ var THEORY_UML = {
       +'<tr><td><b>Кто использует</b></td><td>Компании с процессным подходом, отслеживание в реальном времени</td><td>Аналитики и менеджеры для иллюстрации идей и узких мест</td></tr>'
       +'<tr><td><b>Сложность</b></td><td>Требует глубоких знаний BPMN, как написание алгоритма</td><td>Рекомендуется новичкам начинать именно с этого типа</td></tr>'
       +'</table></div>'
-      +'<div class="info-box yellow">BPM (Business Process Modeling) — среда, где вы моделируете процесс (один или в команде). BPMS (Business Process Management System) — система выполнения созданных моделей: Bizagi, Comindware, ELMA и др.</div>'
+      +'<div class="info-box yellow">BPMN (Business Process Model and Notation) — язык моделирования; BPM (Business Process Management) — дисциплина управления процессами. BPMS (Business Process Management System) — система, которая исполняет созданные модели: Camunda, Bizagi и др.</div>'
   }
 };
 
@@ -2461,7 +2463,7 @@ var Q_UML = [
  q:"В BPMN 2.0, какой Gateway маршрутизирует поток к первому наступившему событию (например: получен платёж ИЛИ истёк таймер)?",
  opts:["Parallel Gateway (AND) — запускает все пути одновременно","Exclusive Gateway (XOR) — берёт один путь по условию","Event-Based Gateway — берёт путь того события, которое наступило первым","Inclusive Gateway (OR) — активирует один или несколько путей"],
  ans:2,
- exp:"Event-Based Gateway (шестигранник с двойным кругом внутри) — специально для гонки событий. После него стоят catching events (Message, Timer и т.д.). Какое событие наступило первым — тот путь и выбирается. XOR работает с data conditions, а не с событиями."},
+ exp:"Event-Based Gateway (ромб с двойным кругом, внутри которого пятиугольник) — специально для гонки событий. После него стоят catching events (Message, Timer и т.д.). Какое событие наступило первым — тот путь и выбирается. XOR работает с data conditions, а не с событиями."},
 
 {sec:"theory",lab:"Theory — Notation & Concepts",type:"concept",
  q:"Чем Call Activity отличается от Sub-Process в BPMN 2.0?",
@@ -2477,9 +2479,9 @@ var Q_UML = [
 
 {sec:"theory",lab:"Theory — Notation & Concepts",type:"concept",
  q:"Какая нотация на Class Diagram означает РЕАЛИЗАЦИЮ интерфейса (implements)?",
- opts:["Сплошная линия с закрашенным треугольником (наследование)","Пунктирная линия с открытым (пустым) треугольником, стрелка к интерфейсу","Пунктирная линия со стрелкой-зависимостью (open arrowhead)","Сплошная линия с закрашенным ромбом (композиция)"],
+ opts:["Сплошная линия с пустым (незакрашенным) треугольником (наследование)","Пунктирная линия с открытым (пустым) треугольником, стрелка к интерфейсу","Пунктирная линия со стрелкой-зависимостью (open arrowhead)","Сплошная линия с закрашенным ромбом (композиция)"],
  ans:1,
- exp:"Realization (реализация интерфейса) = пунктирная линия + открытый (hollow) треугольник наконечник, направленный ОТ класса К интерфейсу. Сплошная + открытый треугольник = Generalization (наследование). Путаница между Realization и Generalization — одна из самых частых ошибок на собеседованиях."},
+ exp:"Realization (реализация интерфейса) = пунктирная линия + открытый (hollow) треугольник наконечник, направленный ОТ класса К интерфейсу. Сплошная + тот же пустой треугольник = Generalization (наследование). Путаница между Realization и Generalization — одна из самых частых ошибок на собеседованиях."},
 
 {sec:"theory",lab:"Theory — Notation & Concepts",type:"concept",
  q:"В BPMN 2.0 Message Flow (пунктирная линия со стрелкой) может соединять:",
@@ -2519,7 +2521,7 @@ var Q_UML = [
  svg:"act1",
  opts:["State Machine Diagram — жизненный цикл объекта","Sequence Diagram — взаимодействие объектов во времени","Activity Diagram — поток действий с Decision Node","Use Case Diagram — функции системы"],
  ans:2,
- exp:"На диаграмме: Initial Node (закрашенный круг), Action (прямоугольник 'Submit Request'), Decision Node (ромб с условиями [approved]/[rejected]), два Action'а, Final Node (двойной круг). Это Activity Diagram. State Machine использует состояния с named borders, а не прямоугольные actions. Ромб в Activity = Decision, в State Machine = Choice псевдо-состояние."},
+ exp:"На диаграмме: Initial Node (закрашенный круг), Action (прямоугольник 'Submit Request'), Decision Node (ромб с условиями [approved]/[rejected]), два Action'а, Activity Final (круг с закрашенной точкой внутри). Это Activity Diagram. State Machine использует состояния с named borders, а не прямоугольные actions. Ромб в Activity = Decision, в State Machine = Choice псевдо-состояние."},
 
 {sec:"uml",lab:"UML — Class",type:"missing_element",
  q:"На Class Diagram: Order (1) — ? — Customer. Customer может иметь много Orders. Что должно стоять вместо «?» (мультиплицированность на стороне Order)?",
@@ -2541,10 +2543,10 @@ var Q_UML = [
  exp:"Пунктирная стрелка с открытым (hollow) наконечником = Return Message — ответ на предшествующий synchronous call. Всегда парная: если A вызвал B (solid filled arrow), то B возвращает A пунктирной стрелкой. Async сообщение = solid open arrow. Create = пунктирная к боксу нового объекта. Destroy = X на конце lifeline."},
 
 {sec:"uml",lab:"UML — Class",type:"read_diagram",
- q:"В Class Diagram: сплошная линия с ЗАКРАШЕННЫМ треугольником (▲), стрелка от Dog к Animal. Что это означает?",
+ q:"В Class Diagram: сплошная линия с ПУСТЫМ (незакрашенным) треугольником (▷), стрелка от Dog к Animal. Что это означает?",
  opts:["Реализация интерфейса — Dog implements Animal","Generalization (наследование) — Dog наследует Animal. Стрелка ВСЕГДА от субкласса к суперклассу","Ассоциация — Dog связан с Animal","Зависимость — Dog использует Animal"],
  ans:1,
- exp:"Сплошная линия + закрашенный/открытый треугольник = Generalization (наследование). Направление ВСЕГДА от подкласса к суперклассу (Dog → Animal). Не путай с Realization (пунктирная + треугольник = implements интерфейс). Ромб = Aggregation/Composition. Открытая стрелка = Association. Пунктирная + открытая стрелка = Dependency."},
+ exp:"Сплошная линия + пустой (незакрашенный) треугольник = Generalization (наследование). Направление ВСЕГДА от подкласса к суперклассу (Dog → Animal). Не путай с Realization (пунктирная + треугольник = implements интерфейс). Ромб = Aggregation/Composition. Открытая стрелка = Association. Пунктирная + открытая стрелка = Dependency."},
 
 {sec:"uml",lab:"UML — Class",type:"choose_diagram",
  q:"Нужно показать архитектуру микросервиса: OrderService требует интерфейс IInventory, который реализует InventoryService. Какая нотация ПРАВИЛЬНАЯ для Class/Component диаграммы?",
@@ -2614,7 +2616,7 @@ var Q_UML = [
  q:"В BPMN 2.0, какой элемент используется для ожидания ОДНОГО из нескольких возможных сообщений (например: или подтверждение оплаты, или отмена от клиента — что придёт первым)?",
  opts:["Parallel Gateway (AND) с двумя Receive Tasks","Event-Based Gateway с двумя catching Message Events","Inclusive Gateway (OR) с двумя Message Events","XOR Gateway с двумя условиями"],
  ans:1,
- exp:"Event-Based Gateway (шестигранник с двойным кругом) создаёт 'race condition' между событиями. После него стоят catching Intermediate Events (Message, Timer и т.д.) — какое событие наступит первым, тот путь и активируется. AND запустил бы ОБА пути. XOR работает с условиями данных, не с событиями."},
+ exp:"Event-Based Gateway (ромб с двойным кругом, внутри которого пятиугольник) создаёт 'race condition' между событиями. После него стоят catching Intermediate Events (Message, Timer и т.д.) — какое событие наступит первым, тот путь и активируется. AND запустил бы ОБА пути. XOR работает с условиями данных, не с событиями."},
 
 {sec:"bpmn",lab:"BPMN — Pools & Lanes",type:"read_diagram",
  q:"На диаграмме два Pool: 'E-Shop' и 'Payment GW'. Между ними пунктирная линия со стрелкой. Что представляет эта связь?",
@@ -3015,15 +3017,16 @@ var DRAW_EXERCISES = [
   {id:'d',kind:'gateway_x',text:'PIN верный?'},
   {id:'a3',kind:'task',text:'Выбрать сумму'},
   {id:'a4',kind:'task',text:'Выдать наличные'},
+  {id:'m',kind:'merge',text:'Merge'},
   {id:'a5',kind:'task',text:'Вернуть карту'},
   {id:'e',kind:'end',text:'Activity Final'}
  ],
  edges:[
   {from:'s',to:'a1'},{from:'a1',to:'a2'},{from:'a2',to:'d'},
-  {from:'d',to:'a3',label:'Да'},{from:'a3',to:'a4'},{from:'a4',to:'a5'},
-  {from:'d',to:'a5',label:'Нет'},{from:'a5',to:'e'}
+  {from:'d',to:'a3',label:'Да'},{from:'a3',to:'a4'},{from:'a4',to:'m'},
+  {from:'d',to:'m',label:'Нет'},{from:'m',to:'a5'},{from:'a5',to:'e'}
  ],
- explanation:'Decision Node (◆) имеет один вход и несколько выходов с guard-условиями [Да]/[Нет]. Обе ветки сходятся на Action «Вернуть карту» — в UML Activity несколько входящих потоков в одно действие допустимы (неявный merge). Activity Final (◉) один.'},
+ explanation:'Decision Node (◆) имеет один вход и несколько выходов с guard-условиями [Да]/[Нет]. Обе ветки сходятся в Merge Node (◇): в UML Activity несколько входящих рёбер прямо в Action означают неявный Join (действие ждёт ВСЕ входы), поэтому альтернативные ветки нужно объединять через Merge. После Merge — «Вернуть карту» и один Activity Final (◉).'},
 
 {id:'d3',level:1,type:'bpmn',title:'Обработка заказа интернет-магазина',
  scenario:'Заказ получен. Система проверяет остаток на складе. Если товар В НАЛИЧИИ — резервирует его и отправляет курьеру (Send Task), конец. Если НЕТ — уведомляет клиента о недостаче, конец. Один Pool без Lane: просто выстрой процесс слева направо.',
@@ -3042,7 +3045,7 @@ var DRAW_EXERCISES = [
   {from:'g',to:'t2',label:'Да'},{from:'t2',to:'t3'},{from:'t3',to:'e1'},
   {from:'g',to:'t4',label:'Нет'},{from:'t4',to:'e2'}
  ],
- explanation:'Классический линейный процесс с одним Exclusive Gateway. Send Task (✉, пунктир) — задача, которая отправляет сообщение другому участнику (курьеру). Обрати внимание: Gateway сам ничего не делает, он только маршрутизирует — проверка остатка идёт ДО него.'},
+ explanation:'Классический линейный процесс с одним Exclusive Gateway. Send Task (закрашенный значок конверта ✉) — задача, которая отправляет сообщение другому участнику (курьеру). Обрати внимание: Gateway сам ничего не делает, он только маршрутизирует — проверка остатка идёт ДО него.'},
 
 {id:'d4',level:1,type:'usecase',title:'Онлайн-магазин: заказ со скидкой',
  scenario:'Customer оформляет заказ (Place Order). Оформление ВСЕГДА включает оплату (Make Payment). Иногда покупатель применяет промокод (Apply Discount Code) — это необязательное расширение Place Order. Нарисуй Use Case Diagram с правильными направлениями «include» и «extend».',
@@ -3343,8 +3346,8 @@ SVGS_UML.dr5 = '<svg viewBox="0 0 520 190" width="500" height="185" xmlns="http:
 +'<marker id="dr5d" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto"><polygon points="0 3,8 0,8 6" fill="#94a3b8"/></marker>'
 +'</defs>'
 +'<line x1="150" y1="70" x2="198" y2="65" stroke="#94a3b8" stroke-width="1.5"/>'
-+'<text x="163" y="60" fill="#64748b" font-size="9">1</text>'
-+'<text x="185" y="60" fill="#64748b" font-size="9">1..*</text>'
++'<text x="163" y="60" fill="#64748b" font-size="9">1..*</text>'
++'<text x="185" y="60" fill="#64748b" font-size="9">1</text>'
 +'<polygon points="198,65 186,59 186,71" fill="none" stroke="#94a3b8" stroke-width="1.5"/>'
 +'<line x1="150" y1="80" x2="378" y2="60" stroke="#94a3b8" stroke-width="1.5"/>'
 +'<polygon points="150,80 162,74 162,86" fill="#94a3b8"/>'
@@ -3401,37 +3404,37 @@ Q_UML.push({sec:"uml",lab:"UML — Чтение диаграмм",type:"read_dia
  svg:"dr5",
  opts:[
   "Order → Customer: наследование; Order ◆ OrderItem: зависимость; Order ---▷ IPayable: ассоциация",
-  "Order → Customer: ассоциация (1 заказ у 1..* Customer); Order ◆ OrderItem: композиция (OrderItem не существует без Order); Order ---▷ IPayable: реализация интерфейса",
+  "Order → Customer: ассоциация (Customer 1 — 1..* Order: у заказа ровно один Customer, у Customer один или более Order); Order ◆ OrderItem: композиция (OrderItem не существует без Order); Order ---▷ IPayable: реализация интерфейса",
   "Order → Customer: ассоциация; Order ◆ OrderItem: агрегация (пустой ромб); Order ---▷ IPayable: зависимость",
   "Все три стрелки — разные виды наследования в UML"
  ],
  ans:1,
- exp:"3 разные связи: 1) Открытая стрелка (→) = Ассоциация. Order связан с Customer, множественность 1 к 1..*. 2) Закрашенный ромб (◆) = Композиция — сильное владение: OrderItem не существует без Order, при удалении Order удаляются OrderItems. Пустой ромб = Агрегация (слабое владение). 3) Пунктирная + открытый треугольник = Реализация (Realization) — Order implements IPayable. Сплошная + треугольник = Generalization (наследование)."});
+ exp:"3 разные связи: 1) Открытая стрелка (→) = Ассоциация. Order связан с Customer: каждый Order принадлежит ровно одному Customer (1 на стороне Customer), а у Customer один или более Order (1..* на стороне Order). 2) Закрашенный ромб (◆) = Композиция — сильное владение: OrderItem не существует без Order, при удалении Order удаляются OrderItems. Пустой ромб = Агрегация (слабое владение). 3) Пунктирная + открытый треугольник = Реализация (Realization) — Order implements IPayable. Сплошная + треугольник = Generalization (наследование)."});
 
 
 // ─── INIT ───
 // ─── NEW QUESTIONS: Article-based BPMN terminology (bilingual) ───
 Q_UML.push({sec:"bpmn",lab:"BPMN — Базовые объекты / Core Objects",type:"concept",
- q:"Из скольких базовых объектов строится язык описания бизнес-процессов BPMN? Назови их.",
+ q:"Как по спецификации OMG BPMN 2.0 структурированы базовые элементы нотации? Назови категории.",
  opts:[
-  "5 объектов: Event, Activity, Gateway, Flow, Pool",
-  "8 объектов: Event (Событие), Activity (Действия), Gateway (Шлюзы), Flow (Поток), Data (Данные), Artefact (Артефакты), Swimlane (Дорожки), Pool (Пул)",
-  "3 объекта: Task, Gateway, Event",
-  "10 объектов, включая Lane, Pool, Message, Data, Group, Annotation, Event, Gateway, Flow, Activity"
+  "3 категории: Flow Objects, Connecting Objects, Swimlanes — а Data и Artifacts в BPMN 2.0 не входят в базовые элементы",
+  "5 категорий: Flow Objects (Events, Activities, Gateways), Data (Data Objects, Data Stores…), Connecting Objects (Sequence Flow, Message Flow, Association), Swimlanes (Pools, Lanes), Artifacts (Group, Text Annotation)",
+  "3 объекта: Task, Gateway, Event — всё остальное является их вариациями",
+  "8 равноправных объектов: Event, Activity, Gateway, Flow, Data, Artifact, Swimlane, Pool — без деления на категории"
  ],
  ans:1,
- exp:"BPMN строится на 8 базовых объектах: Event/Событие, Activity/Действия, Gateway/Шлюзы или Развилки, Flow/Поток, Data/Данные, Artefact/Артефакты, Swimlane/«плавательные дорожки», Pool/Пул. Это фундамент нотации — все остальные элементы (типы событий, типы шлюзов, типы задач) являются вариациями этих базовых объектов."});
+ exp:"Спецификация OMG BPMN 2.0 делит базовые элементы на 5 категорий: Flow Objects (Events/События, Activities/Действия, Gateways/Шлюзы), Data (Data Objects, Data Inputs/Outputs, Data Stores), Connecting Objects (Sequence Flow, Message Flow, Association, Data Association), Swimlanes (Pools/Пулы, Lanes/Дорожки) и Artifacts (Group, Text Annotation). Это фундамент нотации — все остальные элементы (типы событий, типы шлюзов, типы задач) являются вариациями этих базовых элементов."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Activity / Действия",type:"concept",
- q:"Какой подтип Activity (Действия) представляет собой набор ЛОГИЧЕСКИ СВЯЗАННЫХ действий, для которого может быть определён протокол выполнения (всё или ничего)?",
+ q:"Какой подтип Activity (Действия) представляет собой набор ЛОГИЧЕСКИ СВЯЗАННЫХ действий, к которому применяется транзакционный протокол «всё или ничего» (успех, отмена с компенсацией или сбой)?",
  opts:[
   "Task (Задача) — простая единица работы",
-  "Transaction (Транзакция) — набор логически связанных действий с протоколом выполнения",
+  "Transaction (Транзакция) — набор логически связанных действий с транзакционным протоколом",
   "Call Activity (Вызывающее действие) — точка входа для глобального подпроцесса",
   "Event Sub-Process (Событийный подпроцесс) — запускается своим событием"
  ],
  ans:1,
- exp:"Transaction (Транзакция) — это группа действий, логически связанных в одну атомарную единицу: либо выполняются ВСЕ, либо ОТКАТЫВАЮТСЯ ВСЕ (по аналогии с транзакцией в базах данных). Для транзакции BPMN явно определяет протокол выполнения. Task — простейшая неделимая единица работы. Call Activity вызывает ГЛОБАЛЬНО определённый процесс. Event Sub-Process запускается внутренним событием и может прерывать родительский процесс."});
+ exp:"Transaction (Транзакция) — это группа действий, логически связанных в одну атомарную единицу: либо выполняются ВСЕ, либо ОТКАТЫВАЮТСЯ ВСЕ (по аналогии с транзакцией в базах данных). Для транзакции BPMN определяет транзакционный протокол: успешное завершение, отмена с компенсацией (Cancel) или сбой (Hazard). Task — простейшая неделимая единица работы. Call Activity вызывает ГЛОБАЛЬНО определённый процесс. Event Sub-Process запускается внутренним событием и может прерывать родительский процесс."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Activity / Действия",type:"concept",
  q:"Чем Call Activity (Вызывающее действие) принципиально отличается от обычного Sub-Process (вложенного подпроцесса)?",
@@ -3445,18 +3448,18 @@ Q_UML.push({sec:"bpmn",lab:"BPMN — Activity / Действия",type:"concept"
  exp:"Call Activity вызывает ГЛОБАЛЬНЫЙ процесс — он определён один раз и может переиспользоваться в нескольких разных диаграммах/процессах (например, стандартная проверка KYC, используемая в открытии счёта, выдаче кредита и оформлении страховки). Sub-Process — локальная декомпозиция конкретного процесса, не предназначенная для переиспользования в других местах модели."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Gateway / Шлюзы",type:"concept",
- q:"Какой шлюз называется «Оператор исключающего ИЛИ, управляемый данными» (Exclusive Gateway, XOR) и как он работает при разветвлении?",
+ q:"Как работает Exclusive Gateway (XOR, исключающий шлюз, управляемый данными) при разветвлении и слиянии?",
  opts:[
   "Активирует ВСЕ исходящие ветви одновременно",
-  "При ветвлении направляет поток ЛИШЬ по ОДНОЙ из исходящих ветвей; при синхронизации ждёт завершения ОДНОЙ входящей ветви",
+  "При ветвлении направляет поток ЛИШЬ по ОДНОЙ из исходящих ветвей; при слиянии пропускает каждый пришедший токен дальше сразу, без синхронизации",
   "Активирует одну или более ветвей по выбору исполнителя",
   "Используется только для запуска параллельных подпроцессов"
  ],
  ans:1,
- exp:"Exclusive Gateway / Оператор исключающего ИЛИ — управляется ДАННЫМИ (условие в потоке данных решает, какая ветвь активируется). При разветвлении — только ОДНА ветвь. При слиянии — ждёт ОДНУ завершившуюся входящую ветвь и сразу продолжает (не дожидается остальных, потому что остальные и не будут активированы)."});
+ exp:"Exclusive Gateway (XOR) — управляется ДАННЫМИ (условие в потоке данных решает, какая ветвь активируется). При разветвлении — только ОДНА ветвь. При слиянии — не синхронизирует: каждый пришедший токен сразу пропускается дальше (остальные ветви и не были активированы, поэтому ждать нечего)."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Gateway / Шлюзы",type:"concept",
- q:"«Оператор И» (Parallel Gateway, AND) — как именно он работает при разделении и при синхронизации параллельных потоков?",
+ q:"Parallel Gateway (AND, параллельный шлюз) — как именно он работает при разделении и при синхронизации параллельных потоков?",
  opts:[
   "При разделении активируется одна ветвь по условию; при синхронизации ждёт первую завершившуюся",
   "При разделении на параллельные потоки ВСЕ ветви активируются ОДНОВРЕМЕННО; при синхронизации ждёт завершения ВСЕХ входящих ветвей и затем активирует исходящий поток",
@@ -3464,10 +3467,10 @@ Q_UML.push({sec:"bpmn",lab:"BPMN — Gateway / Шлюзы",type:"concept",
   "Используется только для остановки процесса"
  ],
  ans:1,
- exp:"Parallel Gateway / Оператор И: при разделении (split) — ВСЕ исходящие ветви активируются ОДНОВРЕМЕННО (параллельное выполнение). При синхронизации (join/слиянии) — оператор ждёт завершения ВСЕХ входящих ветвей, и только потом активирует исходящий поток. Это правило строгое: дисбаланс AND Split/Join (например split на 3 ветви, а join ждёт только 2) — ошибка модели."});
+ exp:"Parallel Gateway (AND): при разделении (split) — ВСЕ исходящие ветви активируются ОДНОВРЕМЕННО (параллельное выполнение). При синхронизации (join/слиянии) — оператор ждёт завершения ВСЕХ входящих ветвей, и только потом активирует исходящий поток. Это правило строгое: дисбаланс AND Split/Join (например split на 3 ветви, а join ждёт только 2) — ошибка модели."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Gateway / Шлюзы",type:"concept",
- q:"«Оператор ИЛИ» (Inclusive Gateway, OR) — самый сложный шлюз. Опиши его поведение при ветвлении и слиянии.",
+ q:"Inclusive Gateway (OR, включающий шлюз) — самый сложный шлюз. Опиши его поведение при ветвлении и слиянии.",
  opts:[
   "При ветвлении активируется ровно одна ветвь; при слиянии — ждёт только одну ветвь",
   "При ветвлении активируется одна ИЛИ более ветвей (зависит от условий); при слиянии ВСЕ выполняющиеся входящие ветви должны быть завершены",
@@ -3475,18 +3478,18 @@ Q_UML.push({sec:"bpmn",lab:"BPMN — Gateway / Шлюзы",type:"concept",
   "Используется только в неисполняемых процессах"
  ],
  ans:1,
- exp:"Inclusive Gateway / Оператор ИЛИ: при разветвлении активируется ОДНА или БОЛЕЕ ветвей — сколько именно, зависит от условий на каждой исходящей ветви (это может быть от 1 до всех). При слиянии — оператор должен дождаться завершения ВСЕХ ветвей, которые были фактически активированы при разделении (а не все теоретически возможные). Это самый сложный для движка BPMN шлюз, так как требует отслеживания, какие пути были запущены."});
+ exp:"Inclusive Gateway (OR): при разветвлении активируется ОДНА или БОЛЕЕ ветвей — сколько именно, зависит от условий на каждой исходящей ветви (это может быть от 1 до всех). При слиянии — оператор должен дождаться завершения ВСЕХ ветвей, которые были фактически активированы при разделении (а не все теоретически возможные). Это самый сложный для движка BPMN шлюз, так как требует отслеживания, какие пути были запущены."});
 
-Q_UML.push({sec:"bpmn",lab:"BPMN — Pool & Swimlane",type:"concept",
- q:"Что показывают Pool (Пул) и Swimlane (Дорожка) на диаграмме BPMN, и как они между собой связаны?",
+Q_UML.push({sec:"bpmn",lab:"BPMN — Pool & Lane",type:"concept",
+ q:"Что показывают Pool (Пул) и Lane (Дорожка) на диаграмме BPMN, и как они между собой связаны?",
  opts:[
   "Pool — это синоним Lane, они полностью идентичны",
-  "Pool описывает ОДИН процесс на диаграмме целиком и может содержать несколько Swimlane (дорожек), показывающих конкретных участников процесса (роль, отдел, систему) внутри этого процесса",
-  "Swimlane может содержать несколько Pool внутри себя",
+  "Pool представляет участника (организацию, систему, роль) и содержит его процесс; внутри Pool может быть несколько Lane (дорожек), показывающих конкретных исполнителей (роль, отдел, систему) внутри этого процесса",
+  "Lane может содержать несколько Pool внутри себя",
   "Pool используется только для отображения данных, не участников"
  ],
  ans:1,
- exp:"Pool (Пул) описывает ОДИН процесс на диаграмме целиком — на одной диаграмме может быть несколько пулов (например, «Клиент» и «Магазин»). Внутри пула могут быть Swimlane (дорожки), которые указывают конкретных участников процесса, скрытых внутри пула: например, в процессе обработки заказа — «Менеджер по продажам», «Начальник отдела продаж», «Кассир». Дорожки позволяют иерархически делить пулы и другие дорожки — это инструмент распределения обязанностей внутри одного процесса."});
+ exp:"Pool (Пул) представляет участника (Participant) взаимодействия — организацию, систему или роль — и содержит процесс этого участника; на одной диаграмме может быть несколько пулов (например, «Клиент» и «Магазин»). Внутри пула могут быть Lane (дорожки), которые указывают конкретных исполнителей внутри пула: например, в процессе обработки заказа — «Менеджер по продажам», «Начальник отдела продаж», «Кассир». Дорожки позволяют иерархически делить пулы и другие дорожки — это инструмент распределения обязанностей внутри одного процесса."});
 
 Q_UML.push({sec:"bpmn",lab:"BPMN — Data Object & Message",type:"concept",
  q:"В чём ключевая особенность Data Object (Объекта данных) — может ли один и тот же объект данных быть И результатом, И стартовым условием одновременно?",
