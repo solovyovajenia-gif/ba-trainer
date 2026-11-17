@@ -9,19 +9,21 @@
 <body>
 
 <div class="app-nav">
-  <button class="app-nav-btn active" onclick="switchApp('ba')" id="nav-ba">📋 Требования & Методологии</button>
-  <button class="app-nav-btn" onclick="switchApp('uml')" id="nav-uml">🎯 UML & BPMN Диаграммы</button>
+  <button class="app-nav-btn active" onclick="switchApp('ba')" id="nav-ba" data-i18n="nav_ba">📋 Требования & Методологии</button>
+  <button class="app-nav-btn" onclick="switchApp('uml')" id="nav-uml" data-i18n="nav_uml">🎯 UML & BPMN Диаграммы</button>
+  <button class="lang-switch" id="lang-switch" onclick="toggleLang()" title="Язык / Language">EN</button>
 </div>
+<div class="content-notice" id="content-notice" style="display:none"></div>
 
 <div id="section-ba" class="section show">
   <!-- BA TRAINER HEADER -->
   <div class="hdr">
-    <h1>📋 BA Trainer — Требования & Методологии</h1>
-    <span class="badge b1" style="margin-left:auto">Теория ×20</span>
-    <span class="badge b2">Практика ×43</span>
+    <h1 data-i18n="hdr_ba">📋 BA Trainer — Требования & Методологии</h1>
+    <span class="badge b1" style="margin-left:auto"><span data-i18n="badge_theory">Теория</span> ×20</span>
+    <span class="badge b2"><span data-i18n="badge_practice">Практика</span> ×43</span>
   </div>
   <div class="pg">
-    <div class="pg-meta"><span id="plabel">Теоретический справочник</span><span id="pscore"></span></div>
+    <div class="pg-meta"><span id="plabel" data-i18n="theory_ref">Теоретический справочник</span><span id="pscore"></span></div>
     <div class="pg-bg"><div class="pg-fill" id="pfill" style="width:0%"></div></div>
   </div>
   <div class="main" id="app"></div>
@@ -42,7 +44,9 @@
   <div class="main" id="uapp"></div>
 </div>
 
+<script src="i18n.js"></script>
 <script src="data.js"></script>
 <script src="app.js"></script>
+<script>applyStaticI18n();</script>
 </body>
 </html>

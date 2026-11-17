@@ -32,7 +32,7 @@ function renderTheory(){
     +'<p>На основе фидбека Andersen: BABOK v3, классификация требований, техники выявления, User Stories, Agile/Scrum. Изучи материал, затем — 58 вопросов.</p></div>'
     +'<div class="tabs">'+tabsHtml+'</div>'
     +'<div id="tp">'+TC[theoryTab]+'</div>'
-    +'<button class="start-btn" onclick="startQuiz()">🚀 Начать тест — 20 теория + 43 практика</button>';
+    +'<button class="start-btn" onclick="startQuiz()">'+t('start_quiz_ba')+'</button>';
 }
 
 function switchTab(id){theoryTab=id;renderTheory();}
@@ -483,11 +483,11 @@ function renderTheoryUML(){
   document.getElementById('upfill').style.width = '0%';
 
   var tabs = [
-    {id:'overview',label:'📊 Diagram Types'},
-    {id:'uml_elements',label:'🔷 UML Elements'},
-    {id:'bpmn_elements',label:'🟣 BPMN 2.0 — Элементы / Elements'},
-    {id:'practice_build',label:'🎨 Практика: Построй диаграмму'},
-    {id:'practice_draw',label:'✏️ Практика: Нарисуй диаграмму'}
+    {id:'overview',label:t('tab_overview')},
+    {id:'uml_elements',label:t('tab_uml_el')},
+    {id:'bpmn_elements',label:t('tab_bpmn_el')},
+    {id:'practice_build',label:t('tab_build')},
+    {id:'practice_draw',label:t('tab_draw')}
   ];
   var tabsHtml = tabs.map(function(t){
     return '<div class="ttab'+(theoryTabUML===t.id?' active':'')+'" onclick="switchTabUML(\''+t.id+'\')">'+t.label+'</div>';
@@ -497,11 +497,11 @@ function renderTheoryUML(){
 
   document.getElementById('uapp').innerHTML =
     '<div class="theory-screen">'+
-      '<h2>📚 Theory Reference</h2>'+
-      '<p class="sub">Изучи материал перед тестом. Можно вернуться во время прохождения.</p>'+
+      '<h2>📚 '+t('theory_ref_uml')+'</h2>'+
+      '<p class="sub">'+t('theory_sub')+'</p>'+
       '<div class="theory-tabs">'+tabsHtml+'</div>'+
       '<div class="theory-panel show" id="utp">'+panelContent+'</div>'+
-      '<button class="start-btn" onclick="startQuizUML()">🚀 Начать тест (67 вопросов)</button>'+
+      '<button class="start-btn" onclick="startQuizUML()">'+t('start_quiz_uml')+'</button>'+
     '</div>';
   if(theoryTabUML==='practice_draw') dwBind();
 }
@@ -1167,21 +1167,21 @@ function renderDrawPractice(){
 }
 function renderDrawLevels(){
   var c1 = DRAW_EXERCISES.filter(function(e){return e.level===1;}).length, c2 = DRAW_EXERCISES.filter(function(e){return e.level===2;}).length;
-  return '<div class="t-h3">✏️ Нарисуй диаграмму</div>'
-    +'<div class="info-box">Полноценное рисование: перетаскивай элементы из палитры на холст, расставляй по Lane и слева направо, соединяй стрелками. Проверяется не порядок кликов, а структура: какие элементы есть, где они стоят и чем соединены.</div>'
+  return '<div class="t-h3">'+t('dw_title')+'</div>'
+    +'<div class="info-box">'+t('dw_intro')+'</div>'
     +'<div class="build-type-grid">'
-    +'<div class="build-type-card" onclick="dwSelectLevel(1)"><div class="bt-icon">🧩</div><h4>Уровень 1 — Собери</h4><p>В палитре только нужные элементы ('+c1+' заданий). Расставь и соедини.</p></div>'
-    +'<div class="build-type-card" onclick="dwSelectLevel(2)"><div class="bt-icon">📚</div><h4>Уровень 2 — Библиотека</h4><p>В палитре есть лишние элементы ('+c2+' заданий). Выбери только нужные.</p></div>'
+    +'<div class="build-type-card" onclick="dwSelectLevel(1)"><div class="bt-icon">🧩</div><h4>'+t('dw_l1')+'</h4><p>'+t('dw_l1_desc',{n:c1})+'</p></div>'
+    +'<div class="build-type-card" onclick="dwSelectLevel(2)"><div class="bt-icon">📚</div><h4>'+t('dw_l2')+'</h4><p>'+t('dw_l2_desc',{n:c2})+'</p></div>'
     +'</div>';
 }
 function renderDrawList(){
   var list = DRAW_EXERCISES.filter(function(e){return e.level===dwState.level;});
   var typeLab = {}; BUILD_TYPES.forEach(function(t){typeLab[t.id]=t.icon+' '+t.label;});
-  return '<div class="t-h3">'+(dwState.level===1?'🧩 Уровень 1 — Собери из готового':'📚 Уровень 2 — Выбери из библиотеки')+'</div>'
+  return '<div class="t-h3">'+(dwState.level===1?t('dw_l1_long'):t('dw_l2_long'))+'</div>'
     +'<div class="build-ex-list">'+list.map(function(e,i){
-      return '<div class="build-ex-card" onclick="dwStart(\''+e.id+'\')"><h4>'+(i+1)+'. '+e.title+'</h4><p>'+typeLab[e.type]+' · '+e.nodes.length+' элементов · '+e.edges.length+' связей'+(e.lanes?' · '+e.lanes.length+' Lane':'')+'</p></div>';
+      return '<div class="build-ex-card" onclick="dwStart(\''+e.id+'\')"><h4>'+(i+1)+'. '+e.title+'</h4><p>'+t('dw_meta',{t:typeLab[e.type],n:e.nodes.length,e:e.edges.length})+(e.lanes?t('dw_lanes',{l:e.lanes.length}):'')+'</p></div>';
     }).join('')+'</div>'
-    +'<button class="btn btn-g" onclick="dwBackLevels()">← Уровни</button>';
+    +'<button class="btn btn-g" onclick="dwBackLevels()">'+t('back_levels')+'</button>';
 }
 function dwSelectLevel(l){ dwState.level=l; dwState.exId=null; dwRefresh(); }
 function dwBackLevels(){ dwState.level=null; dwState.exId=null; dwRefresh(); }
@@ -1200,34 +1200,34 @@ function renderDrawExercise(){
     +'<div class="build-scenario">📌 '+ex.scenario+'</div>';
   if(dwState.result && dwState.result.ok){
     var pct = dwState.attempts<=1?'perfect':dwState.attempts<=3?'good':'rough';
-    var title = pct==='perfect'?'🏆 Идеально! С первой попытки':pct==='good'?'✅ Диаграмма построена верно':'📚 Готово, но стоит повторить теорию';
-    html += '<div class="build-done-banner '+pct+'"><h3>'+title+'</h3><p>Проверок: '+dwState.attempts+'</p></div>';
+    var title = pct==='perfect'?t('dw_perfect'):pct==='good'?t('dw_good'):t('dw_rough');
+    html += '<div class="build-done-banner '+pct+'"><h3>'+title+'</h3><p>'+t('dw_checks')+dwState.attempts+'</p></div>';
   }
   // toolbar
   html += '<div class="dw-toolbar">'
-    +'<button class="dw-tool'+(dwState.tool==='select'?' active':'')+'" onclick="dwSetTool(\'select\')">↖ Двигать</button>'
-    +'<button class="dw-tool'+(dwState.tool==='connect'?' active':'')+'" onclick="dwSetTool(\'connect\')">→ Соединить</button>';
+    +'<button class="dw-tool'+(dwState.tool==='select'?' active':'')+'" onclick="dwSetTool(\'select\')">'+t('tool_move')+'</button>'
+    +'<button class="dw-tool'+(dwState.tool==='connect'?' active':'')+'" onclick="dwSetTool(\'connect\')">'+t('tool_connect')+'</button>';
   if(!flow){
     html += '<span class="dw-sep"></span>' + DW_EDGE_KINDS[ex.type].map(function(k){
       return '<button class="dw-tool dw-kind'+(dwState.edgeKind===k.id?' active':'')+'" onclick="dwSetKind(\''+k.id+'\')">'+k.label+'</button>';
     }).join('');
   }
   html += '<span class="dw-sep"></span>'
-    +'<button class="dw-tool" onclick="dwDeleteSelected()"'+(dwState.selected?'':' disabled')+'>🗑 Удалить</button>'
-    +'<button class="dw-tool" onclick="dwClear()">✖ Очистить</button>'
+    +'<button class="dw-tool" onclick="dwDeleteSelected()"'+(dwState.selected?'':' disabled')+'>'+t('tool_delete')+'</button>'
+    +'<button class="dw-tool" onclick="dwClear()">'+t('tool_clear')+'</button>'
     +'</div>';
-  html += '<div class="dw-hint">'+(dwState.tool==='connect'?(dwState.connectFrom?'Теперь кликни на элемент, КУДА ведёт стрелка':'Кликни на элемент, ОТКУДА идёт стрелка'):'Перетаскивай элементы по холсту. Клик по элементу или стрелке выделяет их для удаления.')+'</div>';
+  html += '<div class="dw-hint">'+(dwState.tool==='connect'?(dwState.connectFrom?t('hint_to'):t('hint_from')):t('hint_move'))+'</div>';
   // canvas
   var H=dwCanvasH(ex);
   html += '<div class="dw-canvas-wrap"><svg id="dw-svg" class="dw-svg" viewBox="0 0 '+DW_W+' '+H+'" xmlns="http://www.w3.org/2000/svg">'+dwSvgInner(ex)+'</svg></div>';
   // label chooser
   if(dwState.pendingEdge!==null){
     var labels=[]; ex.edges.forEach(function(e){ if(e.label && labels.indexOf(e.label)===-1) labels.push(e.label); });
-    html += '<div class="dw-label-box">Подпись для ветки: '+labels.map(function(l){return '<button class="btn btn-p dw-lbl" onclick="dwSetLabel(\''+bpEsc(l)+'\')">'+bpEsc(l)+'</button>';}).join('')
-      +'<button class="btn btn-g dw-lbl" onclick="dwSetLabel(\'\')">без подписи</button></div>';
+    html += '<div class="dw-label-box">'+t('label_for')+labels.map(function(l){return '<button class="btn btn-p dw-lbl" onclick="dwSetLabel(\''+bpEsc(l)+'\')">'+bpEsc(l)+'</button>';}).join('')
+      +'<button class="btn btn-g dw-lbl" onclick="dwSetLabel(\'\')">'+t('no_label')+'</button></div>';
   }
   // palette
-  html += '<div class="dw-pal-title">Палитра — перетащи на холст (или кликни, чтобы добавить)</div><div class="dw-palette">';
+  html += '<div class="dw-pal-title">'+t('palette_title')+'</div><div class="dw-palette">';
   lib.forEach(function(n){
     var used = dwState.nodes.some(function(p){return p.src===n.id;});
     html += '<div class="dw-pal-item'+(used?' used':'')+'" draggable="'+(used?'false':'true')+'" data-src="'+n.id+'" onclick="dwAddFromPalette(\''+n.id+'\')">'
@@ -1236,13 +1236,13 @@ function renderDrawExercise(){
   html += '</div>';
   // result
   if(dwState.result && !dwState.result.ok){
-    html += '<div class="dw-errors"><b>Проверка '+dwState.attempts+': найдено замечаний — '+dwState.result.errors.length+'</b><ul>'+dwState.result.errors.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+    html += '<div class="dw-errors"><b>'+t('errors_title',{a:dwState.attempts,n:dwState.result.errors.length})+'</b><ul>'+dwState.result.errors.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
   }
   if(dwState.result && dwState.result.ok){
-    html += '<div class="build-explanation"><b>Разбор:</b> '+ex.explanation+'</div>'
-      +'<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-p" onclick="dwRetry()">🔄 Нарисовать заново</button><button class="btn btn-g" onclick="dwBackList()">← Другое задание</button></div>';
+    html += '<div class="build-explanation"><b>'+t('analysis')+'</b> '+ex.explanation+'</div>'
+      +'<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-p" onclick="dwRetry()">'+t('redraw')+'</button><button class="btn btn-g" onclick="dwBackList()">'+t('back_other')+'</button></div>';
   } else {
-    html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="btn btn-p" onclick="dwCheck()">✅ Проверить</button><button class="btn btn-g" onclick="dwBackList()">← Другое задание</button></div>';
+    html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="btn btn-p" onclick="dwCheck()">'+t('check')+'</button><button class="btn btn-g" onclick="dwBackList()">'+t('back_other')+'</button></div>';
   }
   return html;
 }
@@ -1266,7 +1266,7 @@ function dwSvgInner(ex){
         +'<text x="'+(DW_LEFT/2)+'" y="'+(y+DW_LANE_H/2+4)+'" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="700">'+bpEsc(l.label)+'</text>';
     });
   } else if(dwState.nodes.length===0){
-    s += '<text x="'+(DW_W/2)+'" y="'+(H/2)+'" text-anchor="middle" fill="#374151" font-size="14">Холст пуст — перетащи элементы из палитры ниже</text>';
+    s += '<text x="'+(DW_W/2)+'" y="'+(H/2)+'" text-anchor="middle" fill="#374151" font-size="14">'+t('canvas_empty')+'</text>';
   }
   dwState.edges.forEach(function(e,i){ s += dwEdgeSvg(ex,e,i); });
   dwState.nodes.forEach(function(n){ s += dwNodeSvg(ex,n); });
@@ -1432,4 +1432,10 @@ function dwCheck(){
   dwState.result={ok:errors.length===0, errors:errors};
   dwRefresh();
   var r=document.querySelector('.dw-errors,.build-done-banner'); if(r) r.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// re-render current screens after a language switch
+function rerenderAll(){
+  if(state==='theory') renderTheory(); else if(state==='quiz') renderQ(); else renderScore();
+  if(umlInited){ if(stateUML==='theory') renderTheoryUML(); else if(stateUML==='quiz') renderQUML(); else renderScoreUML(); }
 }
